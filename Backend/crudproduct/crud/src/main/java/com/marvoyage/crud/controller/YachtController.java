@@ -30,7 +30,7 @@ public class YachtController {
     public ResponseEntity<List<Yachts>> getAvailableYachts() {
         List<Yachts> yachts = productService.getAvailableYachts();
         if (yachts.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(new MessageDto("No hay yates disponibles")));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
         return ResponseEntity.ok(yachts);
 
@@ -39,34 +39,37 @@ public class YachtController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Yachts> getYachtById(@Valid Long id, @RequestBody YachtsDto dto) throws AttributeException {
+    public ResponseEntity<Yachts> getYachtById (@PathVariable Long id) {
         Yachts yacht = productService.getYachtById(id);
-        if (yacht != null) {
-            return new ResponseEntity<>(yacht, HttpStatus.OK);
+        if (yacht == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+            return ResponseEntity.ok(yacht);
         }
     }
 
+
+
     @PostMapping
-    public ResponseEntity<Yachts> createYacht(@RequestBody YachtsDto dto) throws AttributeException {
+    public ResponseEntity<MessageDto> createYacht(@RequestBody YachtsDto dto) throws AttributeException {
         Yachts createdYacht = productService.createYacht(dto);
-        return new ResponseEntity<>(createdYacht, HttpStatus.CREATED);
+        String message = "Yacht created successfully";
+        return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Yachts> updateYacht(@PathVariable Long id, @RequestBody YachtsDto dto) throws AttributeException {
+    public ResponseEntity<MessageDto> updateYacht(@PathVariable Long id, @RequestBody YachtsDto dto) throws AttributeException {
         Yachts updatedYacht = productService.updateYacht(id, dto);
-        if (updatedYacht != null) {
-            return new ResponseEntity<>(updatedYacht, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+
+        String message = "Yacht updated successfully";
+        return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteYacht(@PathVariable Long id) {
+    public ResponseEntity<MessageDto> deleteYacht(@PathVariable Long id) {
+
         productService.deleteYacht(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok(new MessageDto(HttpStatus.OK, "Yacht deleted successfully"));
     }
 }
