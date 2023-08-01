@@ -1,5 +1,6 @@
 package com.marvoyage.crud.controller;
 
+import Global.exceptions.AttributeException;
 import com.marvoyage.crud.dto.YachtsDto;
 import com.marvoyage.crud.entity.Yachts;
 import com.marvoyage.crud.service.ProductService;
@@ -23,6 +24,12 @@ public class YachtController {
         return new ResponseEntity<>(yachts, HttpStatus.OK);
     }
 
+    @GetMapping("/available")
+    public ResponseEntity<List<Yachts>> getAvailableYachts() {
+        List<Yachts> yachts = productService.getAvailableYachts();
+        return new ResponseEntity<>(yachts, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Yachts> getYachtById(@PathVariable Long id) {
         Yachts yacht = productService.getYachtById(id);
@@ -34,13 +41,13 @@ public class YachtController {
     }
 
     @PostMapping
-    public ResponseEntity<Yachts> createYacht(@RequestBody YachtsDto dto) {
+    public ResponseEntity<Yachts> createYacht(@RequestBody YachtsDto dto) throws AttributeException {
         Yachts createdYacht = productService.createYacht(dto);
         return new ResponseEntity<>(createdYacht, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Yachts> updateYacht(@PathVariable Long id, @RequestBody YachtsDto dto) {
+    public ResponseEntity<Yachts> updateYacht(@PathVariable Long id, @RequestBody YachtsDto dto) throws AttributeException {
         Yachts updatedYacht = productService.updateYacht(id, dto);
         if (updatedYacht != null) {
             return new ResponseEntity<>(updatedYacht, HttpStatus.OK);
