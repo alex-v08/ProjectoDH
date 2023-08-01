@@ -1,6 +1,6 @@
 package com.marvoyage.crud.controller;
 
-import com.marvoyage.crud.dto.YatesDto;
+import com.marvoyage.crud.dto.YachtsDto;
 import com.marvoyage.crud.entity.Yachts;
 import com.marvoyage.crud.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +34,13 @@ public class YachtController {
     }
 
     @PostMapping
-    public ResponseEntity<Yachts> createYacht(@RequestBody YatesDto dto) {
+    public ResponseEntity<Yachts> createYacht(@RequestBody YachtsDto dto) {
         Yachts createdYacht = productService.createYacht(dto);
         return new ResponseEntity<>(createdYacht, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Yachts> updateYacht(@PathVariable Long id, @RequestBody YatesDto dto) {
+    public ResponseEntity<Yachts> updateYacht(@PathVariable Long id, @RequestBody YachtsDto dto) {
         Yachts updatedYacht = productService.updateYacht(id, dto);
         if (updatedYacht != null) {
             return new ResponseEntity<>(updatedYacht, HttpStatus.OK);

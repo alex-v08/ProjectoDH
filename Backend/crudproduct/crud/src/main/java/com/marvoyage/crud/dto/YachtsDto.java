@@ -2,13 +2,13 @@ package com.marvoyage.crud.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class YatesDto {
+public class YachtsDto {
     @NotBlank
     private String nombre;
     private String descripcion;
     private String imagen;
 
-    public YatesDto() {
+    public YachtsDto() {
     }
 
     public String getNombre() {

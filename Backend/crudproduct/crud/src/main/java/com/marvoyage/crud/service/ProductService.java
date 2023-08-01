@@ -1,7 +1,7 @@
 package com.marvoyage.crud.service;
 
 
-import com.marvoyage.crud.dto.YatesDto;
+import com.marvoyage.crud.dto.YachtsDto;
 import com.marvoyage.crud.entity.Yachts;
 import com.marvoyage.crud.repository.YachtsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class ProductService {
         return yachtsRepository.findByName(name).get();
     }
 
-    public Yachts createYacht(YatesDto dto) {
+    public Yachts createYacht(YachtsDto dto) {
         Yachts yacht = new Yachts(autoIncrementId(), dto.getNombre(), dto.getDescripcion(), dto.getImagen());
         return yachtsRepository.save(yacht);
     }
@@ -38,7 +38,7 @@ public class ProductService {
         return yachts.isEmpty() ? 1L : yachts.stream().max(Comparator.comparing(Yachts::getId)).get().getId() + 1L;
     }
 
-    public Yachts updateYacht(Long id, YatesDto dto) {
+    public Yachts updateYacht(Long id, YachtsDto dto) {
         Yachts yacht = yachtsRepository.findById(id).get();
         yacht.setName(dto.getNombre());
         yacht.setDescription(dto.getDescripcion());
