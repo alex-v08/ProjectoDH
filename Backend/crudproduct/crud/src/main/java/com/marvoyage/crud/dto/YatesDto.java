@@ -1,14 +1,14 @@
-package com.marvoyage.crud.dao;
+package com.marvoyage.crud.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class YatesDao {
+public class YatesDto {
     @NotBlank
     private String nombre;
     private String descripcion;
     private String imagen;
 
-    public YatesDao() {
+    public YatesDto() {
     }
 
     public String getNombre() {
