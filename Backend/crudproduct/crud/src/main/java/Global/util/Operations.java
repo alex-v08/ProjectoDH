@@ -1,4 +1,4 @@
-package Global.exceptions.util;
+package Global.util;
 
 public class Operations {
     public static String trimBracket(String str) {

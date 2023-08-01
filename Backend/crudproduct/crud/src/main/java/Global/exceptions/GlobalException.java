@@ -2,7 +2,7 @@ package Global.exceptions;
 
 
 import Global.dto.MessageDto;
-import Global.exceptions.util.Operations;
+import Global.util.Operations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

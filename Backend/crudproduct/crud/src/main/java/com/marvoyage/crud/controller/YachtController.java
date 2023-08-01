@@ -1,9 +1,11 @@
 package com.marvoyage.crud.controller;
 
+import Global.dto.MessageDto;
 import Global.exceptions.AttributeException;
 import com.marvoyage.crud.dto.YachtsDto;
 import com.marvoyage.crud.entity.Yachts;
 import com.marvoyage.crud.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,20 +20,26 @@ public class YachtController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Yachts>> getAllYachts() {
-        List<Yachts> yachts = productService.getAllYachts();
-        return new ResponseEntity<>(yachts, HttpStatus.OK);
+
+        return ResponseEntity.ok(productService.getAllYachts());
     }
 
     @GetMapping("/available")
     public ResponseEntity<List<Yachts>> getAvailableYachts() {
         List<Yachts> yachts = productService.getAvailableYachts();
-        return new ResponseEntity<>(yachts, HttpStatus.OK);
+        if (yachts.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(new MessageDto("No hay yates disponibles")));
+        } else {
+        return ResponseEntity.ok(yachts);
+
+        }
+
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Yachts> getYachtById(@PathVariable Long id) {
+    public ResponseEntity<Yachts> getYachtById(@Valid Long id, @RequestBody YachtsDto dto) throws AttributeException {
         Yachts yacht = productService.getYachtById(id);
         if (yacht != null) {
             return new ResponseEntity<>(yacht, HttpStatus.OK);
