@@ -14,4 +14,5 @@ public interface YachtsRepository extends MongoRepository<Yachts, Long> {
     Optional<Yachts> findByName(String name);
 
     List<Yachts> findByAvailable(boolean b);
+
 }
