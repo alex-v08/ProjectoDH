@@ -50,7 +50,7 @@ public class YachtController {
 
 
 
-    @PostMapping()
+    @PostMapping("/create")
     public ResponseEntity<MessageDto> createYacht(@RequestBody YachtsDto dto) throws AttributeException {
         Yachts createdYacht = productService.createYacht(dto);
         String message = "Yacht created successfully";
@@ -66,7 +66,7 @@ public class YachtController {
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<MessageDto> deleteYacht(@PathVariable Long id) {
 
         productService.deleteYacht(id);
