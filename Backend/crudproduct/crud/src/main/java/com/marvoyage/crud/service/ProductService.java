@@ -52,10 +52,16 @@ public class ProductService {
 
     public Yachts updateYacht(Long id, YachtsDto dto) throws AttributeException {
         Yachts yacht = yachtsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
-
         yacht.setName(dto.getNombre());
         yacht.setDescription(dto.getDescripcion());
         yacht.setImageUrl(dto.getImagen());
+        yacht.setAvailable(dto.getAvailable());
+        yacht.setPricePerDay(dto.getPricePerDay());
+        yacht.setCategory(dto.getCategory());
+        yacht.setPricePerHour(dto.getPricePerHour());
+        yacht.setPricePerWeek(dto.getPricePerWeek());
+
+
         return yachtsRepository.save(yacht);
     }
 

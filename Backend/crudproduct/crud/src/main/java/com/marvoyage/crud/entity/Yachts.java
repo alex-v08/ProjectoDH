@@ -19,6 +19,34 @@ public class Yachts {
 
     private Boolean available;
 
+    public void setPricePerWeek(String pricePerWeek) {
+        this.pricePerWeek = pricePerWeek;
+    }
+
+    public String getPricePerHour() {
+        return pricePerHour;
+    }
+
+    public void setPricePerHour(String pricePerHour) {
+        this.pricePerHour = pricePerHour;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
+    }
+
     public Yachts() {
     }
 
@@ -39,6 +67,8 @@ public class Yachts {
         this.description = descripcion;
         this.imageUrl = imagen;
     }
+
+
 
     public Long getId() {
         return id;
