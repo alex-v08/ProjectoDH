@@ -35,7 +35,7 @@ public class UserController {
     @PostMapping("/new")
     public ResponseEntity<MessageDto> save(@Valid @RequestBody UserDto dto) throws AttributeException {
         User user = userService.saveUser(dto);
-        String message = "User created with id: " + user.getName();
+        String message = "User created with Name: " + user.getName();
 
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
