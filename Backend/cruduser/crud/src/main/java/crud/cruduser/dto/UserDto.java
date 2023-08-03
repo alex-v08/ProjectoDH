@@ -1,4 +1,4 @@
-package crud.crudUser.dto;
+package crud.cruduser.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

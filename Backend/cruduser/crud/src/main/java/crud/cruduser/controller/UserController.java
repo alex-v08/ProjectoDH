@@ -1,8 +1,8 @@
-package crud.crudUser.controller;
+package crud.cruduser.controller;
 
-import crud.crudUser.dto.UserDto;
-import crud.crudUser.service.UserService;
-import crud.crudUser.entity.User;
+import crud.cruduser.dto.UserDto;
+import crud.cruduser.service.UserService;
+import crud.cruduser.entity.User;
 
 
 import crud.global.dto.MessageDto;

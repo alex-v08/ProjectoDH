@@ -1,6 +1,6 @@
-package crud.crudUser.repository;
+package crud.cruduser.repository;
 
-import crud.crudUser.entity.User;
+import crud.cruduser.entity.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

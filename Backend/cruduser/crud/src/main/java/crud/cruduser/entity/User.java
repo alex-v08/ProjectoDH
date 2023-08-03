@@ -1,4 +1,4 @@
-package crud.crudUser.entity;
+package crud.cruduser.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,7 +17,7 @@ public class User {
     private String phone;
 
     private String address;
-    private String id_product;
+    private String idProduct;
 
     public User(Long id, String name) {
         this.id = id;
@@ -82,12 +82,12 @@ public class User {
         return id;
     }
 
-    public String getId_product() {
-        return id_product;
+    public String getIdProduct() {
+        return idProduct;
     }
 
-    public void setId_product(String id_product) {
-        this.id_product = id_product;
+    public void setIdProduct(String idProduct) {
+        this.idProduct = idProduct;
     }
 
     public void setId(Long id) {

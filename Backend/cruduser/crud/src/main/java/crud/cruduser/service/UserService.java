@@ -1,8 +1,8 @@
-package crud.crudUser.service;
+package crud.cruduser.service;
 
-import crud.crudUser.dto.UserDto;
-import crud.crudUser.entity.User;
-import crud.crudUser.repository.UsersRepository;
+import crud.cruduser.dto.UserDto;
+import crud.cruduser.entity.User;
+import crud.cruduser.repository.UsersRepository;
 
 import crud.global.exceptions.AttributeException;
 import crud.global.exceptions.ResourceNotFoundException;
@@ -24,8 +24,7 @@ public class UserService {
     }
 
     public User getUserById(Long id) {
-        return
-                usersRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return usersRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     public User saveUser(UserDto dto) throws AttributeException {
@@ -59,7 +58,7 @@ public class UserService {
 
 
     public void deleteUser(Long id) {
-        User user = usersRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        usersRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         usersRepository.deleteById(id);
     }
