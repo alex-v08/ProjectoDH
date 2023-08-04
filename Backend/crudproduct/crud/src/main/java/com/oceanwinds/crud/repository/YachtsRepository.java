@@ -2,6 +2,7 @@ package com.oceanwinds.crud.repository;
 
 import com.oceanwinds.crud.entity.Yachts;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,7 +21,8 @@ public interface YachtsRepository extends JpaRepository<Yachts, Long> {
     List<Yachts> findByAvailableAndCategory(boolean b, String category);
 
 
-  /*  List<Yachts> findYachtsWithModifiedImages(String urlListImages,Long id);*/
+    @Query(value = "SELECT IMAGE_URL FROM YACHTS WHERE ID = ?1 ", nativeQuery = true)
+    List<String> findYachtsWithModifiedImages(Long id);
 
 
 

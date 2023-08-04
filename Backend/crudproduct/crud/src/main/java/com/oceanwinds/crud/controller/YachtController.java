@@ -62,15 +62,14 @@ public class YachtController {
 
     @PostMapping("/create")
     public ResponseEntity<MessageDto> createYacht(@RequestBody YachtsDto dto) throws AttributeException {
-        Yachts createdYacht = productService.createYacht(dto);
+        productService.createYacht(dto);
         String message = "Yacht created successfully";
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<MessageDto> updateYacht(@PathVariable Long id, @RequestBody YachtsDto dto) throws AttributeException {
-        Yachts updatedYacht = productService.updateYacht(id, dto);
-
+        productService.updateYacht(id, dto);
 
         String message = "Yacht updated successfully";
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
@@ -83,10 +82,11 @@ public class YachtController {
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, "Yacht deleted successfully"));
     }
 
-    /*
-    @GetMapping("/findAllImagen/{id}")
-    public List<Yachts> getYachtsWithModifiedImages(@PathVariable Long id) {
-        return productService.getYachtsWithModifiedImages(id);
-    }*/
+    @GetMapping("/urlImage/{id}")
+    public ResponseEntity<List<String>> getImageUrl(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.findYachtsWithModifiedImages(id));
+    }
+
+
 
 }

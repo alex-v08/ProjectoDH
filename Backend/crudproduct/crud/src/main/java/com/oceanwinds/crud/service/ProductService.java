@@ -102,28 +102,22 @@ public class ProductService {
     }
 
     public List<Yachts> getAvailableYachts() {
+
         return yachtsRepository.findByAvailable(true);
     }
 
+    public List<String> findYachtsWithModifiedImages(Long id){
+        List<String> modifiedImages = new ArrayList<>();
+        Yachts yacht = yachtsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
 
-/*
-    public List<Yachts> getYachtsWithModifiedImages(String urlIImages, Long id) {
-        List<Yachts> yachts = yachtsRepository.findYachtsWithModifiedImages(urlIImages, id);
-        List<Yachts> modifiedYachts = new ArrayList<>();
-
-        for (Yachts yacht : yachts) {
-            List<String> modifiedImageUrls = new ArrayList<>();
-            for (int i = 1; i <= 13; i++) {
-                String modifiedImageUrl = yacht.getImageUrl() + i + ".png";
-                modifiedImageUrls.add(modifiedImageUrl);
-            }
+        for (int i = 1; i <= 13; i++) {
+            modifiedImages.add(yacht.getImageUrl() + i + ".png");
         }
-
-
-        return modifiedYachts;
+        return modifiedImages;
     }
 
-    */
 
-}
+    }
+
+
 
