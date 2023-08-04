@@ -9,6 +9,7 @@ import com.oceanwinds.crud.repository.YachtsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -103,6 +104,26 @@ public class ProductService {
     public List<Yachts> getAvailableYachts() {
         return yachtsRepository.findByAvailable(true);
     }
-}
 
+
+/*
+    public List<Yachts> getYachtsWithModifiedImages(String urlIImages, Long id) {
+        List<Yachts> yachts = yachtsRepository.findYachtsWithModifiedImages(urlIImages, id);
+        List<Yachts> modifiedYachts = new ArrayList<>();
+
+        for (Yachts yacht : yachts) {
+            List<String> modifiedImageUrls = new ArrayList<>();
+            for (int i = 1; i <= 13; i++) {
+                String modifiedImageUrl = yacht.getImageUrl() + i + ".png";
+                modifiedImageUrls.add(modifiedImageUrl);
+            }
+        }
+
+
+        return modifiedYachts;
+    }
+
+    */
+
+}
 

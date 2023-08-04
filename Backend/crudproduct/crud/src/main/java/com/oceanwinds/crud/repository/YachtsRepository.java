@@ -18,4 +18,10 @@ public interface YachtsRepository extends JpaRepository<Yachts, Long> {
     List<Yachts> findByAvailable(boolean b);
 
     List<Yachts> findByAvailableAndCategory(boolean b, String category);
+
+
+  /*  List<Yachts> findYachtsWithModifiedImages(String urlListImages,Long id);*/
+
+
+
 }

@@ -2,5 +2,6 @@ package com.oceanwinds.crud.entity;
 
 public enum Category {
 
-    PREMIUM, STANDARD, ECONOMY;
+    SAILBOAT, MOTORBOAT, CATAMARAN, YACHT, JETSKI
+
 }

@@ -6,6 +6,10 @@ import lombok.*;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 
 @Entity
 @Getter @Setter
@@ -24,6 +28,8 @@ public class Yachts {
     @Column(nullable = false, unique = true)
     private String sku;
     private String description;
+    //Array of images
+
     private String imageUrl;
     private Double pricePerDay;
     private Double pricePerWeek;

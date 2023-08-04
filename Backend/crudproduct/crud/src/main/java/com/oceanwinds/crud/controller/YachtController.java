@@ -82,4 +82,11 @@ public class YachtController {
         productService.deleteYacht(id);
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, "Yacht deleted successfully"));
     }
+
+    /*
+    @GetMapping("/findAllImagen/{id}")
+    public List<Yachts> getYachtsWithModifiedImages(@PathVariable Long id) {
+        return productService.getYachtsWithModifiedImages(id);
+    }*/
+
 }
