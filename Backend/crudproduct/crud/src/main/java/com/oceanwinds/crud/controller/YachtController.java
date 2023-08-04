@@ -1,10 +1,10 @@
-package com.marvoyage.crud.controller;
+package com.oceanwinds.crud.controller;
 
 import Global.dto.MessageDto;
 import Global.exceptions.AttributeException;
-import com.marvoyage.crud.dto.YachtsDto;
-import com.marvoyage.crud.entity.Yachts;
-import com.marvoyage.crud.service.ProductService;
+import com.oceanwinds.crud.entity.dto.YachtsDto;
+import com.oceanwinds.crud.entity.Yachts;
+import com.oceanwinds.crud.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class YachtController {
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<Yachts>> getAvailableYachts() {
+    public ResponseEntity<List<Yachts>> getAvailableYachts() throws AttributeException {
         List<Yachts> yachts = productService.getAvailableYachts();
         if (yachts.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -35,6 +35,16 @@ public class YachtController {
 
         }
 
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<Yachts>> getYachtsByCategory(@PathVariable String category) {
+        List<Yachts> yachts = productService.getYachtsByCategory(category);
+        if (yachts.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.ok(yachts);
+        }
     }
 
     @GetMapping("/{id}")

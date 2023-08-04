@@ -1,4 +1,4 @@
-package com.marvoyage.crud.entity;
+package com.oceanwinds.crud.entity;
 
 public enum Category {
 

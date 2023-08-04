@@ -1,4 +1,4 @@
-package com.marvoyage.crud;
+package com.oceanwinds.crud;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

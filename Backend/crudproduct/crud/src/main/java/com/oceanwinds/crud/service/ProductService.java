@@ -1,11 +1,11 @@
-package com.marvoyage.crud.service;
+package com.oceanwinds.crud.service;
 
 
 import Global.exceptions.AttributeException;
 import Global.exceptions.ResourceNotFoundException;
-import com.marvoyage.crud.dto.YachtsDto;
-import com.marvoyage.crud.entity.Yachts;
-import com.marvoyage.crud.repository.YachtsRepository;
+import com.oceanwinds.crud.entity.dto.YachtsDto;
+import com.oceanwinds.crud.entity.Yachts;
+import com.oceanwinds.crud.repository.YachtsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,29 +32,40 @@ public class ProductService {
 
     public Yachts createYacht(YachtsDto dto) throws AttributeException {
 
-        if (dto.getNombre() == null || dto.getNombre().isEmpty()) {
+        if (dto.getName() == null || dto.getName().isEmpty()) {
             throw new AttributeException("Name is required");
         }
-        if (dto.getDescripcion() == null || dto.getDescripcion().isEmpty()) {
+        if (dto.getDescription() == null || dto.getDescription().isEmpty()) {
             throw new AttributeException("Description is required");
         }
-        if (dto.getImagen() == null || dto.getImagen().isEmpty()) {
+        if (dto.getImageUrl() == null || dto.getImageUrl().isEmpty()) {
             throw new AttributeException("Image is required");
         }
-        Yachts yacht = new Yachts(autoIncrementId(), dto.getNombre(), dto.getDescripcion(), dto.getImagen());
+
+
+        Yachts yacht = new Yachts();
+
+        yacht.setName(dto.getName());
+        yacht.setSku(dto.getSku());
+        yacht.setDescription(dto.getDescription());
+        yacht.setImageUrl(dto.getImageUrl());
+        yacht.setAvailable(dto.getAvailable());
+        yacht.setPricePerDay(dto.getPricePerDay());
+        yacht.setCategory(dto.getCategory());
+        yacht.setPricePerHour(dto.getPricePerHour());
+        yacht.setPricePerWeek(dto.getPricePerWeek());
+
+
         return yachtsRepository.save(yacht);
     }
 
-    private Long autoIncrementId() {
-        List<Yachts> yachts = yachtsRepository.findAll();
-        return yachts.isEmpty() ? 1L : yachts.stream().max(Comparator.comparing(Yachts::getId)).get().getId() + 1L;
-    }
 
     public Yachts updateYacht(Long id, YachtsDto dto) throws AttributeException {
         Yachts yacht = yachtsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
-        yacht.setName(dto.getNombre());
-        yacht.setDescription(dto.getDescripcion());
-        yacht.setImageUrl(dto.getImagen());
+        yacht.setName(dto.getName());
+        yacht.setSku(dto.getSku());
+        yacht.setDescription(dto.getDescription());
+        yacht.setImageUrl(dto.getImageUrl());
         yacht.setAvailable(dto.getAvailable());
         yacht.setPricePerDay(dto.getPricePerDay());
         yacht.setCategory(dto.getCategory());
@@ -80,10 +91,17 @@ public class ProductService {
 
     }
 
+
+    public List<Yachts> getAvailableYachtsByCategory(String category) {
+        return yachtsRepository.findByAvailableAndCategory(true, category);
+    }
+
+    public List<Yachts> getYachtsByCategory(String category) {
+        return yachtsRepository.findByCategory(category);
+    }
+
     public List<Yachts> getAvailableYachts() {
         return yachtsRepository.findByAvailable(true);
-
-
     }
 }
 
