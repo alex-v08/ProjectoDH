@@ -16,7 +16,10 @@ public class YachtsDto {
     private String name;
     @Column(name = "sku", nullable = false, unique = true)
     private String sku;
+    @Column(name = "description", nullable = false)
+
     private String description;
+    @Column(name = "image_url", nullable = false)
     private String imageUrl;
     private Double pricePerDay;
     private Double pricePerWeek;

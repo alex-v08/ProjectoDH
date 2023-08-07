@@ -14,7 +14,7 @@ import lombok.*;
 public class Yachts {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "nombre" , nullable = false)
