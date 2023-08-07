@@ -1,13 +1,9 @@
 package com.oceanwinds.crud.entity;
 
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 
 @Entity
@@ -18,10 +14,10 @@ import java.util.List;
 public class Yachts {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "name" , nullable = false)
+    @Column(name = "nombre" , nullable = false)
     private String name;
     @Column(nullable = false, unique = true)
     private String sku;
