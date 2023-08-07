@@ -1,5 +1,6 @@
 package com.oceanwinds.crud.repository;
 
+import com.oceanwinds.crud.entity.Category;
 import com.oceanwinds.crud.entity.Yachts;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +14,7 @@ public interface YachtsRepository extends JpaRepository<Yachts, Long> {
 
     boolean existsByAvailable(boolean available);
 
-    List<Yachts> findByCategory(String category);
+    List<Yachts> findByCategory(Category category);
     Optional<Yachts> findByName(String name);
 
     List<Yachts> findByAvailable(boolean b);

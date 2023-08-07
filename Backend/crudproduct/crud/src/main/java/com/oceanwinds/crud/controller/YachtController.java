@@ -2,6 +2,7 @@ package com.oceanwinds.crud.controller;
 
 import Global.dto.MessageDto;
 import Global.exceptions.AttributeException;
+import com.oceanwinds.crud.entity.Category;
 import com.oceanwinds.crud.entity.dto.YachtsDto;
 import com.oceanwinds.crud.entity.Yachts;
 import com.oceanwinds.crud.service.ProductService;
@@ -38,7 +39,7 @@ public class YachtController {
     }
 
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<Yachts>> getYachtsByCategory(@PathVariable String category) {
+    public ResponseEntity<List<Yachts>> getYachtsByCategory(@PathVariable Category category) {
         List<Yachts> yachts = productService.getYachtsByCategory(category);
         if (yachts.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -84,6 +85,9 @@ public class YachtController {
 
     @GetMapping("/urlImage/{id}")
     public ResponseEntity<List<String>> getImageUrl(@PathVariable Long id) {
+        if (productService.findYachtsWithModifiedImages(id).isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
         return ResponseEntity.ok(productService.findYachtsWithModifiedImages(id));
     }
 

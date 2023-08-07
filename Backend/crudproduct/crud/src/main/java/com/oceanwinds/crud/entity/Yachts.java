@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,18 +17,15 @@ import java.util.List;
 
 public class Yachts {
 
-    @jakarta.persistence.Id
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "NOMBRE" , nullable = false)
+    @Column(name = "name" , nullable = false)
     private String name;
     @Column(nullable = false, unique = true)
     private String sku;
     private String description;
-    //Array of images
-
     private String imageUrl;
     private Double pricePerDay;
     private Double pricePerWeek;

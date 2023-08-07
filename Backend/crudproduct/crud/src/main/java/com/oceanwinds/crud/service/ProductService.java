@@ -3,6 +3,7 @@ package com.oceanwinds.crud.service;
 
 import Global.exceptions.AttributeException;
 import Global.exceptions.ResourceNotFoundException;
+import com.oceanwinds.crud.entity.Category;
 import com.oceanwinds.crud.entity.dto.YachtsDto;
 import com.oceanwinds.crud.entity.Yachts;
 import com.oceanwinds.crud.repository.YachtsRepository;
@@ -97,7 +98,7 @@ public class ProductService {
         return yachtsRepository.findByAvailableAndCategory(true, category);
     }
 
-    public List<Yachts> getYachtsByCategory(String category) {
+    public List<Yachts> getYachtsByCategory(Category category) {
         return yachtsRepository.findByCategory(category);
     }
 
