@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/")
@@ -84,11 +85,8 @@ public class YachtController {
     }
 
     @GetMapping("/urlImage/{id}")
-    public ResponseEntity<List<String>> getImageUrl(@PathVariable Long id) {
-        if (productService.findYachtsWithModifiedImages(id).isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.ok(productService.findYachtsWithModifiedImages(id));
+    public List<Map<String, Object>> getYachtModifiedImages(@PathVariable Long id) {
+        return productService.findYachtsWithModifiedImages(id);
     }
 
 

@@ -10,9 +10,7 @@ import com.oceanwinds.crud.repository.YachtsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -107,16 +105,18 @@ public class ProductService {
         return yachtsRepository.findByAvailable(true);
     }
 
-    public List<String> findYachtsWithModifiedImages(Long id){
-        List<String> modifiedImages = new ArrayList<>();
+    public List<Map<String, Object>> findYachtsWithModifiedImages(Long id){
+        List<Map<String, Object>> modifiedImagesList = new ArrayList<>();
         Yachts yacht = yachtsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
 
         for (int i = 1; i <= 13; i++) {
-            modifiedImages.add(yacht.getImageUrl() + i + ".png");
+            Map<String, Object> modifiedImage = new HashMap<>();
+            modifiedImage.put("id", i);
+            modifiedImage.put("url", yacht.getImageUrl() + i + ".png");
+            modifiedImagesList.add(modifiedImage);
         }
-        return modifiedImages;
+        return modifiedImagesList;
     }
-
 
     }
 

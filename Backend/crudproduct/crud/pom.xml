@@ -8,7 +8,7 @@
         <version>3.0.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.MarVoyage</groupId>
+    <groupId>com.ocean</groupId>
     <artifactId>crud</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>crud</name>
