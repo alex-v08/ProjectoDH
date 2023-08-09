@@ -3,28 +3,11 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
-      <profile name="Maven default annotation processors profile" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name="api-gateway" />
-        <module name="crud (1)" />
-      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="crud" target="17" />
-      <module name="crud (1) (com.MarVoyage)" target="17" />
-      <module name="crud (2) (com.oceanwings)" target="17" />
+      <module name="api-gateway" target="17" />
+      <module name="crud (1)" target="17" />
+      <module name="crud (2)" target="17" />
     </bytecodeTargetLevel>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="api-gateway" options="-parameters" />
-      <module name="crud" options="-parameters" />
-      <module name="crud (1)" options="-parameters" />
-      <module name="crud (1) (com.MarVoyage)" options="-parameters" />
-      <module name="crud (2)" options="-parameters" />
-      <module name="crud (2) (com.oceanwings)" options="-parameters" />
-    </option>
   </component>
 </project>
