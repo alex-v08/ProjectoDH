@@ -2,6 +2,7 @@ package com.oceanwinds.crud.controller;
 
 import Global.dto.MessageDto;
 import Global.exceptions.AttributeException;
+import Global.util.PaginatedResponse;
 import com.oceanwinds.crud.entity.Category;
 import com.oceanwinds.crud.entity.dto.YachtsDto;
 import com.oceanwinds.crud.entity.Yachts;
@@ -22,9 +23,11 @@ public class YachtController {
     private ProductService productService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Yachts>> getAllYachts() {
-
-        return ResponseEntity.ok(productService.getAllYachts());
+    public ResponseEntity<PaginatedResponse<Yachts>> getAllYachts(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int perPage) {
+        PaginatedResponse<Yachts> response = productService.getAllYachts(page, perPage);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/available")

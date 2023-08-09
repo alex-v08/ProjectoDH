@@ -3,11 +3,14 @@ package com.oceanwinds.crud.service;
 
 import Global.exceptions.AttributeException;
 import Global.exceptions.ResourceNotFoundException;
+import Global.util.PaginatedResponse;
 import com.oceanwinds.crud.entity.Category;
 import com.oceanwinds.crud.entity.dto.YachtsDto;
 import com.oceanwinds.crud.entity.Yachts;
 import com.oceanwinds.crud.repository.YachtsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -116,6 +119,19 @@ public class ProductService {
             modifiedImagesList.add(modifiedImage);
         }
         return modifiedImagesList;
+    }
+
+    public PaginatedResponse<Yachts> getAllYachts(int page, int perPage) {
+        Page<Yachts> yachtsPage = yachtsRepository.findAll(PageRequest.of(page - 1, perPage));
+
+        PaginatedResponse<Yachts> paginatedResponse = new PaginatedResponse<>();
+        paginatedResponse.setPage(yachtsPage.getNumber() + 1);
+        paginatedResponse.setPer_page(yachtsPage.getSize());
+        paginatedResponse.setTotal(yachtsPage.getTotalElements());
+        paginatedResponse.setTotal_pages(yachtsPage.getTotalPages());
+        paginatedResponse.setData(yachtsPage.getContent());
+
+        return paginatedResponse;
     }
 
     }
