@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Maven: org.mockito:mockito-all:1.10.18" type="java-imported" external-system-id="Maven">
+    <properties groupId="org.mockito" artifactId="mockito-all" version="1.10.18" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mockito/mockito-all/1.10.18/mockito-all-1.10.18.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mockito/mockito-all/1.10.18/mockito-all-1.10.18-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mockito/mockito-all/1.10.18/mockito-all-1.10.18-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
