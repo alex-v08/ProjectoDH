@@ -1,13 +1,9 @@
 package com.oceanwinds.crud.entity;
 
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 
 @Entity
