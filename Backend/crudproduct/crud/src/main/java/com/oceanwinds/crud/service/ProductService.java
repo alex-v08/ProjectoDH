@@ -108,7 +108,7 @@ public class ProductService {
         return yachtsRepository.findByAvailable(true);
     }
 
-    public List<Map<String, Object>> findYachtsWithModifiedImages(Long id){
+    public List<Map<String, Object>> findYachtsWithModifiedImages(Long id) {
         List<Map<String, Object>> modifiedImagesList = new ArrayList<>();
         Yachts yacht = yachtsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
 
@@ -134,7 +134,20 @@ public class ProductService {
         return paginatedResponse;
     }
 
+    public PaginatedResponse<Yachts> getYachtsByPage(int page, int perPage) {
+        PaginatedResponse<Yachts> allYachts = getAllYachts(page, perPage);
+        List<Yachts> yachts = allYachts.getData();
+        List<Yachts> yachtsByPage = new ArrayList<>();
+        for (int i = (page - 1) * perPage; i < page * perPage; i++) {
+            if (i < yachts.size()) {
+                yachtsByPage.add(yachts.get(i));
+            }
+        }
+        allYachts.setData(yachtsByPage);
+        return allYachts;
+
     }
+}
 
 
 

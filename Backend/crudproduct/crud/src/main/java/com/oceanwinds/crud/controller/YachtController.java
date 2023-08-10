@@ -17,16 +17,30 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/")
+@CrossOrigin(origins = "http://localhost:3000")
 public class YachtController {
 
     @Autowired
     private ProductService productService;
 
     @GetMapping("/all")
-    public ResponseEntity<PaginatedResponse<Yachts>> getAllYachts(
-            @RequestParam(defaultValue = "1") int page,
+    public ResponseEntity<List<Yachts>> getAllYachts() {
+        List<Yachts> yachts = productService.getAllYachts();
+        if (yachts.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.ok(yachts);
+        }
+
+    }
+
+
+
+    @GetMapping("/page/{page}")
+    public ResponseEntity<PaginatedResponse<Yachts>> getYachtsByPage(
+            @PathVariable int page,
             @RequestParam(defaultValue = "10") int perPage) {
-        PaginatedResponse<Yachts> response = productService.getAllYachts(page, perPage);
+        PaginatedResponse<Yachts> response = productService.getYachtsByPage(page, perPage);
         return ResponseEntity.ok(response);
     }
 
