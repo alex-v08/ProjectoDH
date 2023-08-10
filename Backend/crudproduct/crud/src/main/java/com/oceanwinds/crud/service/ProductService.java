@@ -137,13 +137,14 @@ public class ProductService {
     public PaginatedResponse<Yachts> getYachtsByPage(int page, int perPage) {
         PaginatedResponse<Yachts> allYachts = getAllYachts(page, perPage);
         List<Yachts> yachts = allYachts.getData();
-        List<Yachts> yachtsByPage = new ArrayList<>();
-        for (int i = (page - 1) * perPage; i < page * perPage; i++) {
-            if (i < yachts.size()) {
-                yachtsByPage.add(yachts.get(i));
+        List<Yachts> availableYachts = new ArrayList<>();
+
+        for (Yachts yacht : yachts) {
+            if (yacht.getAvailable()) {
+                availableYachts.add(yacht);
             }
         }
-        allYachts.setData(yachtsByPage);
+        allYachts.setData(availableYachts);
         return allYachts;
 
     }
