@@ -2,7 +2,7 @@ version: '3.9'
 services:
   crudproduct_app:
     container_name: crudproduct_app
-    image: crudproduct_app:3.0.0
+    image: crudproduct_app:2.0.1
     build: .
     ports:
       - "8081:8081"
