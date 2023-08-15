@@ -53,6 +53,7 @@ public class UserService {
         user.setPassword(dto.getPassword());
         user.setPhone(dto.getPhone());
         user.setAddress(dto.getAddress());
+        user.setRole(dto.getRole());
         return  usersRepository.save(user);
 
     }
