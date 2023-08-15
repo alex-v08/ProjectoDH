@@ -33,9 +33,16 @@ public class UserService {
             throw new AttributeException("User already exists");
         }
 
-
-        User user = new User();
-        updateUser(dto, user.getId());
+        User user = new User(
+                dto.getName(),
+                dto.getLastName(),
+                dto.getEmail(),
+                dto.getDni(),
+                dto.getPassword(),
+                dto.getPhone(),
+                dto.getAddress(),
+                dto.getRole()
+        );
 
         return usersRepository.save(user);
     }
