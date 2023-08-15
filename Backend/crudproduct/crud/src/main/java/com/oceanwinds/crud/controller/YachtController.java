@@ -3,9 +3,8 @@ package com.oceanwinds.crud.controller;
 import Global.dto.MessageDto;
 import Global.exceptions.AttributeException;
 import Global.util.PaginatedResponse;
-import com.oceanwinds.crud.entity.Category;
-import com.oceanwinds.crud.entity.dto.YachtsDto;
 import com.oceanwinds.crud.entity.Yachts;
+import com.oceanwinds.crud.entity.dto.YachtsDto;
 import com.oceanwinds.crud.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +33,15 @@ public class YachtController {
 
     }
 
-
+    @GetMapping("/yachtByCategory/{category}")
+    public ResponseEntity<List<Yachts>> getYachtsByCategory(@RequestParam String categoryName) {
+        List<Yachts> yachts = productService.getYachtsByCategoryName(categoryName);
+        if (yachts.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.ok(yachts);
+        }
+    }
 
     @GetMapping("/page/{page}")
     public ResponseEntity<PaginatedResponse<Yachts>> getYachtsByPage(
@@ -56,15 +63,6 @@ public class YachtController {
 
     }
 
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<Yachts>> getYachtsByCategory(@PathVariable Category category) {
-        List<Yachts> yachts = productService.getYachtsByCategory(category);
-        if (yachts.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } else {
-            return ResponseEntity.ok(yachts);
-        }
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Yachts> getYachtById (@PathVariable Long id) {

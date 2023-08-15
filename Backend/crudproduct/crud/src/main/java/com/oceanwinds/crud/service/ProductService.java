@@ -5,21 +5,29 @@ import Global.exceptions.AttributeException;
 import Global.exceptions.ResourceNotFoundException;
 import Global.util.PaginatedResponse;
 import com.oceanwinds.crud.entity.Category;
-import com.oceanwinds.crud.entity.dto.YachtsDto;
 import com.oceanwinds.crud.entity.Yachts;
+import com.oceanwinds.crud.entity.dto.YachtsDto;
+import com.oceanwinds.crud.repository.CategoryRepository;
 import com.oceanwinds.crud.repository.YachtsRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductService {
 
     @Autowired
     YachtsRepository yachtsRepository;
+
+    @Autowired
+    CategoryRepository categoryRepository;
 
     public List<Yachts> getAllYachts() {
         return yachtsRepository.findAll();
@@ -47,6 +55,8 @@ public class ProductService {
 
 
         Yachts yacht = new Yachts();
+        Category category = categoryRepository.findById(dto.getCategoryId())
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
 
         yacht.setName(dto.getName());
         yacht.setSku(dto.getSku());
@@ -54,7 +64,7 @@ public class ProductService {
         yacht.setImageUrl(dto.getImageUrl());
         yacht.setAvailable(dto.getAvailable());
         yacht.setPricePerDay(dto.getPricePerDay());
-        yacht.setCategory(dto.getCategory());
+        yacht.setCategory(category);
         yacht.setPricePerHour(dto.getPricePerHour());
         yacht.setPricePerWeek(dto.getPricePerWeek());
 
@@ -65,13 +75,15 @@ public class ProductService {
 
     public Yachts updateYacht(Long id, YachtsDto dto) throws AttributeException {
         Yachts yacht = yachtsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
+        Category category = categoryRepository.findById(dto.getCategoryId())
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
         yacht.setName(dto.getName());
         yacht.setSku(dto.getSku());
         yacht.setDescription(dto.getDescription());
         yacht.setImageUrl(dto.getImageUrl());
         yacht.setAvailable(dto.getAvailable());
         yacht.setPricePerDay(dto.getPricePerDay());
-        yacht.setCategory(dto.getCategory());
+        yacht.setCategory(category);
         yacht.setPricePerHour(dto.getPricePerHour());
         yacht.setPricePerWeek(dto.getPricePerWeek());
 
@@ -99,7 +111,8 @@ public class ProductService {
         return yachtsRepository.findByAvailableAndCategory(true, category);
     }
 
-    public List<Yachts> getYachtsByCategory(Category category) {
+    public List<Yachts> getYachtsByCategoryName(String categoryName) {
+        Category category = categoryRepository.findByName(categoryName).get();
         return yachtsRepository.findByCategory(category);
     }
 

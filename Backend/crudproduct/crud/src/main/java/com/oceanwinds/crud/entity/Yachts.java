@@ -1,6 +1,7 @@
 package com.oceanwinds.crud.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,6 +28,8 @@ public class Yachts {
     private Double pricePerWeek;
     private Double pricePerHour;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
     private Boolean available;
@@ -58,7 +61,7 @@ public class Yachts {
                 ", pricePerDay=" + pricePerDay +
                 ", pricePerWeek=" + pricePerWeek +
                 ", pricePerHour=" + pricePerHour +
-                ", category=" + category +
+                ", category=" + (category != null ? category.getName() : "null") +
                 ", available=" + available +
                 '}';
     }
@@ -66,6 +69,8 @@ public class Yachts {
     public Long getId() {
         return id;
     }
+
+
 }
 
 

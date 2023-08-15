@@ -16,8 +16,9 @@ public interface YachtsRepository extends JpaRepository<Yachts, Long> {
 
     boolean existsByAvailable(boolean available);
 
-    List<Yachts> findByCategory(Category category);
     Optional<Yachts> findByName(String name);
+
+    List<Yachts> findByCategory(Category category);
 
     List<Yachts> findByAvailable(boolean b);
 
