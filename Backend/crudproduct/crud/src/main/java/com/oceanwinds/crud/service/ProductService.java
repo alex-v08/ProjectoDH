@@ -24,21 +24,22 @@ import java.util.Map;
 public class ProductService {
 
     @Autowired
-    ProductRepository yachtsRepository;
+    ProductRepository productRepository;
 
     @Autowired
     CategoryRepository categoryRepository;
 
+
     public List<Product> getAllYachts() {
-        return yachtsRepository.findAll();
+        return productRepository.findAll();
     }
 
     public Product getYachtById(Long id) {
-        return yachtsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
+        return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
     }
 
     public Product getYachtByName(String name) {
-        return yachtsRepository.findByName(name).get();
+        return productRepository.findByName(name).get();
     }
 
     public Product createYacht(ProductDto dto) throws AttributeException {
@@ -55,8 +56,10 @@ public class ProductService {
 
 
         Product yacht = new Product();
+
         Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+
 
         yacht.setName(dto.getName());
         yacht.setSku(dto.getSku());
@@ -69,14 +72,17 @@ public class ProductService {
         yacht.setPricePerWeek(dto.getPricePerWeek());
 
 
-        return yachtsRepository.save(yacht);
+        return productRepository.save(yacht);
     }
 
 
     public Product updateYacht(Long id, ProductDto dto) throws AttributeException {
-        Product yacht = yachtsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
+
+        Product yacht = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
         Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+
+
         yacht.setName(dto.getName());
         yacht.setSku(dto.getSku());
         yacht.setDescription(dto.getDescription());
@@ -88,13 +94,14 @@ public class ProductService {
         yacht.setPricePerWeek(dto.getPricePerWeek());
 
 
-        return yachtsRepository.save(yacht);
+        return productRepository.save(yacht);
     }
 
     public void deleteYacht(Long id) {
 
-        Product yacht = yachtsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
-        yachtsRepository.deleteById(id);
+        Product yacht = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
+        productRepository.deleteById(id);
+
     }
 
     public boolean existsByAvailable(boolean available) throws AttributeException {
@@ -102,28 +109,33 @@ public class ProductService {
             throw new AttributeException("Yacht is not Available for rent");
 
         }
-        return yachtsRepository.existsByAvailable(available);
+        return productRepository.existsByAvailable(available);
 
     }
 
 
     public List<Product> getAvailableYachtsByCategory(String category) {
-        return yachtsRepository.findByAvailableAndCategory(true, category);
+        return productRepository.findByAvailableAndCategory(true, category);
     }
 
     public List<Product> getYachtsByCategoryName(String categoryName) {
         Category category = categoryRepository.findByName(categoryName).get();
-        return yachtsRepository.findByCategory(category);
+        return productRepository.findByCategory(category);
+    }
+
+    public List<Product> getYachtsByCategory(Category category) {
+        return productRepository.findByCategory(category);
     }
 
     public List<Product> getAvailableYachts() {
 
-        return yachtsRepository.findByAvailable(true);
+        return productRepository.findByAvailable(true);
     }
 
     public List<Map<String, Object>> findYachtsWithModifiedImages(Long id) {
         List<Map<String, Object>> modifiedImagesList = new ArrayList<>();
-        Product yacht = yachtsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
+
+        Product yacht = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
 
         for (int i = 1; i <= 13; i++) {
             Map<String, Object> modifiedImage = new HashMap<>();
@@ -135,7 +147,8 @@ public class ProductService {
     }
 
     public PaginatedResponse<Product> getAllYachts(int page, int perPage) {
-        Page<Product> yachtsPage = yachtsRepository.findAll(PageRequest.of(page - 1, perPage));
+
+        Page<Product> yachtsPage = productRepository.findAll(PageRequest.of(page - 1, perPage));
 
         PaginatedResponse<Product> paginatedResponse = new PaginatedResponse<>();
         paginatedResponse.setPage(yachtsPage.getNumber() + 1);

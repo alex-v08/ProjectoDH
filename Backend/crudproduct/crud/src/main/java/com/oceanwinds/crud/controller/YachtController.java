@@ -3,6 +3,7 @@ package com.oceanwinds.crud.controller;
 import Global.dto.MessageDto;
 import Global.exceptions.AttributeException;
 import Global.util.PaginatedResponse;
+import com.oceanwinds.crud.entity.Category;
 import com.oceanwinds.crud.entity.Product;
 import com.oceanwinds.crud.entity.dto.ProductDto;
 import com.oceanwinds.crud.service.ProductService;
@@ -74,8 +75,6 @@ public class YachtController {
             return ResponseEntity.ok(yacht);
         }
     }
-
-
 
     @PostMapping("/create")
     public ResponseEntity<MessageDto> createYacht(@RequestBody ProductDto dto) throws AttributeException {

@@ -2,7 +2,8 @@ package com.oceanwinds.crud.entity;
 
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 
 

@@ -24,7 +24,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByAvailableAndCategory(boolean b, String category);
 
-
     @Query(value = "SELECT IMAGE_URL FROM YACHTS WHERE ID = ?1 ", nativeQuery = true)
     List<String> findYachtsWithModifiedImages(Long id);
 

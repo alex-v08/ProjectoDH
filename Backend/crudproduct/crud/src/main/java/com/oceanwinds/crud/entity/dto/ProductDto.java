@@ -1,8 +1,8 @@
 package com.oceanwinds.crud.entity.dto;
 
 import jakarta.persistence.Column;
-
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 
 @Getter
