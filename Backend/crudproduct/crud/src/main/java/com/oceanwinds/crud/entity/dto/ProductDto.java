@@ -1,10 +1,7 @@
 package com.oceanwinds.crud.entity.dto;
 
-import com.oceanwinds.crud.entity.Category;
 import jakarta.persistence.Column;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 
@@ -13,7 +10,7 @@ import lombok.*;
 
 
 
-public class YachtsDto {
+public class ProductDto {
     @Column(name = "name" , nullable = false)
     private String name;
     @Column(name = "sku", nullable = false, unique = true)
@@ -28,11 +25,11 @@ public class YachtsDto {
 
     private Boolean available;
 
-    public YachtsDto() {
+    public ProductDto() {
 
     }
 
-    public YachtsDto(String name, String sku, String description, String imageUrl, Double pricePerDay, Double pricePerWeek, Double pricePerHour, Long categoryId, Boolean available) {
+    public ProductDto(String name, String sku, String description, String imageUrl, Double pricePerDay, Double pricePerWeek, Double pricePerHour, Long categoryId, Boolean available) {
         this.name = name;
         this.sku = sku;
         this.description = description;

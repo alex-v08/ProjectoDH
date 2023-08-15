@@ -1,11 +1,8 @@
 package com.oceanwinds.crud.service;
 
-import Global.exceptions.AttributeException;
 import Global.exceptions.ResourceNotFoundException;
-import com.oceanwinds.crud.entity.Yachts;
-import com.oceanwinds.crud.entity.dto.YachtsDto;
-import com.oceanwinds.crud.repository.YachtsRepository;
-import com.oceanwinds.crud.service.ProductService;
+import com.oceanwinds.crud.entity.Product;
+import com.oceanwinds.crud.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +18,7 @@ import java.util.Optional;
 public class ProductServiceTest {
 
     @Mock
-    private YachtsRepository yachtsRepository;
+    private ProductRepository yachtsRepository;
 
     @InjectMocks
     private ProductService productService;
@@ -33,12 +30,12 @@ public class ProductServiceTest {
 
     @Test
     public void testGetAllYachts() {
-        List<Yachts> yachtsList = new ArrayList<>();
+        List<Product> yachtsList = new ArrayList<>();
 
 
         Mockito.when(yachtsRepository.findAll()).thenReturn(yachtsList);
 
-        List<Yachts> result = productService.getAllYachts();
+        List<Product> result = productService.getAllYachts();
 
 
         Assertions.assertEquals(yachtsList.size(), result.size());
@@ -48,13 +45,13 @@ public class ProductServiceTest {
     @Test
     public void testGetYachtById() {
         Long yachtId = 1L;
-        Yachts yacht = new Yachts();
+        Product yacht = new Product();
         yacht.setId(yachtId);
 
 
         Mockito.when(yachtsRepository.findById(yachtId)).thenReturn(Optional.of(yacht));
 
-        Yachts result = productService.getYachtById(yachtId);
+        Product result = productService.getYachtById(yachtId);
 
         Assertions.assertEquals(yacht.getId(), result.getId());
 

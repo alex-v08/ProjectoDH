@@ -1,6 +1,5 @@
 package com.oceanwinds.crud.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +21,7 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category")
-    private List<Yachts> yachts;
+    private List<Product> yachts;
 
     @Override
     public String toString() {

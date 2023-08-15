@@ -3,8 +3,8 @@ package com.oceanwinds.crud.controller;
 import Global.dto.MessageDto;
 import Global.exceptions.AttributeException;
 import Global.util.PaginatedResponse;
-import com.oceanwinds.crud.entity.Yachts;
-import com.oceanwinds.crud.entity.dto.YachtsDto;
+import com.oceanwinds.crud.entity.Product;
+import com.oceanwinds.crud.entity.dto.ProductDto;
 import com.oceanwinds.crud.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +23,8 @@ public class YachtController {
     private ProductService productService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Yachts>> getAllYachts() {
-        List<Yachts> yachts = productService.getAllYachts();
+    public ResponseEntity<List<Product>> getAllYachts() {
+        List<Product> yachts = productService.getAllYachts();
         if (yachts.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
@@ -34,8 +34,8 @@ public class YachtController {
     }
 
     @GetMapping("/yachtByCategory/{category}")
-    public ResponseEntity<List<Yachts>> getYachtsByCategory(@RequestParam String categoryName) {
-        List<Yachts> yachts = productService.getYachtsByCategoryName(categoryName);
+    public ResponseEntity<List<Product>> getYachtsByCategory(@RequestParam String categoryName) {
+        List<Product> yachts = productService.getYachtsByCategoryName(categoryName);
         if (yachts.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
@@ -44,16 +44,16 @@ public class YachtController {
     }
 
     @GetMapping("/page/{page}")
-    public ResponseEntity<PaginatedResponse<Yachts>> getYachtsByPage(
+    public ResponseEntity<PaginatedResponse<Product>> getYachtsByPage(
             @PathVariable int page,
             @RequestParam(defaultValue = "10") int perPage) {
-        PaginatedResponse<Yachts> response = productService.getYachtsByPage(page, perPage);
+        PaginatedResponse<Product> response = productService.getYachtsByPage(page, perPage);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<Yachts>> getAvailableYachts() throws AttributeException {
-        List<Yachts> yachts = productService.getAvailableYachts();
+    public ResponseEntity<List<Product>> getAvailableYachts() throws AttributeException {
+        List<Product> yachts = productService.getAvailableYachts();
         if (yachts.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
@@ -65,8 +65,8 @@ public class YachtController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Yachts> getYachtById (@PathVariable Long id) {
-        Yachts yacht = productService.getYachtById(id);
+    public ResponseEntity<Product> getYachtById (@PathVariable Long id) {
+        Product yacht = productService.getYachtById(id);
         if (yacht == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
@@ -78,14 +78,14 @@ public class YachtController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<MessageDto> createYacht(@RequestBody YachtsDto dto) throws AttributeException {
+    public ResponseEntity<MessageDto> createYacht(@RequestBody ProductDto dto) throws AttributeException {
         productService.createYacht(dto);
         String message = "Yacht created successfully";
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<MessageDto> updateYacht(@PathVariable Long id, @RequestBody YachtsDto dto) throws AttributeException {
+    public ResponseEntity<MessageDto> updateYacht(@PathVariable Long id, @RequestBody ProductDto dto) throws AttributeException {
         productService.updateYacht(id, dto);
 
         String message = "Yacht updated successfully";
