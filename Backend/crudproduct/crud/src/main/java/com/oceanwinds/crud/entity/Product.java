@@ -11,7 +11,7 @@ import lombok.*;
 
 @Table(name = "YACHTS")
 
-public class Yachts {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,7 +31,7 @@ public class Yachts {
 
     private Boolean available;
 
-    public Yachts(Long id, String name, String sku, String description, String imageUrl, Double pricePerDay, Double pricePerWeek, Double pricePerHour, Category category, Boolean available) {
+    public Product(Long id, String name, String sku, String description, String imageUrl, Double pricePerDay, Double pricePerWeek, Double pricePerHour, Category category, Boolean available) {
         this.id = id;
         this.name = name;
         this.sku = sku;
@@ -44,7 +44,7 @@ public class Yachts {
         this.available = available;
     }
 
-    public Yachts() {
+    public Product() {
     }
 
     @Override

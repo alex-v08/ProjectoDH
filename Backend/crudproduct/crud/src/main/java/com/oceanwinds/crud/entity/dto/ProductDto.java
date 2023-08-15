@@ -11,7 +11,7 @@ import lombok.*;
 
 
 
-public class YachtsDto {
+public class ProductDto {
     @Column(name = "name" , nullable = false)
     private String name;
     @Column(name = "sku", nullable = false, unique = true)
@@ -26,11 +26,11 @@ public class YachtsDto {
 
     private Boolean available;
 
-    public YachtsDto() {
+    public ProductDto() {
 
     }
 
-    public YachtsDto(String name, String sku, String description, String imageUrl, Double pricePerDay, Double pricePerWeek, Double pricePerHour, Category category, Boolean available) {
+    public ProductDto(String name, String sku, String description, String imageUrl, Double pricePerDay, Double pricePerWeek, Double pricePerHour, Category category, Boolean available) {
         this.name = name;
         this.sku = sku;
         this.description = description;
