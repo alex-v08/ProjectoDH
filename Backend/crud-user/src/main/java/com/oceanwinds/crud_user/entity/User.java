@@ -2,11 +2,12 @@ package com.oceanwinds.crud_user.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
+
 @ToString
 @Getter
 
@@ -17,12 +18,15 @@ public class User {
 
     @Setter
     @Column(nullable = false)
+
     private String name;
 
     @Setter
+
     private String lastName;
 
     @Setter
+
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -55,5 +59,7 @@ public class User {
         this.address = address;
         this.role = role;
     }
+
+
 }
 

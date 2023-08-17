@@ -31,12 +31,16 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @PostMapping("/new")
-    public ResponseEntity<MessageDto> save(@Valid @RequestBody UserDto dto) throws AttributeException {
-        User user = userService.saveUser(dto);
-        String message = "User created with Name: " + user.getName();
-
-        return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
+    @PostMapping("/create")
+    public ResponseEntity<MessageDto> save(@Valid @RequestBody UserDto dto) {
+        try {
+            User user = userService.saveUser(dto);
+            String message = "Usuario creado con Nombre: " + user.getName();
+            return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
+        } catch (AttributeException e) {
+            String errorMessage = "Error al crear el usuario: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageDto(HttpStatus.BAD_REQUEST, errorMessage));
+        }
     }
 
     @PutMapping("/{id}")
@@ -52,6 +56,8 @@ public class UserController {
         String message = "User deleted with id: " + id;
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
+
+
 
 
 }
