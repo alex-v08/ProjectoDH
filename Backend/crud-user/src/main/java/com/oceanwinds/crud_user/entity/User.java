@@ -1,10 +1,7 @@
 package com.oceanwinds.crud_user.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -19,24 +16,30 @@ public class User {
     private Long id;
 
     @Setter
+    @Column(nullable = false)
     private String name;
 
     @Setter
     private String lastName;
 
     @Setter
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Setter
+    @Column(nullable = false, unique = true)
     private String dni;
 
     @Setter
+    @Column(nullable = false)
     private String password;
 
     @Setter
+    @Column(nullable = false)
     private String phone;
 
     @Setter
+    @Column(nullable = false)
     private String address;
 
     @Setter
