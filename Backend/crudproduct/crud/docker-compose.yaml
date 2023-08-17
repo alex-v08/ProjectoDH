@@ -1,34 +1,10 @@
-version: '3'
+version: '3.9'
 services:
-  # Servicio de la base de datos MySQL
-  mysql:
-    image: mysql:latest
-    container_name: mysql-db
-    environment:
-      MYSQL_ROOT_PASSWORD: Cmaximiliano99
-      MYSQL_DATABASE: proyectointegrador
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql-data:/var/lib/mysql
-
-  # Servicio de la aplicación Spring Boot
-  spring-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: spring-app
+  crudproduct_app:
+    container_name: crudproduct_app
+    image: crudproduct_app:2.0.1
+    build: .
     ports:
       - "8081:8081"
-    depends_on:
-      - mysql
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/proyectointegrador
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: Cmaximiliano99
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_JPA_SHOW_SQL: "true"
-      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQLDialect
 
-volumes:
-  mysql-data:
+
