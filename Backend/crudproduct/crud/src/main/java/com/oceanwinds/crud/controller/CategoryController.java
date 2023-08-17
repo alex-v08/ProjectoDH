@@ -54,7 +54,7 @@ public class CategoryController {
 
     @GetMapping("/categoryById/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
-        Category category = categoryService.getCategoryById(id).orElseThrow(() -> new ResourceNotFoundException("category not found"));
+        Category category = categoryService.getCategoryById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         if (category == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {

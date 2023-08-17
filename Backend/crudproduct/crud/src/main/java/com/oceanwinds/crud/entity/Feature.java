@@ -27,7 +27,7 @@ public class Feature {
     @Column
     private String image;
 
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "feature")
     private Set<Product> yates = new HashSet<>();
 }
