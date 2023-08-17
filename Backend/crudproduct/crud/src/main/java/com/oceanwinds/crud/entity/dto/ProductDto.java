@@ -22,6 +22,7 @@ public class ProductDto {
     private Double pricePerHour;
 
     private Long categoryId;
+    private Long featureId;
 
     private Boolean available;
 

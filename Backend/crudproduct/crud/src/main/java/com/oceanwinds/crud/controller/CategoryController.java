@@ -38,24 +38,33 @@ public class CategoryController {
     public ResponseEntity<MessageDto> updateCategory(@PathVariable Long id, @RequestBody CategoryDto dto) throws AttributeException {
         categoryService.updateCategory(id, dto);
 
-        String message = "Yacht updated successfully";
+        String message = "Category updated successfully";
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
 
     @GetMapping("/category/all")
-    public ResponseEntity<List<Category>> getAllYachts() {
+    public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> categories = categoryService.getAllCategory();
         if (categories.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
             return ResponseEntity.ok(categories);
         }
-
     }
 
     @GetMapping("/categoryById/{id}")
-    public ResponseEntity<Category> getYachtsByCategory(@PathVariable Long id) {
+    public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
         Category category = categoryService.getCategoryById(id).orElseThrow(() -> new ResourceNotFoundException("category not found"));
+        if (category == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.ok(category);
+        }
+    }
+
+    @GetMapping("/categoryByName/{name}")
+    public ResponseEntity<Category> getCategoryByName(@RequestParam String name) {
+        Category category = categoryService.getCategoryByName(name);
         if (category == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {

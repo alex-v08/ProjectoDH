@@ -1,5 +1,6 @@
 package com.oceanwinds.crud.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,11 +21,23 @@ public class Category {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @Column
+    private String description;
+
+    @Column
+    private String image;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
     private List<Product> yachts;
 
     @Override
     public String toString() {
-        return  "name='" + name + '\'';
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", image='" + image + '\'' +
+                '}';
     }
 }

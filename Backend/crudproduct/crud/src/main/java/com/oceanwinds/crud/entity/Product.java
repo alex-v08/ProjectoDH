@@ -1,17 +1,18 @@
 package com.oceanwinds.crud.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
 @Getter @Setter
-
 @Table(name = "YACHTS")
-
 public class Product {
 
     @Id
@@ -31,6 +32,12 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "yacht_feature", joinColumns = @JoinColumn(name = "yacht_id"),
+    inverseJoinColumns = @JoinColumn(name = "feature_id"))
+    private Set<Feature> feature = new HashSet<>();
 
     private Boolean available;
 

@@ -27,7 +27,8 @@ public class CategoryService {
     public Category updateCategory(Long id, CategoryDto dto) throws AttributeException {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         category.setName(dto.getName());
-
+        category.setDescription(dto.getDescription());
+        category.setImage(dto.getImage());
         return categoryRepository.save(category);
     }
 
@@ -45,6 +46,8 @@ public class CategoryService {
         Category category = new Category();
 
         category.setName(dto.getName());
+        category.setDescription(dto.getDescription());
+        category.setImage(dto.getImage());
 
         return categoryRepository.save(category);
     }

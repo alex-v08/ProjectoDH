@@ -34,9 +34,19 @@ public class YachtController {
 
     }
 
-    @GetMapping("/yachtByCategory/{category}")
-    public ResponseEntity<List<Product>> getYachtsByCategory(@RequestParam String categoryName) {
+    @GetMapping("/yachtByCategoryName/{categoryName}")
+    public ResponseEntity<List<Product>> getYachtsByCategoryName(@RequestParam String categoryName) {
         List<Product> yachts = productService.getYachtsByCategoryName(categoryName);
+        if (yachts.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.ok(yachts);
+        }
+    }
+
+    @GetMapping("/yachtByCategoryId/{categoryId}")
+    public ResponseEntity<List<Product>> getYachtsByCategoryId(@RequestParam Long categoryId) {
+        List<Product> yachts = productService.getYachtsByCategoryId(categoryId);
         if (yachts.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
