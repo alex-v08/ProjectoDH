@@ -11,6 +11,11 @@ cache:
 before_script:
   - npm install
 
+workflow:
+  rules:
+    - changes:
+        - Frontend/*/
+
 build:
   stage: build
   script:
