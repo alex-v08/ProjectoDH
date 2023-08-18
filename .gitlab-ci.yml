@@ -19,7 +19,7 @@ deploy:
   stage: deploy  
   image: python:3.8
   before_script:
-    - apt-get update && apt-get install -y awscli && apt-get install node:18.16
+    - apt-get update && apt-get install -y awscli && apt-get install nodejs
   variables:
     AWS_DEFAULT_REGION: us-east-2
   script:
