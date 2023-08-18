@@ -1,0 +1,27 @@
+image: node:14
+
+stages:
+  - build
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+
+before_script:
+  - npm install
+
+build:
+  stage: build
+  script:
+    - npm run-script build
+
+deploy:
+  stage: deploy
+  image: python:3.8
+  before_script:
+    - apt-get update && apt-get install -y awscli
+  script:
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws s3 sync dist/ s3://baldeintento/
