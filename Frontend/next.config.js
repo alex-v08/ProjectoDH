@@ -1,4 +1,5 @@
 module.exports = {
+  distDir: 'oceanwings',
   images: {
     remotePatterns: [
       {
