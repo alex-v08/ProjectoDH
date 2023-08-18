@@ -16,14 +16,16 @@ build:
     - npm run-script build
 
 deploy:
-  stage: deploy
+  stage: deploy  
   image: python:3.8
   before_script:
-    - apt-get update && apt-get install -y awscli
+    - apt-get update && apt-get install -y awscli && apt-get install node:18.16
   variables:
     AWS_DEFAULT_REGION: us-east-2
   script:
-    - cd Frontend    
+    - cd Frontend
+    - npm install
+    - npm run-script build    
     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
     - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-    - aws s3 sync .next/ s3://g5-c1ow/
+    - aws s3 sync next s3://g5-c1ow/
