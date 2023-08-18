@@ -17,6 +17,7 @@ build:
   artifacts:
     paths:
       - Frontend/.next
+      - Frontend/oceanwings
 
 deploy:
   stage: deploy
