@@ -10,22 +10,17 @@ cache:
 
 build:
   stage: build
-  script:
-    - cd Frontend
-    - npm install
-    - npm run-script build
-    - cd oceanwings
-    - ls
-
-deploy:
-  stage: deploy  
   image: python:3.8
   before_script:
     - apt-get update && apt-get install -y awscli
   variables:
     AWS_DEFAULT_REGION: us-east-2
   script:
-    - cd Frontend 
+    - cd Frontend
+    - npm install
+    - npm run-script build
+    - cd oceanwings
+    - ls
     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
     - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
     - aws s3 sync . s3://g5-c1ow/
