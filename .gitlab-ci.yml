@@ -14,11 +14,9 @@ build:
     - cd Frontend
     - npm install
     - npm run-script build
-    - mkdir build-artifacts
-    - mv oceanwings build-artifacts/  # Mueve los archivos a una carpeta para los artefactos
   artifacts:
     paths:
-      - build-artifacts/  # Especifica qué carpeta se almacenará como artefacto
+      - Frontend/.next
 
 deploy:
   stage: deploy
@@ -27,11 +25,7 @@ deploy:
     - apt-get update && apt-get install -y awscli
   variables:
     AWS_DEFAULT_REGION: us-east-2
-  script:
+  script:   
     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
     - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-    - mkdir -p /deploy-dir  # Crear directorio para los artefactos descargados
-    - artifacts:download build-artifacts/
-    - mv build-artifacts/oceanwings deploy-dir/
-    - cd deploy-dir
     - aws s3 sync . s3://g5-c1ow/
