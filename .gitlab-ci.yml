@@ -20,6 +20,8 @@ deploy:
   image: python:3.8
   before_script:
     - apt-get update && apt-get install -y awscli
+  variables:
+    AWS_DEFAULT_REGION: us-east-2
   script:
     - cd Frontend
     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
