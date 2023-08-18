@@ -14,6 +14,7 @@ build:
     - cd Frontend
     - npm install
     - npm run-script build
+    - mkdir build-artifacts
     - mv oceanwings /build-artifacts  # Mueve los archivos a una carpeta para los artefactos
   artifacts:
     paths:
