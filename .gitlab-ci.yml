@@ -15,8 +15,7 @@ build:
     - npm install
     - npm run-script build
   artifacts:
-    paths:
-      - Frontend/.next
+    paths:      
       - Frontend/oceanwings
 
 deploy:
@@ -29,4 +28,4 @@ deploy:
   script:   
     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
     - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-    - aws s3 sync . s3://g5-c1ow/
+    - aws s3 sync ./Frontend/oceanwings/ s3://g5-c1ow/
