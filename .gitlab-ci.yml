@@ -1,22 +1,5 @@
-image: node:18.16
-
 stages:
-  - build
   - deploy
-
-cache:
-  paths:
-    - node_modules/
-
-build:
-  stage: build
-  script:
-    - cd Frontend
-    - npm install
-    - npm run-script build
-  artifacts:
-    paths:      
-      - Frontend/oceanwings
 
 deploy:
   stage: deploy
@@ -28,4 +11,4 @@ deploy:
   script:   
     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
     - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-    - aws s3 sync ./Frontend/oceanwings/ s3://g5-c1ow/
+    - aws ec2 sync ./Frontend/ ec2://OWFront/
