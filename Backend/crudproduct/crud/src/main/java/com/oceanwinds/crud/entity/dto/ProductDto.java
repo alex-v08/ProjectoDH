@@ -4,6 +4,9 @@ import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.Set;
+
 
 @Getter
 @Setter
@@ -22,7 +25,7 @@ public class ProductDto {
     private Double pricePerHour;
 
     private Long categoryId;
-    private Long featureId;
+    private Set<Long> featuresId;
 
     private Boolean available;
 

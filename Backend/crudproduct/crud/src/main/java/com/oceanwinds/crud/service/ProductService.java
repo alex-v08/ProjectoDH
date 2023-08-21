@@ -17,10 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -76,13 +74,10 @@ public class ProductService {
         yacht.setPricePerHour(dto.getPricePerHour());
         yacht.setPricePerWeek(dto.getPricePerWeek());
 
-        if (dto.getFeatureId() != null){
-            Feature feature = featureRepository.findById(dto.getFeatureId())
-                    .orElseThrow(() -> new EntityNotFoundException("Feature not found"));
-            feature.getYates().add(yacht);
-            yacht.getFeature().add(feature);
+        if (dto.getFeaturesId() != null){
+            Set<Feature> features = new HashSet<>(featureRepository.findAllById(dto.getFeaturesId()));;
+            yacht.setFeature(features);
         }
-
 
         return productRepository.save(yacht);
     }
@@ -132,6 +127,7 @@ public class ProductService {
         return productRepository.findByAvailableAndCategory(true, category);
     }
 
+
     public List<Product> getYachtsByCategoryName(String categoryName) {
         Category category = categoryRepository.findByName(categoryName).get();
         return productRepository.findByCategory(category);
@@ -140,6 +136,13 @@ public class ProductService {
     public List<Product> getYachtsByCategoryId(Long categoryId) {
         Category category = categoryRepository.findById(categoryId).get();
         return productRepository.findByCategory(category);
+    }
+
+    public List<Product> getYachtsByFeaturesId(List<Long> featuresId) {
+        Set<Feature> features = new HashSet<>(featureRepository.findAllById(featuresId));
+        List<Product> products = productRepository.findByFeatureIn(features);
+        products.removeIf(product -> !product.getFeature().containsAll(features));
+        return products;
     }
 
     public List<Product> getYachtsByCategory(Category category) {

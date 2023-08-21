@@ -1,6 +1,7 @@
 package com.oceanwinds.crud.repository;
 
 import com.oceanwinds.crud.entity.Category;
+import com.oceanwinds.crud.entity.Feature;
 import com.oceanwinds.crud.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -19,6 +21,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findByName(String name);
 
     List<Product> findByCategory(Category category);
+
+    List<Product> findByFeatureIn(Set<Feature> features);
 
     List<Product> findByAvailable(boolean b);
 

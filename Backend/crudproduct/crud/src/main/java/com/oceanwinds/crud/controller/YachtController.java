@@ -4,16 +4,21 @@ import Global.dto.MessageDto;
 import Global.exceptions.AttributeException;
 import Global.util.PaginatedResponse;
 import com.oceanwinds.crud.entity.Category;
+import com.oceanwinds.crud.entity.Feature;
 import com.oceanwinds.crud.entity.Product;
 import com.oceanwinds.crud.entity.dto.ProductDto;
+import com.oceanwinds.crud.repository.FeatureRepository;
 import com.oceanwinds.crud.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/")
@@ -22,6 +27,9 @@ public class YachtController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private FeatureRepository featureRepository;
 
     @GetMapping("/all")
     public ResponseEntity<List<Product>> getAllYachts() {
@@ -44,9 +52,20 @@ public class YachtController {
         }
     }
 
+
     @GetMapping("/yachtByCategoryId/{categoryId}")
     public ResponseEntity<List<Product>> getYachtsByCategoryId(@RequestParam Long categoryId) {
         List<Product> yachts = productService.getYachtsByCategoryId(categoryId);
+        if (yachts.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.ok(yachts);
+        }
+    }
+
+    @GetMapping("/yachtByFeaturesId/{featuresId}")
+    public ResponseEntity<List<Product>> getYachtsByFeaturesId(@RequestParam List<Long> featuresId) {
+        List<Product> yachts = productService.getYachtsByFeaturesId(featuresId);
         if (yachts.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
