@@ -16,7 +16,7 @@ build:
     - npm run-script build
   artifacts:
     paths:
-      - oceanwings
+      - Frontend/oceanwings
 
 deploy:
   stage: deploy
@@ -28,6 +28,7 @@ deploy:
   script:   
     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
     - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-    - ssh-keyscan -H $EC2_PUBLIC_IP >> ~/.ssh/known_hosts
+    - mkdir -p ok_hosts/.ssh
+    - ssh-keyscan -H $EC2_PUBLIC_IP >> ok_hosts/.ssh/known_hosts
     - scp -r oceanwings ubuntu@$EC2_PUBLIC_IP:~
     - ssh ubuntu@$EC2_PUBLIC_IP "chmod +x ~/deploy_front.sh && ~/deploy_front.sh"
