@@ -25,7 +25,6 @@ public class Product {
     private String sku;
     private String description;
 
-    @Transient
     private String imageUrl;
     private Double pricePerDay;
     private Double pricePerWeek;
