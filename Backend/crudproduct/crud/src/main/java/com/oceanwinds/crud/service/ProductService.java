@@ -62,8 +62,15 @@ public class ProductService {
           Category category = categoryRepository.findById(dto.getCategoryId())
                   .orElseThrow(() -> new EntityNotFoundException("Category not found"));
           yacht.setCategory(category);
+        } else {
+            yacht.setCategory(null);
         }
-
+        if (dto.getFeaturesId() != null){
+            Set<Feature> features = new HashSet<>(featureRepository.findAllById(dto.getFeaturesId()));;
+            yacht.setFeature(features);
+        } else {
+            yacht.setFeature(null);
+        }
 
         yacht.setName(dto.getName());
         yacht.setSku(dto.getSku());
@@ -73,11 +80,6 @@ public class ProductService {
         yacht.setPricePerDay(dto.getPricePerDay());
         yacht.setPricePerHour(dto.getPricePerHour());
         yacht.setPricePerWeek(dto.getPricePerWeek());
-
-        if (dto.getFeaturesId() != null){
-            Set<Feature> features = new HashSet<>(featureRepository.findAllById(dto.getFeaturesId()));;
-            yacht.setFeature(features);
-        }
 
         return productRepository.save(yacht);
     }
@@ -90,8 +92,15 @@ public class ProductService {
             Category category = categoryRepository.findById(dto.getCategoryId())
                     .orElseThrow(() -> new EntityNotFoundException("Category not found"));
             yacht.setCategory(category);
+        } else {
+            yacht.setCategory(null);
         }
-
+        if (dto.getFeaturesId() != null){
+            Set<Feature> features = new HashSet<>(featureRepository.findAllById(dto.getFeaturesId()));;
+            yacht.setFeature(features);
+        } else {
+            yacht.setFeature(null);
+        }
 
         yacht.setName(dto.getName());
         yacht.setSku(dto.getSku());
