@@ -5,8 +5,6 @@ Fcrud/src/test/java/com/oceanwinds/crud/service/ProductServiceTest.java,a/f/af9
 crud/.gitignore,3/c/3c95efe8988a22e375f7a85b9034c212dc57f3f3
 e
 5crud/src/main/java/Global/util/PaginatedResponse.java,9/0/90eaf5a094c6d4606bf66da78d92770550d596f4
-v
-Fcrud/src/main/java/com/oceanwinds/crud/controller/YachtController.java,2/b/2b99f4abd4a4e9317baf5e3c11a95f63fbec0f48
 r
 Bcrud/src/main/java/com/oceanwinds/crud/service/ProductService.java,b/f/bfd03f72569a9d1afce746a4f7fe814679a452c5
 x
@@ -17,16 +15,8 @@ l
 <crud/src/main/java/Global/exceptions/AttributeException.java,d/b/db22827c6fbbb3f16d508d717341f856465112a6
 i
 9crud/src/main/java/Global/exceptions/GlobalException.java,5/a/5a747edafc11b9a05cca9ebf93668260066d58ad
-p
-@crud/src/test/java/com/oceanwinds/crud/CrudApplicationTests.java,e/e/eea9bcee2946d54223bc075d977724466845bced
-j
-:crud/src/main/java/com/oceanwinds/crud/entity/Product.java,7/5/756131b29e2200fc847a27179028ad58c9fc8630
-k
-;crud/src/main/java/com/oceanwinds/crud/entity/Category.java,4/c/4cc2fdaa8472c4327f9c5c48e962e101252368c0
 ?
 crud/Dockerfile,b/e/be458dcb5af56f5e591c233ba775e58d47765daa
-q
-Acrud/src/main/java/com/oceanwinds/crud/entity/dto/ProductDto.java,d/c/dcd32dc160f458147d665ff06faacf117d04371c
 ]
 -crud/src/main/java/Global/dto/MessageDto.java,c/5/c543a7a430e46a488e7522755657a35f00a91fed
 <
