@@ -30,5 +30,5 @@ deploy:
     - echo "$EC2_PEM_PRIVATE_KEY" > ok_hosts/.ssh/id_rsa
     - chmod 600 ok_hosts/.ssh/id_rsa
     - ssh-keyscan -H $EC2_PUBLIC_IP >> ok_hosts/.ssh/known_hosts
-    - scp -o "StrictHostKeyChecking accept-new" -i ok_hosts/.ssh/id_rsa -r Frontend/oceanwings ubuntu@$EC2_PUBLIC_IP:~
+    - scp -o "StrictHostKeyChecking accept-new" -i ok_hosts/.ssh/id_rsa -r Frontend ubuntu@$EC2_PUBLIC_IP:~
     - ssh -o "StrictHostKeyChecking accept-new" -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP "chmod +x ~/deploy_front.sh && ~/deploy_front.sh"
