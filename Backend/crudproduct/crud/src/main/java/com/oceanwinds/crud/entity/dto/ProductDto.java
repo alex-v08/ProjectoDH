@@ -1,9 +1,11 @@
 package com.oceanwinds.crud.entity.dto;
 
-import com.oceanwinds.crud.entity.Category;
 import jakarta.persistence.Column;
+import lombok.Getter;
+import lombok.Setter;
 
-import lombok.*;
+import java.util.List;
+import java.util.Set;
 
 
 @Getter
@@ -22,7 +24,8 @@ public class ProductDto {
     private Double pricePerWeek;
     private Double pricePerHour;
 
-    private Category category;
+    private Long categoryId;
+    private Set<Long> featuresId;
 
     private Boolean available;
 
@@ -30,7 +33,7 @@ public class ProductDto {
 
     }
 
-    public ProductDto(String name, String sku, String description, String imageUrl, Double pricePerDay, Double pricePerWeek, Double pricePerHour, Category category, Boolean available) {
+    public ProductDto(String name, String sku, String description, String imageUrl, Double pricePerDay, Double pricePerWeek, Double pricePerHour, Long categoryId, Boolean available) {
         this.name = name;
         this.sku = sku;
         this.description = description;
@@ -38,7 +41,7 @@ public class ProductDto {
         this.pricePerDay = pricePerDay;
         this.pricePerWeek = pricePerWeek;
         this.pricePerHour = pricePerHour;
-        this.category = category;
+        this.categoryId = categoryId;
         this.available = available;
     }
 
@@ -96,14 +99,6 @@ public class ProductDto {
 
     public void setPricePerHour(Double pricePerHour) {
         this.pricePerHour = pricePerHour;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 
     public Boolean getAvailable() {

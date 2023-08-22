@@ -4,24 +4,32 @@ import Global.dto.MessageDto;
 import Global.exceptions.AttributeException;
 import Global.util.PaginatedResponse;
 import com.oceanwinds.crud.entity.Category;
-import com.oceanwinds.crud.entity.dto.ProductDto;
+import com.oceanwinds.crud.entity.Feature;
 import com.oceanwinds.crud.entity.Product;
+import com.oceanwinds.crud.entity.dto.ProductDto;
+import com.oceanwinds.crud.repository.FeatureRepository;
 import com.oceanwinds.crud.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class YachtController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private FeatureRepository featureRepository;
 
     @GetMapping("/all")
     public ResponseEntity<List<Product>> getAllYachts() {
@@ -34,7 +42,36 @@ public class YachtController {
 
     }
 
+    @GetMapping("/yachtByCategoryName/{categoryName}")
+    public ResponseEntity<List<Product>> getYachtsByCategoryName(@RequestParam String categoryName) {
+        List<Product> yachts = productService.getYachtsByCategoryName(categoryName);
+        if (yachts.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.ok(yachts);
+        }
+    }
 
+
+    @GetMapping("/yachtByCategoryId/{categoryId}")
+    public ResponseEntity<List<Product>> getYachtsByCategoryId(@RequestParam Long categoryId) {
+        List<Product> yachts = productService.getYachtsByCategoryId(categoryId);
+        if (yachts.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.ok(yachts);
+        }
+    }
+
+    @GetMapping("/yachtByFeaturesId/{featuresId}")
+    public ResponseEntity<List<Product>> getYachtsByFeaturesId(@RequestParam List<Long> featuresId) {
+        List<Product> yachts = productService.getYachtsByFeaturesId(featuresId);
+        if (yachts.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.ok(yachts);
+        }
+    }
 
     @GetMapping("/page/{page}")
     public ResponseEntity<PaginatedResponse<Product>> getYachtsByPage(
@@ -56,15 +93,6 @@ public class YachtController {
 
     }
 
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<Product>> getYachtsByCategory(@PathVariable Category category) {
-        List<Product> yachts = productService.getYachtsByCategory(category);
-        if (yachts.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } else {
-            return ResponseEntity.ok(yachts);
-        }
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getYachtById (@PathVariable Long id) {
@@ -76,8 +104,6 @@ public class YachtController {
             return ResponseEntity.ok(yacht);
         }
     }
-
-
 
     @PostMapping("/create")
     public ResponseEntity<MessageDto> createYacht(@RequestBody ProductDto dto) throws AttributeException {

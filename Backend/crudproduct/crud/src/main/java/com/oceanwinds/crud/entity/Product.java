@@ -1,16 +1,18 @@
 package com.oceanwinds.crud.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
 @Getter @Setter
-
 @Table(name = "YACHTS")
-
 public class Product {
 
     @Id
@@ -23,13 +25,19 @@ public class Product {
     private String sku;
     private String description;
 
-    @Transient
     private String imageUrl;
     private Double pricePerDay;
     private Double pricePerWeek;
     private Double pricePerHour;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToMany
+    @JoinTable(name = "yacht_feature", joinColumns = @JoinColumn(name = "yacht_id"),
+    inverseJoinColumns = @JoinColumn(name = "feature_id"))
+    private Set<Feature> feature = new HashSet<>();
 
     private Boolean available;
 
@@ -60,7 +68,7 @@ public class Product {
                 ", pricePerDay=" + pricePerDay +
                 ", pricePerWeek=" + pricePerWeek +
                 ", pricePerHour=" + pricePerHour +
-                ", category=" + category +
+                ", category=" + (category != null ? category.getName() : "null") +
                 ", available=" + available +
                 '}';
     }
@@ -144,6 +152,7 @@ public class Product {
     public void setAvailable(Boolean available) {
         this.available = available;
     }
+
 }
 
 
