@@ -37,14 +37,15 @@ deploy:
     - chmod 600 ok_hosts/.ssh/id_rsa
     - ssh-keyscan -H $EC2_PUBLIC_IP >> ok_hosts/.ssh/known_hosts
     - scp -o "StrictHostKeyChecking accept-new" -i ok_hosts/.ssh/id_rsa -r Frontend ubuntu@$EC2_PUBLIC_IP:~
+    - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'ls'
     - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'sudo apt-get update -y' 
     - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'sudo apt-get upgrade -y'
     - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash'
     - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && nvm install --lts'   
-    - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'npm i -g pm2'   
+    - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && npm install -g pm2'   
     - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'pm2 delete all'
     - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'rm -r deploy/'
     - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'mv Frontend/ deploy/'
-    - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'cd deploy/ && npm install'
+    - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'cd deploy/ && export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && npm install'
     - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'pm2 start npm --name "next" -- run-script start'
     - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'sudo systemctl restart nginx' 
