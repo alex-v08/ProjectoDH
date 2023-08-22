@@ -36,13 +36,11 @@ deploy:
     - echo "$EC2_PEM_PRIVATE_KEY" > ok_hosts/.ssh/id_rsa
     - chmod 600 ok_hosts/.ssh/id_rsa
     - ssh-keyscan -H $EC2_PUBLIC_IP >> ok_hosts/.ssh/known_hosts
-    - scp -o "StrictHostKeyChecking accept-new" -i ok_hosts/.ssh/id_rsa -r Frontend ubuntu@$EC2_PUBLIC_IP:~
-    - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'bash -s' << 'ENDSSH' 
-      pm2 delete all 
-      rm -r deploy/ 
-      mv Frontend/ deploy/ 
-      cd deploy/ 
-      npm install 
-      pm2 start npm --name "next" -- run-script start 
-      sudo systemctl restart nginx 
-      ENDSSH
+    - scp -o "StrictHostKeyChecking accept-new" -i ok_hosts/.ssh/id_rsa -r Frontend ubuntu@$EC2_PUBLIC_IP:~    
+    - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'bash -s'  "pm2 delete all"
+    - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'bash -s'  "rm -r deploy/"
+    - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'bash -s'  "mv Frontend/ deploy/"
+    - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'bash -s'  "cd deploy/ && npm install"
+    - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'bash -s'  "pm2 start npm --name "next" -- run-script start" 
+    - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'bash -s'  "sudo systemctl restart nginx"
+  
