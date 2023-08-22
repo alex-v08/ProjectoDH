@@ -10,6 +10,9 @@ cache:
 
 build:
   stage: build
+  rules:
+    - changes:
+        - Frontend/**/*
   script:
     - cd Frontend
     - npm install
@@ -21,6 +24,9 @@ build:
 deploy:
   stage: deploy
   image: python:3.8
+  rules:
+    - changes:
+        - Frontend/**/*
   before_script:
     - apt-get update && apt-get install -y awscli
   variables:
@@ -33,6 +39,3 @@ deploy:
     - scp -o "StrictHostKeyChecking accept-new" -i ok_hosts/.ssh/id_rsa -r Frontend ubuntu@$EC2_PUBLIC_IP:~
     - ssh -o "StrictHostKeyChecking accept-new" -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP "chmod +x ~/deploy_front.sh && ~/deploy_front.sh"
 
-only:
-  changes:
-    - Frontend/**/*.*
