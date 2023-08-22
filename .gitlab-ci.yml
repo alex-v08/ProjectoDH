@@ -20,7 +20,6 @@ build:
   artifacts:
     paths:
       - Frontend/.next
-      - Frontend/node_modules
 
 deploy:
   stage: deploy
@@ -43,6 +42,7 @@ deploy:
         rm -r deploy/
         mv Frontend/ deploy/
         cd deploy/
+        npm install
         pm2 start npm --name "next" -- run-script start
         sudo systemctl restart nginx
       ENDSSH
