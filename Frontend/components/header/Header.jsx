@@ -1,9 +1,10 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import logoLight from '/public/logo-light.svg'
 import logoDark from '/public/logo-dark.svg'
-import ThemeButton from '@/components/header/ThemeButton'
-import Hamburguer from '@/components/header/Hamburguer'
+import Menu from './Menu'
 
 export default function Header() {
   return (
@@ -18,6 +19,7 @@ export default function Header() {
                 className='dark:hidden'
                 width={101}
                 height={50}
+                priority={true}
               />
               <Image
                 src={logoDark}
@@ -25,22 +27,12 @@ export default function Header() {
                 className='hidden dark:block'
                 width={101}
                 height={50}
+                priority={true}
               />
             </Link>
           </li>
         </ul>
-        <div className='flex gap-4'>
-          <button className='hidden rounded border border-sky-500 bg-transparent px-4 py-2 font-semibold text-sky-700 transition ease-in-out hover:border-transparent hover:bg-sky-500 hover:text-white dark:text-white sm:block'>
-            Crear cuenta
-          </button>
-          <Link href='/administracion'>
-            <button className='hidden rounded border border-sky-500 bg-transparent px-4 py-2 font-semibold text-sky-700 transition ease-in-out hover:border-transparent hover:bg-sky-500 hover:text-white dark:text-white sm:block'>
-              Inicio de sesión
-            </button>
-          </Link>
-          <ThemeButton />
-          <Hamburguer />
-        </div>
+        <Menu />
       </nav>
     </header>
   )

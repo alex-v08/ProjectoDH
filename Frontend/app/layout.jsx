@@ -7,6 +7,8 @@ import Providers from './providers'
 import Footer from '@/components/footer/Footer'
 import Header from '@/components/header/Header'
 
+import ScrollToTopPage from '@/components/ScrollToTopPage'
+
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 const caveat = Caveat({ subsets: ['latin'], variable: '--font-caveat' })
@@ -33,6 +35,7 @@ export default function RootLayout({ children }) {
         className={`${inter.variable} ${caveat.variable} ${autography.variable} ${floaty.variable} font-sans`}
       >
         <Providers>
+          <ScrollToTopPage />
           <Header />
           <main>{children}</main>
           <Footer />
