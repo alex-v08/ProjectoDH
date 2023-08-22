@@ -16,7 +16,7 @@ build:
     - npm run-script build
   artifacts:
     paths:
-      - Frontend/oceanwings
+      - Frontend/.next
 
 deploy:
   stage: deploy
