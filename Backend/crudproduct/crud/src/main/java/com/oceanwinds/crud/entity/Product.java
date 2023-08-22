@@ -24,7 +24,6 @@ public class Product {
     @Column(nullable = false, unique = true)
     private String sku;
     private String description;
-
     private String imageUrl;
     private Double pricePerDay;
     private Double pricePerWeek;
