@@ -27,7 +27,6 @@ deploy:
   rules:
     - changes:
         - Frontend/**/*
-        - .gitlab-ci.yml
   before_script:
     - apt-get update && apt-get install -y awscli
   variables:
@@ -37,7 +36,7 @@ deploy:
     - echo "$EC2_PEM_PRIVATE_KEY" > ok_hosts/.ssh/id_rsa
     - chmod 600 ok_hosts/.ssh/id_rsa
     - ssh-keyscan -H $EC2_PUBLIC_IP >> ok_hosts/.ssh/known_hosts
-    - scp -o "StrictHostKeyChecking accept-new" -i ok_hosts/.ssh/id_rsa -r Frontend 
+    - scp -o "StrictHostKeyChecking accept-new" -i ok_hosts/.ssh/id_rsa -r Frontend ubuntu@$EC2_PUBLIC_IP:~   
     - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'pm2 delete all'
     - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'rm -r deploy/'
     - ssh -i ok_hosts/.ssh/id_rsa ubuntu@$EC2_PUBLIC_IP 'mv Frontend/ deploy/'
