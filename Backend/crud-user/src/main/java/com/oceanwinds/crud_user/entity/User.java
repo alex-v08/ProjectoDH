@@ -2,7 +2,7 @@ package com.oceanwinds.crud_user.entity;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
+
 import lombok.*;
 
 @Entity
@@ -47,9 +47,13 @@ public class User {
     private String address;
 
     @Setter
+    @Enumerated
     private UserEnum role;
 
-    public User(String name, String lastName, String email, String dni, String password, String phone, String address, UserEnum role) {
+    @Setter
+    private String uuid;
+
+    public User(String name, String lastName, String email, String dni, String password, String phone, String address, UserEnum role, String uuid) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
@@ -58,6 +62,7 @@ public class User {
         this.phone = phone;
         this.address = address;
         this.role = role;
+        this.uuid = uuid;
     }
 
 

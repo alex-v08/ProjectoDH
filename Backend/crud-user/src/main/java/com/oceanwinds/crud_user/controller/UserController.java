@@ -16,6 +16,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE})
+
 public class UserController {
 
     @Autowired
@@ -46,7 +48,7 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<MessageDto> update(@PathVariable("id")Long id,@Valid @RequestBody UserDto dto) throws AttributeException {
         User user = userService.updateUser(dto, id);
-        String message = "User updated with id: " + user.getName();
+        String message = "User updated with name: " + user.getName();
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
 

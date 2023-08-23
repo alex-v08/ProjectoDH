@@ -1,6 +1,7 @@
 package com.oceanwinds.crud_user.entity.dto;
 
 import com.oceanwinds.crud_user.entity.UserEnum;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +26,10 @@ public class UserDto {
 
     private String address;
 
+    @Enumerated
     private UserEnum role;
+
+    private String uuid;
 
 
 

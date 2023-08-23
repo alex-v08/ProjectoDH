@@ -42,7 +42,8 @@ public class UserService {
                 dto.getPassword(),
                 dto.getPhone(),
                 dto.getAddress(),
-                dto.getRole()
+                dto.getRole(),
+                dto.getUuid()
         );
 
         return usersRepository.save(user);
@@ -60,7 +61,6 @@ public class UserService {
         }
 
         validateUserAttributes(dto);
-
         user.setName(dto.getName());
         user.setLastName(dto.getLastName());
         user.setEmail(dto.getEmail());
@@ -68,6 +68,7 @@ public class UserService {
         user.setPhone(dto.getPhone());
         user.setAddress(dto.getAddress());
         user.setRole(dto.getRole());
+        user.setUuid(dto.getUuid());
 
         return usersRepository.save(user);
     }
