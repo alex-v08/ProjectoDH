@@ -102,4 +102,9 @@ public class UserService {
 
 
     }
+
+    public Boolean getUserByUuid(String uuid) {
+        return usersRepository.existsByUuid(uuid);
+
+    }
 }

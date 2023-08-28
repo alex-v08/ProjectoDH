@@ -25,6 +25,14 @@ public class UserController {
 
 
     @GetMapping("/all")
+    public ResponseEntity<List<User>> getAll() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @GetMapping("uid/{uuid}")
+    public ResponseEntity<Boolean> getByUuid(@PathVariable String uuid) {
+        return ResponseEntity.ok(userService.getUserByUuid(uuid));
+    }
     public ResponseEntity<List<User>> getall() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
