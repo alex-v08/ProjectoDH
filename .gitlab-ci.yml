@@ -5,7 +5,7 @@ build_backend:
   stage: build
   image: maven:3.8.6-openjdk-18
   script:
-    - cd BackEnd/
+    - cd Backend/
     - echo "Building app..."
     - mvn clean
     - mvn clean install
