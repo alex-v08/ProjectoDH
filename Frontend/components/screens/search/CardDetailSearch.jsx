@@ -34,7 +34,7 @@ export const CardDetailSearch = ({
             <div className='flex items-center'>
               <HiLocationMarker className='mr-1 h-4 w-4 text-gray-400' />
               <p className='mr-3 line-clamp-1 w-full text-xs text-gray-500'>
-                1 WHARF RD, BIRCHGROVE NSW 2041, AUSTRALIA
+                SANTA ROSA, LA PAMPA, ARGENTINA
               </p>
             </div>
             <div className='flex items-center'>
@@ -46,7 +46,7 @@ export const CardDetailSearch = ({
             {name}
           </h3>
           <span className='text-sm font-medium text-gray-500 lg:pb-6'>
-            8 Guests 9 Beds 2 Baths 5 Cabins
+            8 Huéspedes 9 Habitaciones 2 Baños 5 Cabinas
           </span>
           <div className='flex flex-wrap items-center justify-between py-4 lg:pb-0 lg:pt-2 xl:pt-4'>
             <h3 className='mr-2 py-4 text-xl font-extrabold leading-none text-sky-500 sm:pt-0 md:pt-4'>
