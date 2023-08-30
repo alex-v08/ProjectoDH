@@ -1,7 +1,7 @@
 package com.oceanwinds.user.entity.dto;
 
 import com.oceanwinds.user.entity.UserEnum;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,25 +11,29 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter@Setter
 public class UserDto {
-    @NotBlank(message = "Name is mandatory")
-    private String name;
 
+
+    private String name;
     private String lastName;
-    @NotBlank(message = "Name is mandatory")
+
     private String email;
 
     private String dni;
-    @NotBlank(message = "Name is mandatory")
+
+
     private String password;
+
 
     private String phone;
 
+
     private String address;
 
-    @Enumerated
+    @Enumerated (EnumType.STRING)
     private UserEnum role;
 
     private String uuid;
+
 
 
 

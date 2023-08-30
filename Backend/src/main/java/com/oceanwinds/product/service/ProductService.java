@@ -32,11 +32,11 @@ public class ProductService {
     FeatureRepository featureRepository;
 
 
-    public List<Product> getAllYachts() {
+    public List<Product> getAllProduct() {
         return productRepository.findAll();
     }
 
-    public Product getYachtById(Long id) {
+    public Product getProductById(Long id) {
         return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
     }
 
@@ -44,7 +44,7 @@ public class ProductService {
         return productRepository.findByName(name).get();
     }
 
-    public Product createYacht(ProductDto dto) throws AttributeException {
+    public Product createProduct(ProductDto dto) throws AttributeException {
         if (dto.getName() == null || dto.getName().isEmpty()) {
             throw new AttributeException("Name is required");
         }
@@ -55,36 +55,36 @@ public class ProductService {
             throw new AttributeException("Image is required");
         }
 
-        Product yacht = new Product();
+        Product product = new Product();
 
         if (dto.getCategoryId() != null) {
           Category category = categoryRepository.findById(dto.getCategoryId())
                   .orElseThrow(() -> new EntityNotFoundException("Category not found"));
-          yacht.setCategory(category);
+          product.setCategory(category);
         } else {
-            yacht.setCategory(null);
+            product.setCategory(null);
         }
         if (dto.getFeaturesId() != null){
             Set<Feature> features = new HashSet<>(featureRepository.findAllById(dto.getFeaturesId()));;
-            yacht.setFeature(features);
+            product.setFeature(features);
         } else {
-            yacht.setFeature(null);
+            product.setFeature(null);
         }
 
-        yacht.setName(dto.getName());
-        yacht.setSku(dto.getSku());
-        yacht.setDescription(dto.getDescription());
-        yacht.setImageUrl(dto.getImageUrl());
-        yacht.setAvailable(dto.getAvailable());
-        yacht.setPricePerDay(dto.getPricePerDay());
-        yacht.setPricePerHour(dto.getPricePerHour());
-        yacht.setPricePerWeek(dto.getPricePerWeek());
+        product.setName(dto.getName());
+        product.setSku(dto.getSku());
+        product.setDescription(dto.getDescription());
+        product.setImageUrl(dto.getImageUrl());
+        product.setAvailable(dto.getAvailable());
+        product.setPricePerDay(dto.getPricePerDay());
+        product.setPricePerHour(dto.getPricePerHour());
+        product.setPricePerWeek(dto.getPricePerWeek());
 
-        return productRepository.save(yacht);
+        return productRepository.save(product);
     }
 
 
-    public Product updateYacht(Long id, ProductDto dto) throws AttributeException {
+    public Product updateProduct(Long id, ProductDto dto) throws AttributeException {
 
         Product yacht = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
         if (dto.getCategoryId() != null) {
@@ -114,7 +114,7 @@ public class ProductService {
         return productRepository.save(yacht);
     }
 
-    public void deleteYacht(Long id) {
+    public void deleteProduct(Long id) {
 
         Product yacht = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
         productRepository.deleteById(id);
@@ -131,22 +131,22 @@ public class ProductService {
     }
 
 
-    public List<Product> getAvailableYachtsByCategory(String category) {
+    public List<Product> getAvailableProductByCategory(String category) {
         return productRepository.findByAvailableAndCategory(true, category);
     }
 
 
-    public List<Product> getYachtsByCategoryName(String categoryName) {
+    public List<Product> getProductsByCategoryName(String categoryName) {
         Category category = categoryRepository.findByName(categoryName).get();
         return productRepository.findByCategory(category);
     }
 
-    public List<Product> getYachtsByCategoryId(Long categoryId) {
+    public List<Product> getProductByCategoryId(Long categoryId) {
         Category category = categoryRepository.findById(categoryId).get();
         return productRepository.findByCategory(category);
     }
 
-    public List<Product> getYachtsByFeaturesId(List<Long> featuresId) {
+    public List<Product> getProductByFeaturesId(List<Long> featuresId) {
         Set<Feature> features = new HashSet<>(featureRepository.findAllById(featuresId));
         List<Product> products = productRepository.findByFeatureIn(features);
         products.removeIf(product -> !product.getFeature().containsAll(features));
@@ -157,12 +157,12 @@ public class ProductService {
         return productRepository.findByCategory(category);
     }
 
-    public List<Product> getAvailableYachts() {
+    public List<Product> getAvailableProduct() {
 
         return productRepository.findByAvailable(true);
     }
 
-    public List<Map<String, Object>> findYachtsWithModifiedImages(Long id) {
+    public List<Map<String, Object>> findProductWithModifiedImages(Long id) {
         List<Map<String, Object>> modifiedImagesList = new ArrayList<>();
 
         Product yacht = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
@@ -190,7 +190,7 @@ public class ProductService {
         return paginatedResponse;
     }
 
-    public PaginatedResponse<Product> getYachtsByPage(int page, int perPage) {
+    public PaginatedResponse<Product> getproductsByPage(int page, int perPage) {
         PaginatedResponse<Product> allYachts = getAllYachts(page, perPage);
         List<Product> yachts = allYachts.getData();
         List<Product> availableYachts = new ArrayList<>();

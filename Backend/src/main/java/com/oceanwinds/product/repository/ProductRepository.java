@@ -28,8 +28,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByAvailableAndCategory(boolean b, String category);
 
-    @Query(value = "SELECT IMAGE_URL FROM YACHTS WHERE ID = ?1 ", nativeQuery = true)
-    List<String> findYachtsWithModifiedImages(Long id);
+    @Query(value = "SELECT IMAGE_URL FROM PRODUCT WHERE ID = ?1 ", nativeQuery = true)
+    List<String> findproductWithModifiedImages(Long id);
 
       Page<Product>  findAll (Pageable pegeable);
 
