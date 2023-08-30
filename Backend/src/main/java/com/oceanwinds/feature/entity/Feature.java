@@ -3,10 +3,7 @@ package com.oceanwinds.feature.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oceanwinds.product.entity.Product;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 
 import java.util.HashSet;
@@ -14,8 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "Feature")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Feature {
