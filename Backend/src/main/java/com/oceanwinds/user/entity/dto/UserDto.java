@@ -3,13 +3,12 @@ package com.oceanwinds.user.entity.dto;
 import com.oceanwinds.user.entity.UserEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter@Setter
+@Data
 public class UserDto {
 
 
@@ -29,14 +28,20 @@ public class UserDto {
 
     private String address;
 
-    @Enumerated (EnumType.STRING)
+
     private UserEnum role;
 
     private String uuid;
 
-    private boolean active;
+    private Boolean active;
 
+    public Boolean getActive() {
+        return active;
+    }
 
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
 
 }

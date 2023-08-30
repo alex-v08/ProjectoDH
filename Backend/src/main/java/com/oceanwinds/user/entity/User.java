@@ -4,6 +4,7 @@ package com.oceanwinds.user.entity;
 import jakarta.persistence.*;
 
 import lombok.*;
+import software.amazon.ion.EmptySymbolException;
 
 @Entity
 @Data
@@ -34,20 +35,21 @@ public class User {
     @Column(nullable = false)
     private String address;
 
-    @Enumerated
+
     private UserEnum role;
 
     private String uuid;
 
-    private boolean active;
+    private Boolean active;
 
 
-    public User(String name, String lastName, String email, String password, String uuid) {
+    public User(String name, String lastName, String email, String password, String uuid, Boolean active) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.uuid = uuid;
+        this.active = active;
     }
 }
 
