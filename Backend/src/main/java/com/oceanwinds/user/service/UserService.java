@@ -47,6 +47,7 @@ public class UserService {
         user.setAddress(dto.getAddress());
         user.setRole(dto.getRole());
         user.setUuid(dto.getUuid());
+        user.setActive(dto.isActive());
 
         return usersRepository.save(user);
     }
@@ -71,6 +72,7 @@ public class UserService {
         user.setAddress(dto.getAddress());
         user.setRole(dto.getRole());
         user.setUuid(dto.getUuid());
+        user.setActive(dto.isActive());
 
         return usersRepository.save(user);
     }

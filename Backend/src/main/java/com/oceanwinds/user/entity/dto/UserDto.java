@@ -34,6 +34,8 @@ public class UserDto {
 
     private String uuid;
 
+    private boolean active;
+
 
 
 

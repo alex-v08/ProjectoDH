@@ -39,6 +39,8 @@ public class User {
 
     private String uuid;
 
+    private boolean active;
+
 
     public User(String name, String lastName, String email, String password, String uuid) {
         this.name = name;
