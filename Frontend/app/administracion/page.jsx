@@ -527,7 +527,7 @@ function PageUsers() {
                 password={user.password}
                 email={user.email}
                 phone={user.phone}
-                adress={user.adress}
+                address={user.address}
                 role={user.role}
                 uuid={user.uuid}
                 active={user.active}
