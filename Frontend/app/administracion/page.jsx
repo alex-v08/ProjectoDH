@@ -88,9 +88,9 @@ export default function Menu() {
             {/* Sidebar */}
             <div
               className='left-0 flex flex-col border-none bg-sky-900 pt-5 text-white dark:bg-[#121212]'
-              style={{ minWidth: '200px' }}
+              style={{ minWidth: '250px' }}
             >
-              <div className='flex h-14 items-center justify-center border-none px-5'>
+              <div className='flex h-14 items-center border-none px-5'>
                 <Image
                   className={`mr-4 w-11 h-11 ${
                     !user ? 'rounded-none' : 'rounded-full border-2 border-sky-500'
@@ -518,7 +518,7 @@ function PageUsers() {
             {data.map(user => (
               <RowUser
                 key={user.id}
-                id={user.id}
+                id={user.id} 
                 name={user.name}
                 lastName={user.lastName}
                 dni={user.dni}
@@ -527,6 +527,8 @@ function PageUsers() {
                 phone={user.phone}
                 adress={user.adress}
                 role={user.role}
+                uuid={user.uuid}
+                active={user.active}
               />
             ))}
           </tbody>
