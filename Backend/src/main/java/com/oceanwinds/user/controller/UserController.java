@@ -3,10 +3,12 @@ package com.oceanwinds.user.controller;
 
 import Global.dto.MessageDto;
 import Global.exceptions.AttributeException;
+import com.oceanwinds.product.entity.Product;
 import com.oceanwinds.user.entity.User;
 import com.oceanwinds.user.entity.dto.UserDto;
 import com.oceanwinds.user.service.UserService;
 import jakarta.validation.Valid;
+import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,6 +68,8 @@ public class UserController {
         String message = "User deleted with id: " + id;
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
+
+
 
 
 
