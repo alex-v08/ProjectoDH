@@ -3,7 +3,7 @@ export function RowUser(props) {
     props
 
   async function handleOnEditRole(newRole) {
-    const hostUrl = process.env.NEXT_PUBLIC_USER_URL
+    const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
     const urlEditRole = `${hostUrl}/users/` + id
 
     const opcion = confirm(
@@ -18,7 +18,7 @@ export function RowUser(props) {
           headers: {
             'Content-Type': 'application/json'
           },
-          
+
           body: JSON.stringify({
             name: name,
             lastName: lastName,

@@ -5,4 +5,4 @@ COPY ./target/crud-back-user-0.0.1-SNAPSHOT.jar cruduser.jar
 
 ENTRYPOINT ["java","-jar","/cruduser.jar"]
 
-EXPOSE 8081
+EXPOSE 8080

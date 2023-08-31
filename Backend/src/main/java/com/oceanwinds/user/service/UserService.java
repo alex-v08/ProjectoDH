@@ -5,12 +5,15 @@ import Global.exceptions.ResourceNotFoundException;
 import com.oceanwinds.user.entity.User;
 import com.oceanwinds.user.entity.dto.UserDto;
 import com.oceanwinds.user.repository.UserRepository;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Data
+
 public class UserService {
     @Autowired
     UserRepository usersRepository;
@@ -30,21 +33,21 @@ public class UserService {
             throw new AttributeException("El correo electrónico ya está registrado.");
         }
 
-        if (usersRepository.existsByDni(dto.getDni())) {
-            throw new AttributeException("El DNI ya está registrado.");
+        if (usersRepository.existsByDni(dto.getUuid())) {
+            throw new AttributeException("El uid ya se encuentra registrado.");
         }
 
-        User user = new User(
-                dto.getName(),
-                dto.getLastName(),
-                dto.getEmail(),
-                dto.getDni(),
-                dto.getPassword(),
-                dto.getPhone(),
-                dto.getAddress(),
-                dto.getRole(),
-                dto.getUuid()
-        );
+        User user = new User();
+        user.setName(dto.getName());
+        user.setDni(dto.getDni());
+        user.setLastName(dto.getLastName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        user.setPhone(dto.getPhone());
+        user.setAddress(dto.getAddress());
+        user.setRole(dto.getRole());
+        user.setUuid(dto.getUuid());
+        user.setActive(dto.getActive());
 
         return usersRepository.save(user);
     }
@@ -69,6 +72,7 @@ public class UserService {
         user.setAddress(dto.getAddress());
         user.setRole(dto.getRole());
         user.setUuid(dto.getUuid());
+        user.setActive(dto.getActive());
 
         return usersRepository.save(user);
     }
