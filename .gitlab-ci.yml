@@ -31,7 +31,7 @@ deploy_Backend:
     - echo "Deploying started..."
     - ssh ubuntu@ "sudo systemctl stop backendow.service"
     - scp Backend/target/pi-project-0.0.1-SNAPSHOT.jar ubuntu@$DEPLOY_SERVER_IP:~/
-    - ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl start backendow.service"
+    - ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl start back.service"
     - echo "Finished deploying the app."
   rules:
     - changes:
