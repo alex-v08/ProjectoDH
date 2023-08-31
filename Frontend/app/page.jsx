@@ -11,33 +11,33 @@ import PaginationControls from '@/components/suggested/paginationControls/Pagina
 import { useState, useEffect } from 'react'
 
 export default function Home({ searchParams }) {
-  const [totalYachts, setTotalYachts] = useState([])
+  const [totalProducts, setTotalProducts] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const getYachts = async () => {
+    const getProducts = async () => {
       try {
-        const response = await fetch('/api/yachts')
+        const response = await fetch('/api/products')
         if (!response.ok) {
           throw new Error('Network response was not ok')
         }
-        const yachts = await response.json()
-        setTotalYachts(yachts)
+        const products = await response.json()
+        setTotalProducts(products)
         setLoading(false)
       } catch (error) {
         console.error('Error fetching data:', error)
         setLoading(false)
       }
     }
-    getYachts()
+    getProducts()
   }, [])
 
   const page = searchParams['page'] ?? '1'
   const per_page = searchParams['per_page'] ?? '9'
   const start = (page - 1) * per_page
   const end = start + parseInt(per_page)
-  const totalPage = Math.ceil(totalYachts?.length / per_page)
-  const entries = totalYachts.slice(start, end)
+  const totalPage = Math.ceil(totalProducts?.length / per_page)
+  const entries = totalProducts.slice(start, end)
 
   const skeletonCards = Array.from({ length: 9 }).map((_, index) => (
     <div
@@ -87,7 +87,7 @@ export default function Home({ searchParams }) {
         <>
           <RandomProducts entries={entries} />
           <PaginationControls
-            hasNextPage={end < totalYachts?.length ?? ''}
+            hasNextPage={end < totalProducts?.length ?? ''}
             hasPrevPage={start > 0}
             totalPage={totalPage}
           />
