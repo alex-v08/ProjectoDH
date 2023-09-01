@@ -1,6 +1,7 @@
 package com.oceanwinds.product.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oceanwinds.category.entity.Category;
 
 import com.oceanwinds.favorites.entity.Favorites;
@@ -45,6 +46,7 @@ public class Product {
 
     private Boolean available;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "favoriteProducts")
     private Set<User> favoriteUsers = new HashSet<>();
 
