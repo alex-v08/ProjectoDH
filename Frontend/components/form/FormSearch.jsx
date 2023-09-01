@@ -1,22 +1,48 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   BiCurrentLocation,
   BiAnchor,
   BiCalendar,
   BiSearch
 } from 'react-icons/bi'
+//import { doSearch, getCategories } from '../util/callAPI'
 
 export default function FormSearch() {
   // Estado para almacenar la opción seleccionada
   const [selectedOption, setSelectedOption] = useState('')
+  // Estado para almacenar el Array de categorias
+  const [categories, setCategories] = useState([])
 
   // Función para manejar el cambio de opción seleccionada
   const handleSelectChange = event => {
     setSelectedOption(event.target.value)
   }
+
+  const urlBase = process.env.NEXT_PUBLIC_HOST_URL
+  const urlCategories = `${urlBase}/api/category/all`
+
+
+  const getCategories = async () => {
+    try {
+      const response = await fetch(`${urlCategories}`)
+      if (!response.ok) {
+        throw new Error(
+          'Error al realizar la petición: ' + response.status
+        )
+      }
+      const jsonData = await response.json()
+      setCategories(jsonData)
+    } catch (error) {
+      console.error('Error al realizar la petición: ', error)
+    }
+  }
+
+  useEffect(() => {
+    getCategories()
+  }, [selectedOption])
 
   return (
     <div className='container'>
@@ -78,11 +104,9 @@ export default function FormSearch() {
               <option value='' hidden defaultValue>
                 Elija el tipo de barco
               </option>
-              <option value='/Velero'>Velero</option>
-              <option value='/A motor'>A motor</option>
-              <option value='/Catamaran'>Catamarán</option>
-              <option value='/Yate'>Yate</option>
-              <option value='/Jet Ski'>Jet Sky</option>
+              {categories && categories.map((category, index) => (
+                <option value={`/${category.name}`} key={index}>{category.name}</option>
+              ))}
             </select>
           </div>
           <Link href={`/search/${selectedOption}`}>

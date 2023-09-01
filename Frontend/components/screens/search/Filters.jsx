@@ -1,6 +1,43 @@
+'use client'
+
 import PriceRangeSlider from '@/components/util/PriceRangeSlider'
+import { useState, useEffect } from 'react'
 
 export default function Filters() {
+  // Estado para almacenar el Array de categorias
+  const [categories, setCategories] = useState([])
+  // Estado para almacenar las opciones seleccionadas
+  const [selectedOption, setSelectedOption] = useState([])
+
+  const urlBase = process.env.NEXT_PUBLIC_HOST_URL
+  const urlCategories = `${urlBase}/api/category/all`
+
+  const handleSelectChange = event => {
+    const checkEvent = event.target.value
+    setSelectedOption([...selectedOption, checkEvent])
+    console.log(selectedOption);
+    console.log(event);
+  }
+
+  const getCategories = async () => {
+    try {
+      const response = await fetch(`${urlCategories}`)
+      if (!response.ok) {
+        throw new Error(
+          'Error al realizar la petición: ' + response.status
+        )
+      }
+      const jsonData = await response.json()
+      setCategories(jsonData)
+    } catch (error) {
+      console.error('Error al realizar la petición: ', error)
+    }
+  }
+
+  useEffect(() => {
+    getCategories()
+  }, [])
+
   return (
     <>
       {/* Tipo de bote */}
@@ -14,76 +51,24 @@ export default function Filters() {
         </div>
         <div className='px-14 pb-10 lg:px-9 xl:px-14'>
           <div className='flex flex-col gap-4 text-lg font-medium text-gray-500'>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='velero'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='velero'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Velero
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='motor'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='motor'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                A motor
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='catamaran'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='catamaran'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Catamarán
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='yate'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='yate'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Yate
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='sky'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='sky'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Jet Ski
-              </label>
-            </div>
+              {categories && categories.map((category, index) => (
+                <div className='group flex items-center' key={index}>
+                  <input
+                    onChange={handleSelectChange}
+                    value={category.id}
+                    type='checkbox'
+                    name={category.name}
+                    id={category.id}
+                    className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
+                  />
+                  <label
+                  htmlFor={category.name}
+                  className='truncate pl-2 transition group-hover:text-sky-500'
+                >
+                  {category.name}
+                </label>
+              </div>
+              ))}
           </div>
         </div>
       </div>
