@@ -1,11 +1,11 @@
 package com.oceanwinds.favorites.controller;
 
+import com.oceanwinds.favorites.entity.Favorites;
 import com.oceanwinds.favorites.service.FavoritesService;
-import com.oceanwinds.product.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -19,27 +19,28 @@ public class FavoritesController {
         this.favoritesService = favoritesService;
     }
 
-    @PostMapping("/{userId}/add/{productId}")
-    public ResponseEntity<String> addFavorite(
-            @PathVariable Long userId,
-            @PathVariable Long productId
-    ) {
-        String result = favoritesService.addFavorite(userId, productId);
-        return ResponseEntity.ok(result);
+    @PostMapping("/add")
+    public void addFavorite(@RequestParam Long userId, @RequestParam Long productId) {
+        favoritesService.addFavorite(userId, productId);
     }
 
-    @PostMapping("/{userId}/remove/{productId}")
-    public ResponseEntity<String> removeFavorite(
-            @PathVariable Long userId,
-            @PathVariable Long productId
-    ) {
-        String result = favoritesService.removeFavorite(userId, productId);
-        return ResponseEntity.ok(result);
+    @DeleteMapping("/delete")
+    public void deleteByUserIdAndProductId(@RequestParam Long userId, @RequestParam Long productId) {
+        favoritesService.deleteByUserIdAndProductId(userId, productId);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<Set<Product>> getUserFavorites(@PathVariable Long userId) {
-        Set<Product> favoriteProducts = favoritesService.getUserFavorites(userId);
-        return ResponseEntity.ok(favoriteProducts);
+    @GetMapping("/findByProductId/{productId}")
+    public Set<Favorites> findByProductId(@PathVariable Long productId) {
+        return favoritesService.findByProductId(productId);
+    }
+
+    @GetMapping("/findByUserId/{userId}")
+    public Set<Favorites> findByUserId(@PathVariable Long userId) {
+        return favoritesService.findByUserId(userId);
+    }
+
+    @GetMapping("/findAll")
+    public List<Favorites> findAll() {
+        return favoritesService.findAll();
     }
 }

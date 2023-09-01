@@ -1,69 +1,43 @@
 package com.oceanwinds.favorites.service;
 
+import com.oceanwinds.favorites.entity.Favorites;
 import com.oceanwinds.favorites.repository.FavoritesRepository;
-import com.oceanwinds.product.entity.Product;
-import com.oceanwinds.product.repository.ProductRepository;
-import com.oceanwinds.user.entity.User;
-import com.oceanwinds.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.List;
 import java.util.Set;
-
 
 @Service
 public class FavoritesService {
 
-    private final UserRepository userRepository;
-    private final ProductRepository productRepository;
-
     private final FavoritesRepository favoritesRepository;
 
-
-
     @Autowired
-    public FavoritesService(UserRepository userRepository, ProductRepository productRepository,FavoritesRepository favoritesRepository) {
-        this.userRepository = userRepository;
-        this.productRepository = productRepository;
+    public FavoritesService(FavoritesRepository favoritesRepository) {
         this.favoritesRepository = favoritesRepository;
     }
 
-    public String addFavorite(Long userId, Long productId) {
-        User user = userRepository.findById(userId).orElse(null);
-        Product product = productRepository.findById(productId).orElse(null);
-
-        if (user == null || product == null) {
-            return "User or product not found.";
-        }
-
-        user.getFavoriteProducts().add(product);
-        userRepository.save(user);
-
-        return "Product added to favorites.";
+    @Transactional
+    public void addFavorite(Long userId, Long productId) {
+        favoritesRepository.addFavorite(userId, productId);
     }
 
-    public String removeFavorite(Long userId, Long productId) {
-        User user = userRepository.findById(userId).orElse(null);
-        Product product = productRepository.findById(productId).orElse(null);
-
-        if (user == null || product == null) {
-            return "User or product not found.";
-        }
-
-        user.getFavoriteProducts().remove(product);
-        userRepository.save(user);
-
-        return "Product removed from favorites.";
+    @Transactional
+    public void deleteByUserIdAndProductId(Long userId, Long productId) {
+        favoritesRepository.deleteByUserIdAndProductId(userId, productId);
     }
 
-    public Set<Product> getUserFavorites(Long userId) {
-        User user = userRepository.findById(userId).orElse(null);
+    public Set<Favorites> findByProductId(Long productId) {
+        return favoritesRepository.findByProductId(productId);
+    }
 
-        if (user == null) {
-            return Collections.emptySet();
-        }
+    public Set<Favorites> findByUserId(Long userId) {
+        return favoritesRepository.findByUserId(userId);
+    }
 
-        return user.getFavoriteProducts();
+    public List<Favorites> findAll() {
+        return favoritesRepository.findAll();
     }
 }
