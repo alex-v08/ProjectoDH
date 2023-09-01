@@ -43,5 +43,12 @@ public class UserDto {
         this.active = active;
     }
 
+    public UserDto(String name, String lastName, String email, String uuid, Boolean active) {
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.uuid = uuid;
+        this.active = active;
+    }
 
 }
