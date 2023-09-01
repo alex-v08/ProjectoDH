@@ -2,8 +2,9 @@ import Galeria from '@/components/suggested/galeriaImagenes/Galeria'
 import CurrencyFormatter from '@/components/util/CurrencyFormatter'
 import Link from 'next/link'
 import { HiLocationMarker } from 'react-icons/hi'
-import { BsStarFill } from 'react-icons/bs'
+import { BsStarFill, BsStar } from 'react-icons/bs'
 import { ButtonBack } from '@/components/suggested/buttonBack/ButtonBack'
+import Image from 'next/image'
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 const itemsUrl = `${hostUrl}/api/`
@@ -160,7 +161,7 @@ export default async function Detalle({ params }) {
               </div>
             </div>
 
-            {/* politicas */}
+            {/* Politicas */}
             <div className='mt-8 border-b pb-8'>
               <h2 className='pb-6 text-2xl font-bold text-sky-950'>
                 Políticas del producto
@@ -228,6 +229,76 @@ export default async function Detalle({ params }) {
                     excluyendo gastos de servicio y comisión de Ocean Winds.
                   </p>
                 </div>
+              </div>
+            </div>
+
+            {/* Comentarios */}
+            <div className='mt-8 border-b pb-8'>
+              <h2 className='text-2xl font-bold text-sky-950'>Comentarios</h2>
+              <div className='comment-body flex border-b pb-5 pt-6'>
+                <Image
+                  src='/avatar.png'
+                  alt='avatar'
+                  width={60}
+                  height={60}
+                  className='mr-5 hidden h-[60px] w-[60px] rounded-full sm:block'
+                />
+                <div>
+                  <div>
+                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
+                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
+                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
+                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
+                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
+                  </div>
+                  <div className='font-semibold'>
+                    Nombre{' '}
+                    <span className='text-sm font-normal text-gray-500'>
+                      - Fechas
+                    </span>
+                  </div>
+                  <div>Quedé muy satisfecho con la atencion del vendedor</div>
+                </div>
+              </div>
+              <div className='comment-body flex border-b pb-5 pt-6'>
+                <Image
+                  src='/avatar.png'
+                  alt='avatar'
+                  width={60}
+                  height={60}
+                  className='mr-5 hidden h-[60px] w-[60px] rounded-full sm:block'
+                />
+                <div>
+                  <div>
+                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
+                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
+                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
+                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
+                    <BsStar className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
+                  </div>
+                  <div className='font-semibold'>
+                    Nombre{' '}
+                    <span className='text-sm font-normal text-gray-500'>
+                      - Fechas
+                    </span>
+                  </div>
+                  <div>Quedé muy satisfecho con la atencion del vendedor</div>
+                </div>
+              </div>
+              <div className='pt-6'>
+                <h2 className='pb-2 text-xl font-bold text-sky-950'>
+                  Agregar un comentario
+                </h2>
+                <p>
+                  Debes{' '}
+                  <Link
+                    href='/login'
+                    className='font-semibold transition ease-in-out hover:text-sky-500'
+                  >
+                    iniciar sesión
+                  </Link>{' '}
+                  para publicar un comentario.
+                </p>
               </div>
             </div>
           </div>

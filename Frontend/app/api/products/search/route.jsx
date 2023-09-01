@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-async function fetchYachts() {
+async function fetchProducts() {
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 
   const response = await fetch(`${hostUrl}/api/all`, {
@@ -17,6 +17,11 @@ async function fetchYachts() {
 }
 
 export async function GET(request) {
-  const results = await fetchYachts()
-  return NextResponse.json(results)
+  const results = await fetchProducts()
+  const { searchParams } = new URL(request.url)
+  const query = searchParams.get('query')
+  const filteredBoats = results.filter(boat => {
+    return boat.category.includes(query)
+  })
+  return NextResponse.json(filteredBoats)
 }

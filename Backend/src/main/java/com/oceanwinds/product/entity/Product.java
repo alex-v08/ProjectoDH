@@ -1,6 +1,7 @@
 package com.oceanwinds.product.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oceanwinds.category.entity.Category;
 
 import com.oceanwinds.favorites.entity.Favorites;
@@ -14,7 +15,7 @@ import java.util.Set;
 
 
 @Entity
-@Data
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Product")
@@ -39,12 +40,13 @@ public class Product {
     private Category category;
 
     @ManyToMany
-    @JoinTable(name = "Product_feature", joinColumns = @JoinColumn(name = "Product_id"),
+    @JoinTable(name = "product_feature", joinColumns = @JoinColumn(name = "product_id"),
     inverseJoinColumns = @JoinColumn(name = "feature_id"))
     private Set<Feature> feature = new HashSet<>();
 
     private Boolean available;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "favoriteProducts")
     private Set<User> favoriteUsers = new HashSet<>();
 
