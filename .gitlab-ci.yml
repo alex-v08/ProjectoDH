@@ -22,7 +22,7 @@ deploy_Backend:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - echo "$SSH_PRIVATE_KEY" | ssh-add -
     - touch ~/.ssh/config
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - ssh-keyscan -H "$DEPLOY_SERVER_IP" >> ~/.ssh/known_hosts
@@ -30,7 +30,7 @@ deploy_Backend:
   script:
     - echo "Deploying started..."
     - ssh ubuntu@ "sudo systemctl stop back.service"
-    - scp Backend/target/pi-project-0.0.1-SNAPSHOT.jar ubuntu@$DEPLOY_SERVER_IP:~/
+    - scp Backend/target/pi-project-0.0.1-SNAPSHOT.jar ubuntu@$DEPLOY_SERVER_IP:~/home/ubuntu/backend
     - ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl start back.service"
     - echo "Finished deploying the app."
   rules:
