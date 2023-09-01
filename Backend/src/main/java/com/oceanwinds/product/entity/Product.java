@@ -2,7 +2,10 @@ package com.oceanwinds.product.entity;
 
 
 import com.oceanwinds.category.entity.Category;
+
+import com.oceanwinds.favorites.entity.Favorites;
 import com.oceanwinds.feature.entity.Feature;
+import com.oceanwinds.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,6 +44,10 @@ public class Product {
     private Set<Feature> feature = new HashSet<>();
 
     private Boolean available;
+
+    @ManyToMany(mappedBy = "favoriteProducts")
+    private Set<User> favoriteUsers = new HashSet<>();
+
 
     public Product(Long id, String name, String sku, String description, String imageUrl, Double pricePerDay, Double pricePerWeek, Double pricePerHour, Category category, Boolean available) {
         this.id = id;

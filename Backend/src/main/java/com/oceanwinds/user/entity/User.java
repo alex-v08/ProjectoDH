@@ -1,10 +1,12 @@
 package com.oceanwinds.user.entity;
 
 
-import jakarta.persistence.*;
 
+import com.oceanwinds.product.entity.Product;
+import jakarta.persistence.*;
 import lombok.*;
-import software.amazon.ion.EmptySymbolException;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -12,7 +14,7 @@ import software.amazon.ion.EmptySymbolException;
 
 @AllArgsConstructor
 @Table(name = "USERS")
-
+@Getter @Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -42,6 +44,14 @@ public class User {
 
     private Boolean active;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "favorites",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<Product> favoriteProducts = new HashSet<>();
+
 
     public User(String name, String lastName, String email, String password, String uuid, Boolean active) {
         this.name = name;
@@ -51,5 +61,7 @@ public class User {
         this.uuid = uuid;
         this.active = active;
     }
+
+
 }
 

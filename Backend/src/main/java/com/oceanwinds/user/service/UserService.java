@@ -2,6 +2,7 @@ package com.oceanwinds.user.service;
 
 import Global.exceptions.AttributeException;
 import Global.exceptions.ResourceNotFoundException;
+import com.oceanwinds.product.entity.Product;
 import com.oceanwinds.user.entity.User;
 import com.oceanwinds.user.entity.dto.UserDto;
 import com.oceanwinds.user.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Data
@@ -111,4 +113,6 @@ public class UserService {
         return usersRepository.existsByUuid(uuid);
 
     }
+
+
 }
