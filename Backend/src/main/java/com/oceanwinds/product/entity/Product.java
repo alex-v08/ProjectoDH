@@ -11,7 +11,7 @@ import java.util.Set;
 
 
 @Entity
-@Data
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Product")
@@ -36,7 +36,7 @@ public class Product {
     private Category category;
 
     @ManyToMany
-    @JoinTable(name = "Product_feature", joinColumns = @JoinColumn(name = "Product_id"),
+    @JoinTable(name = "product_feature", joinColumns = @JoinColumn(name = "product_id"),
     inverseJoinColumns = @JoinColumn(name = "feature_id"))
     private Set<Feature> feature = new HashSet<>();
 

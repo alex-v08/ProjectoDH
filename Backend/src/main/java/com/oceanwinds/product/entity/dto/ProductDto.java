@@ -1,4 +1,4 @@
-package com.oceanwinds.user.product.entity.dto;
+package com.oceanwinds.product.entity.dto;
 
 import jakarta.persistence.Column;
 import lombok.Getter;

@@ -20,9 +20,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findByName(String name);
 
-    List<Product> findByCategory(Category category);
+    List<Product> findByCategoryIn(List<Category> categories);
 
     List<Product> findByFeatureIn(Set<Feature> features);
+
+    List<Product> findByCategoryInAndFeatureIn(List<Category> categories, Set<Feature> features);
+
+    List<Product> findByPriceBetween(double minPrice, double maxPrice);
 
     List<Product> findByAvailable(boolean b);
 
@@ -32,5 +36,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<String> findproductWithModifiedImages(Long id);
 
       Page<Product>  findAll (Pageable pegeable);
+
 
 }

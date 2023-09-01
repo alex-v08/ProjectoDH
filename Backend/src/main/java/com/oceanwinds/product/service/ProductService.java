@@ -8,7 +8,7 @@ import com.oceanwinds.category.entity.Category;
 import com.oceanwinds.category.repository.CategoryRepository;
 import com.oceanwinds.feature.entity.Feature;
 import com.oceanwinds.product.entity.Product;
-import com.oceanwinds.user.product.entity.dto.ProductDto;
+import com.oceanwinds.product.entity.dto.ProductDto;
 import com.oceanwinds.feature.repository.FeatureRepository;
 import com.oceanwinds.product.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -65,10 +65,10 @@ public class ProductService {
             product.setCategory(null);
         }
         if (dto.getFeaturesId() != null){
-            Set<Feature> features = new HashSet<>(featureRepository.findAllById(dto.getFeaturesId()));;
+            Set<Feature> features = new HashSet<>(featureRepository.findAllById(dto.getFeaturesId()));
             product.setFeature(features);
         } else {
-            product.setFeature(null);
+            product.setFeature(new HashSet<>());
         }
 
         product.setName(dto.getName());
@@ -86,32 +86,32 @@ public class ProductService {
 
     public Product updateProduct(Long id, ProductDto dto) throws AttributeException {
 
-        Product yacht = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
         if (dto.getCategoryId() != null) {
             Category category = categoryRepository.findById(dto.getCategoryId())
                     .orElseThrow(() -> new EntityNotFoundException("Category not found"));
-            yacht.setCategory(category);
+            product.setCategory(category);
         } else {
-            yacht.setCategory(null);
+            product.setCategory(null);
         }
         if (dto.getFeaturesId() != null){
-            Set<Feature> features = new HashSet<>(featureRepository.findAllById(dto.getFeaturesId()));;
-            yacht.setFeature(features);
+            Set<Feature> features = new HashSet<>(featureRepository.findAllById(dto.getFeaturesId()));
+            product.setFeature(features);
         } else {
-            yacht.setFeature(null);
+            product.setFeature(null);
         }
 
-        yacht.setName(dto.getName());
-        yacht.setSku(dto.getSku());
-        yacht.setDescription(dto.getDescription());
-        yacht.setImageUrl(dto.getImageUrl());
-        yacht.setAvailable(dto.getAvailable());
-        yacht.setPricePerDay(dto.getPricePerDay());
-        yacht.setPricePerHour(dto.getPricePerHour());
-        yacht.setPricePerWeek(dto.getPricePerWeek());
+        product.setName(dto.getName());
+        product.setSku(dto.getSku());
+        product.setDescription(dto.getDescription());
+        product.setImageUrl(dto.getImageUrl());
+        product.setAvailable(dto.getAvailable());
+        product.setPricePerDay(dto.getPricePerDay());
+        product.setPricePerHour(dto.getPricePerHour());
+        product.setPricePerWeek(dto.getPricePerWeek());
 
 
-        return productRepository.save(yacht);
+        return productRepository.save(product);
     }
 
     public void deleteProduct(Long id) {
@@ -129,21 +129,19 @@ public class ProductService {
         return productRepository.existsByAvailable(available);
 
     }
-
-
+    
     public List<Product> getAvailableProductByCategory(String category) {
         return productRepository.findByAvailableAndCategory(true, category);
     }
 
-
-    public List<Product> getProductsByCategoryName(String categoryName) {
-        Category category = categoryRepository.findByName(categoryName).get();
-        return productRepository.findByCategory(category);
+    public List<Product> getProductByCategoryId(List<Long> categoriesId) {
+        List<Category> categories = categoryRepository.findAllById(categoriesId);
+        return productRepository.findByCategoryIn(categories);
     }
 
-    public List<Product> getProductByCategoryId(Long categoryId) {
-        Category category = categoryRepository.findById(categoryId).get();
-        return productRepository.findByCategory(category);
+    public List<Product> getProductsByCategoryName(List<String> categoriesName) {
+        List<Category> categories = categoryRepository.findAllByNameIn(categoriesName);
+        return productRepository.findByCategoryIn(categories);
     }
 
     public List<Product> getProductByFeaturesId(List<Long> featuresId) {
@@ -153,8 +151,48 @@ public class ProductService {
         return products;
     }
 
-    public List<Product> getYachtsByCategory(Category category) {
-        return productRepository.findByCategory(category);
+    public List<Product> getProductByFeaturesName(List<String> featuresName) {
+        Set<Feature> features = new HashSet<>(featureRepository.findAllByNameIn(featuresName));
+        List<Product> products = productRepository.findByFeatureIn(features);
+        products.removeIf(product -> !product.getFeature().containsAll(features));
+        return products;
+    }
+
+    public List<Product> getAllProductFilterId(List<Long> categoriesId, List<Long> featuresId) {
+        List<Category> categories;
+        Set<Feature> features;
+
+        if (!categoriesId.isEmpty()) {
+            categories = categoryRepository.findAllById(categoriesId);
+        } else {
+            categories = new ArrayList<>();
+        }
+
+        if (!featuresId.isEmpty()) {
+            features = new HashSet<>(featureRepository.findAllById(featuresId));
+        } else {
+            features = new HashSet<>();
+        }
+
+        List<Product> products;
+
+        if (categories.isEmpty() && features.isEmpty()){
+            // No hay categorías especificadas y tampoco características, traer todos los productos
+            products = productRepository.findAll();
+        } else if (categories.isEmpty()) {
+            // No hay categorías especificadas, buscar solo por características
+            products = productRepository.findByFeatureIn(features);
+            products.removeIf(product -> !product.getFeature().containsAll(features));
+        } else if (features.isEmpty()) {
+            // No hay características especificadas, buscar solo por categorías
+            products = productRepository.findByCategoryIn(categories);
+        } else {
+            // Buscar por ambas categorías y características
+            products = productRepository.findByCategoryInAndFeatureIn(categories, features);
+            products.removeIf(product -> !product.getFeature().containsAll(features));
+        }
+
+        return products;
     }
 
     public List<Product> getAvailableProduct() {
