@@ -2,6 +2,7 @@ package com.oceanwinds.user.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oceanwinds.product.entity.Product;
 import jakarta.persistence.*;
 import lombok.*;
