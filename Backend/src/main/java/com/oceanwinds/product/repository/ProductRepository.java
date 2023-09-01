@@ -26,7 +26,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByCategoryInAndFeatureIn(List<Category> categories, Set<Feature> features);
 
-    List<Product> findByPriceBetween(double minPrice, double maxPrice);
+    // List<Product> findByPriceBetween(double minPrice, double maxPrice);
 
     List<Product> findByAvailable(boolean b);
 
