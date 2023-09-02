@@ -6,6 +6,7 @@ import Global.exceptions.AttributeException;
 import com.oceanwinds.product.entity.Product;
 import com.oceanwinds.user.entity.User;
 import com.oceanwinds.user.entity.dto.UserDto;
+import com.oceanwinds.user.entity.dto.UserDtoFirebase;
 import com.oceanwinds.user.service.UserService;
 import jakarta.validation.Valid;
 import org.hibernate.mapping.Set;
@@ -47,6 +48,17 @@ public class UserController {
     public ResponseEntity<MessageDto> save(@Valid @RequestBody UserDto dto) {
         try {
             User user = userService.saveUser(dto);
+            String message = "Usuario creado con Nombre: " + user.getName();
+            return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
+        } catch (AttributeException e) {
+            String errorMessage = "Error al crear el usuario: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageDto(HttpStatus.BAD_REQUEST, errorMessage));
+        }
+    }
+    @PostMapping("/createfb")
+    public ResponseEntity<MessageDto> savefb(@RequestBody UserDtoFirebase dto) {
+        try {
+            User user = userService.saveUserFirebase(dto);
             String message = "Usuario creado con Nombre: " + user.getName();
             return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
         } catch (AttributeException e) {

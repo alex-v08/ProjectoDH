@@ -25,12 +25,11 @@ public class User {
     private String lastName;
     @Column(nullable = false, unique = true)
     private String email;
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String dni;
 
 
-    @Column(nullable = false)
-    private String password;
+
 
     @Column(nullable = false)
     private String phone;
@@ -54,11 +53,10 @@ public class User {
     private Set<Product> favoriteProducts = new HashSet<>();
 
 
-    public User(String name, String lastName, String email, String password, String uuid, Boolean active) {
+    public User(String name, String lastName, String email, String uuid, Boolean active) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
         this.uuid = uuid;
         this.active = active;
     }

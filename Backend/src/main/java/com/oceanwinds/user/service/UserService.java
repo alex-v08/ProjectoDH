@@ -5,6 +5,7 @@ import Global.exceptions.ResourceNotFoundException;
 import com.oceanwinds.product.entity.Product;
 import com.oceanwinds.user.entity.User;
 import com.oceanwinds.user.entity.dto.UserDto;
+import com.oceanwinds.user.entity.dto.UserDtoFirebase;
 import com.oceanwinds.user.repository.UserRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,27 @@ public class UserService {
         return usersRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
+    public User saveUserFirebase(UserDtoFirebase dto) throws AttributeException {
+
+
+        if (usersRepository.existsByemail(dto.getEmail())) {
+            throw new AttributeException("El correo electrónico ya está registrado.");
+        }
+
+        if (usersRepository.existsByDni(dto.getUuid())) {
+            throw new AttributeException("El uid ya se encuentra registrado.");
+        }
+
+        User user = new User();
+        user.setName(dto.getName());
+        user.setLastName(dto.getLastName());
+        user.setEmail(dto.getEmail());
+
+        user.setUuid(dto.getUuid());
+        user.setActive(dto.getActive());
+        return usersRepository.save(user);
+    }
+
     public User saveUser(UserDto dto) throws AttributeException {
         validateUserAttributes(dto);
 
@@ -44,7 +66,6 @@ public class UserService {
         user.setDni(dto.getDni());
         user.setLastName(dto.getLastName());
         user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
         user.setPhone(dto.getPhone());
         user.setAddress(dto.getAddress());
         user.setRole(dto.getRole());
@@ -69,7 +90,6 @@ public class UserService {
         user.setName(dto.getName());
         user.setLastName(dto.getLastName());
         user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
         user.setPhone(dto.getPhone());
         user.setAddress(dto.getAddress());
         user.setRole(dto.getRole());
