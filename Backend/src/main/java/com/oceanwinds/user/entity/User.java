@@ -10,9 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
 @NoArgsConstructor
-
 @AllArgsConstructor
 @Table(name = "USERS")
 @Getter @Setter
@@ -25,25 +23,15 @@ public class User {
     private String lastName;
     @Column(nullable = false, unique = true)
     private String email;
-    @Column(unique = true)
     private String dni;
 
-
-
-
-    @Column(nullable = false)
     private String phone;
-
-    @Column(nullable = false)
     private String address;
-
-
     private UserEnum role;
-
     private String uuid;
-
     private Boolean active;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "favorites",
