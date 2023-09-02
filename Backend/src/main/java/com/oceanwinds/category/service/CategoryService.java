@@ -6,6 +6,7 @@ import com.oceanwinds.category.entity.Category;
 import com.oceanwinds.category.entity.dto.CategoryDto;
 
 import com.oceanwinds.category.repository.CategoryRepository;
+import com.oceanwinds.product.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,9 @@ public class CategoryService {
 
     public void deleteCategory(Long id) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        for (Product product : category.getProduct()) {
+            product.setCategory(null);
+        }
         categoryRepository.deleteById(id);
     }
 
