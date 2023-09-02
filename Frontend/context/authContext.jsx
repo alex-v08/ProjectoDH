@@ -47,12 +47,9 @@ export function AuthProvider({ children }) {
         uuid: userCredential.user.uid,
         email: userCredential.user.email,
         name: userCredential.user.displayName.split(' ')[0],
-        role: 'USER_DEFAULT',
         lastName: userCredential.user.displayName.split(' ')[1],
         active: true
       }
-
-      console.log(userData)
 
       const hostUrl = process.env.NEXT_PUBLIC_HOST_URL // Realiza una solicitud POST a tu endpoint personalizado
 
@@ -99,7 +96,6 @@ export function AuthProvider({ children }) {
         uuid: userCredential.user.uid,
         email: userCredential.user.email,
         name: userCredential.user.displayName.split(' ')[0],
-        role: 'USER_DEFAULT',
         lastName: userCredential.user.displayName.split(' ')[1],
         active: true
       }
@@ -113,21 +109,15 @@ export function AuthProvider({ children }) {
         }
       })
 
-      console.log(response)
-
       if (response.ok) {
         // La respuesta del servidor es exitosa, ahora verifica el valor booleano
         const data = await response.json()
 
         if (data === true) {
           // El usuario ya existe en la base de datos, no es necesario guardarlo nuevamente.
-          console.log('El usuario existe')
-          console.log(userData)
           return userCredential.user
         } else if (data === false) {
           // El usuario no existe en la base de datos, guárdalo en el endpoint personalizado.
-          console.log('El usuario no existe')
-          console.log(userData)
           const createResponse = await fetch(`${hostUrl}/users/createfb`, {
             method: 'POST',
             headers: {
