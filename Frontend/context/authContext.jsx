@@ -25,10 +25,45 @@ export const useAuth = () => {
   return context
 }
 
+const fetchUserData = async (userData, hostUrl) => {
+  const response = await fetch(`${hostUrl}/users/uid/${userData.uuid}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  if (response.ok) {
+    const data = await response.json()
+    return data === true
+  } else {
+    console.error('Error en la solicitud GET al endpoint')
+    throw new Error('Error en la solicitud GET')
+  }
+}
+
+const postUserData = async (userData, hostUrl) => {
+  const response = await fetch(`${hostUrl}/users/createfb`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(userData)
+  })
+
+  if (response.ok) {
+    return true
+  } else {
+    console.error('Error en la solicitud POST al endpoint personalizado')
+    throw new Error('Error en la solicitud POST')
+  }
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
+  const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 
   const signup = async (email, password, displayName) => {
     try {
@@ -51,26 +86,18 @@ export function AuthProvider({ children }) {
         active: true
       }
 
-      const hostUrl = process.env.NEXT_PUBLIC_HOST_URL // Realiza una solicitud POST a tu endpoint personalizado
+      const userExists = await fetchUserData(userData, hostUrl)
 
-      const response = await fetch(`${hostUrl}/users/createfb`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
-      })
-
-      if (response.ok) {
-        // La solicitud POST fue exitosa
+      if (userExists) {
         return userCredential.user
       } else {
-        // Manejar errores en la solicitud POST, por ejemplo:
-        console.error('Error en la solicitud POST al endpoint personalizado')
-        throw new Error('Error en la solicitud POST')
+        const createResponse = await postUserData(userData, hostUrl)
+
+        if (createResponse) {
+          return userCredential.user
+        }
       }
     } catch (error) {
-      // Maneja los errores al crear el usuario o al actualizar el displayName
       console.error(
         'Error al crear el usuario o actualizar el displayName:',
         error
@@ -100,54 +127,18 @@ export function AuthProvider({ children }) {
         active: true
       }
 
-      const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+      const userExists = await fetchUserData(userData, hostUrl)
 
-      const response = await fetch(`${hostUrl}/users/uid/${userData.uuid}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-
-      if (response.ok) {
-        // La respuesta del servidor es exitosa, ahora verifica el valor booleano
-        const data = await response.json()
-
-        if (data === true) {
-          // El usuario ya existe en la base de datos, no es necesario guardarlo nuevamente.
-          return userCredential.user
-        } else if (data === false) {
-          // El usuario no existe en la base de datos, guárdalo en el endpoint personalizado.
-          const createResponse = await fetch(`${hostUrl}/users/createfb`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userData)
-          })
-
-          if (createResponse.ok) {
-            // La solicitud POST fue exitosa
-            return userCredential.user
-          } else {
-            // Manejar errores en la solicitud POST, por ejemplo:
-            console.error(
-              'Error en la solicitud POST al endpoint personalizado'
-            )
-            throw new Error('Error en la solicitud POST')
-          }
-        } else {
-          // Manejar otros posibles valores de respuesta si es necesario
-          console.error('Respuesta inesperada del servidor')
-          throw new Error('Respuesta inesperada del servidor')
-        }
+      if (userExists) {
+        return userCredential.user
       } else {
-        // Manejar errores en la solicitud GET, por ejemplo:
-        console.error('Error en la solicitud GET al endpoint')
-        throw new Error('Error en la solicitud GET')
+        const createResponse = await postUserData(userData, hostUrl)
+
+        if (createResponse) {
+          return userCredential.user
+        }
       }
     } catch (error) {
-      // Maneja los errores al autenticar con Google
       console.error('Error al autenticar con Google:', error)
       throw error
     }
