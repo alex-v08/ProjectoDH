@@ -4,7 +4,6 @@ package com.oceanwinds.product.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oceanwinds.category.entity.Category;
 
-import com.oceanwinds.favorites.entity.Favorites;
 import com.oceanwinds.feature.entity.Feature;
 import com.oceanwinds.location.entity.Location;
 import com.oceanwinds.user.entity.User;
@@ -40,6 +39,7 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "product_feature", joinColumns = @JoinColumn(name = "product_id"),
     inverseJoinColumns = @JoinColumn(name = "feature_id"))

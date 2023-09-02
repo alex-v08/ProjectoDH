@@ -17,16 +17,7 @@ deploy_Backend:
   stage: deploy
   needs: [build_backend]
   image: alpine:3.11
-  before_script:
-    - apk update && apk add openssh-client bash
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | ssh-add -
-    - touch ~/.ssh/config
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    - ssh-keyscan -H "$DEPLOY_SERVER_IP" >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
+
   script:
     - echo "Deploying started..."
     - ssh ubuntu@ "sudo systemctl stop back.service"

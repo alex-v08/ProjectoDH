@@ -20,9 +20,6 @@ public class UserDto {
     private String dni;
 
 
-    private String password;
-
-
     private String phone;
 
 
