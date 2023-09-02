@@ -1,5 +1,6 @@
 'use client'
 
+import { staticBlurDataUrl } from '@/components/util/staticBlurDataUrl'
 import Image from 'next/image'
 
 const FullGalery = ({ imagesGallery }) => {
@@ -12,8 +13,10 @@ const FullGalery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
+            blurDataURL={staticBlurDataUrl()}
+            placeholder='blur'
             style={{ objectFit: 'cover' }}
-            className='h-full rounded-lg bg-gray-300'
+            className='h-full rounded-lg'
           />
         </div>
         <div className='relative aspect-[4/2.8]'>
@@ -22,8 +25,10 @@ const FullGalery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
+            blurDataURL={staticBlurDataUrl()}
+            placeholder='blur'
             style={{ objectFit: 'cover' }}
-            className='h-full rounded-lg bg-gray-300'
+            className='h-full rounded-lg'
           />
         </div>
         <div className='relative aspect-[4/2.8]'>
@@ -32,8 +37,10 @@ const FullGalery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
+            blurDataURL={staticBlurDataUrl()}
+            placeholder='blur'
             style={{ objectFit: 'cover' }}
-            className='h-full rounded-lg bg-gray-300'
+            className='h-full rounded-lg'
           />
         </div>
         <div className='relative aspect-[4/2.8]'>
@@ -42,8 +49,10 @@ const FullGalery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
+            blurDataURL={staticBlurDataUrl()}
+            placeholder='blur'
             style={{ objectFit: 'cover' }}
-            className='h-full rounded-lg bg-gray-300'
+            className='h-full rounded-lg'
           />
         </div>
       </div>

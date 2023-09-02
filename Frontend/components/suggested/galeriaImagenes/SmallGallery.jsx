@@ -1,5 +1,6 @@
 'use client'
 
+import { staticBlurDataUrl } from '@/components/util/staticBlurDataUrl'
 import Image from 'next/image'
 
 const SmallGallery = ({ imagesGallery }) => {
@@ -12,9 +13,11 @@ const SmallGallery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
+            blurDataURL={staticBlurDataUrl()}
+            placeholder='blur'
             style={{ objectFit: 'cover' }}
             quality={100}
-            className='h-full rounded-lg rounded-t-lg bg-gray-300'
+            className='h-full rounded-lg rounded-t-lg'
           />
         </div>
         <div className='relative aspect-[4/2.8]'>
@@ -23,8 +26,10 @@ const SmallGallery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
+            blurDataURL={staticBlurDataUrl()}
+            placeholder='blur'
             style={{ objectFit: 'cover' }}
-            className='h-full rounded-lg bg-gray-300'
+            className='h-full rounded-lg'
           />
         </div>
         <div className='relative aspect-[4/2.8]'>
@@ -33,8 +38,10 @@ const SmallGallery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
+            blurDataURL={staticBlurDataUrl()}
+            placeholder='blur'
             style={{ objectFit: 'cover' }}
-            className='h-full rounded-lg bg-gray-300'
+            className='h-full rounded-lg'
           />
         </div>
         <div className='relative aspect-[4/2.8]'>
@@ -43,8 +50,10 @@ const SmallGallery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
+            blurDataURL={staticBlurDataUrl()}
+            placeholder='blur'
             style={{ objectFit: 'cover' }}
-            className='h-full rounded-lg bg-gray-300'
+            className='h-full rounded-lg '
           />
         </div>
         <div className='relative aspect-[4/2.8]'>
@@ -53,8 +62,10 @@ const SmallGallery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
+            blurDataURL={staticBlurDataUrl()}
+            placeholder='blur'
             style={{ objectFit: 'cover' }}
-            className='h-full rounded-lg bg-gray-300'
+            className='h-full rounded-lg'
           />
         </div>
       </div>
