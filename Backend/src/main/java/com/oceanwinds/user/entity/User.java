@@ -27,7 +27,7 @@ public class User {
 
     private String phone;
     private String address;
-    private UserEnum role;
+    private UserEnum role= UserEnum.USER_DEFAULT;
     private String uuid;
     private Boolean active;
 

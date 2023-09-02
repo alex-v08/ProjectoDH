@@ -1,11 +1,11 @@
-package com.oceanwinds.reservee.controller;
+package com.oceanwinds.booking.controller;
 
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @RequestMapping("/reservas")
-public class ReserveeController {
+public class BookingController {
 
 
 }

@@ -1,16 +1,15 @@
-package com.oceanwinds.reservee.entity.dto;
+package com.oceanwinds.booking.entity.dto;
 
 
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Setter@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ReserveeDto {
+public class BookingDto {
     private Long user_id;
     private Long product_id;
     private LocalDate dateInit;

@@ -1,4 +1,4 @@
-package com.oceanwinds.reservee.entity;
+package com.oceanwinds.booking.entity;
 
 
 import jakarta.persistence.*;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Table(name = "RESERVA_MENSAJES")
 @Getter
 @Setter
-public class ReservaMessage {
+public class BookingMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,5 +17,5 @@ public class ReservaMessage {
 
     @ManyToOne
     @JoinColumn(name = "reserva_id")
-    private Reservee reservee;
+    private Booking booking;
 }

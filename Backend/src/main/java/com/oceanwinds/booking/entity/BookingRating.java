@@ -1,4 +1,4 @@
-package com.oceanwinds.reservee.entity;
+package com.oceanwinds.booking.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,13 +8,13 @@ import lombok.Setter;
 @Table(name = "RESERVA_RATINGS")
 @Getter
 @Setter
-public class ReservaRating {
+public class BookingRating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int rating; // Puntuación de la reserva (1-5 estrellas)
 
     @ManyToOne
-    @JoinColumn(name = "reservee_ratting_id")
-    Reservee reservee;
+    @JoinColumn(name = "booking_rating_id")
+    Booking booking;
 }

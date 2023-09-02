@@ -1,4 +1,4 @@
-package com.oceanwinds.reservee.entity;
+package com.oceanwinds.booking.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oceanwinds.product.entity.Product;
@@ -20,7 +20,7 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Reservee {
+public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,13 +37,13 @@ public class Reservee {
     private LocalDate dateInit;
     private LocalDate dateEnd;
 
-    @OneToMany(mappedBy = "reservee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 
-    private Set<ReservaMessage> messages = new HashSet<>();
+    private Set<BookingMessage> messages = new HashSet<>();
 
-    @OneToMany(mappedBy = "reservee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 
-    private Set<ReservaRating> ratting = new HashSet<>();
+    private Set<BookingRating> rating = new HashSet<>();
 
     private Boolean active;
 
