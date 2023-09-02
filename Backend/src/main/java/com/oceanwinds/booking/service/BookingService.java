@@ -1,5 +1,7 @@
 package com.oceanwinds.booking.service;
 
+import com.oceanwinds.booking.entity.BookingMessage;
+import com.oceanwinds.booking.entity.BookingRating;
 import com.oceanwinds.product.entity.Product;
 import com.oceanwinds.product.repository.ProductRepository;
 import com.oceanwinds.booking.entity.Booking;
@@ -40,7 +42,7 @@ public class BookingService {
         booking.setUser(user);
 
         Product product = productRepository.findById(bookingDto.getProduct_id()).orElse(null);
-        assert product != null;
+
         product.setAvailable(false);
         booking.setProduct(product);
 
@@ -48,26 +50,6 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
-    @Transactional
-    public Booking updateReservee(Long id, BookingDto bookingDto) {
-        // Busca la entidad Reservee por su ID
-        Optional<Booking> existingReservee = bookingRepository.findById(id);
-        if (existingReservee.isPresent()) {
-            Booking booking = existingReservee.get();
-            // Actualiza los campos necesarios desde el DTO
-            booking.setDateInit(bookingDto.getDateInit());
-            booking.setDateEnd(bookingDto.getDateEnd());
-
-            booking.setActive(false);
-            // Actualiza otros campos si es necesario
-            // reservee.setUser(user);
-            // reservee.setProduct(product);
-            return bookingRepository.save(booking);
-        } else {
-            // Manejo de error si no se encuentra la entidad
-            throw new IllegalArgumentException("Reservee with ID " + id + " not found");
-        }
-    }
 
     @Transactional
     public void deleteReservee(Long id) {
@@ -92,16 +74,42 @@ public class BookingService {
         Optional<Booking> reservee = bookingRepository.findById(id);
         return reservee.orElse(null);
     }
-
+    @Transactional
     public List<Booking> getReserveesByUserId(Long userId) {
         // Recupera todas las entidades Reservee asociadas a un usuario específico
-        return bookingRepository.findByUserId(userId);
+        return null;
     }
-
+    @Transactional
     public List<Booking> getReserveesByProductId(Long productId) {
         // Recupera todas las entidades Reservee asociadas a un producto específico
-        return bookingRepository.findByProductId(productId);
+        return null;
+    }
+
+    @Transactional
+    public void addMessageToBooking(Long bookingId, BookingMessage message) {
+        Optional<Booking> bookingOptional = bookingRepository.findById(bookingId);
+        if (bookingOptional.isPresent()) {
+            Booking booking = bookingOptional.get();
+            message.setBooking(booking);
+            booking.getMessages().add(message);
+            bookingRepository.save(booking);
+        } else {
+            throw new IllegalArgumentException("Booking with ID " + bookingId + " not found");
+        }
     }
 
 
+    @Transactional
+    public void addRatingToBooking(Long bookingId, BookingRating rating) {
+        Optional<Booking> bookingOptional = bookingRepository.findById(bookingId);
+        if (bookingOptional.isPresent()) {
+            Booking booking = bookingOptional.get();
+            rating.setBooking(booking);
+            booking.getRating().add(rating);
+            bookingRepository.save(booking);
+        } else {
+            throw new IllegalArgumentException("Booking with ID " + bookingId + " not found");
+        }
+
+    }
 }
