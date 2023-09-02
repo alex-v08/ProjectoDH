@@ -44,17 +44,19 @@ export function AuthProvider({ children }) {
 
       // Construye un objeto con los datos del usuario
       const userData = {
-        uid: userCredential.user.uid,
+        uuid: userCredential.user.uid,
         email: userCredential.user.email,
         name: userCredential.user.displayName.split(' ')[0],
-        lastName: userCredential.user.displayName.split(' ')[1]
+        role: 'USER_DEFAULT',
+        lastName: userCredential.user.displayName.split(' ')[1],
+        active: true
       }
 
       console.log(userData)
 
       const hostUrl = process.env.NEXT_PUBLIC_HOST_URL // Realiza una solicitud POST a tu endpoint personalizado
 
-      const response = await fetch(`${hostUrl}/api/users/createfb`, {
+      const response = await fetch(`${hostUrl}/users/createfb`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -88,9 +90,77 @@ export function AuthProvider({ children }) {
     return signInWithEmailAndPassword(auth, email, password)
   }
 
-  const loginWithGoogle = () => {
-    const googleProvider = new GoogleAuthProvider()
-    return signInWithPopup(auth, googleProvider)
+  const loginWithGoogle = async () => {
+    try {
+      const googleProvider = new GoogleAuthProvider()
+      const userCredential = await signInWithPopup(auth, googleProvider)
+
+      const userData = {
+        uuid: userCredential.user.uid,
+        email: userCredential.user.email,
+        name: userCredential.user.displayName.split(' ')[0],
+        role: 'USER_DEFAULT',
+        lastName: userCredential.user.displayName.split(' ')[1],
+        active: true
+      }
+
+      const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+
+      const response = await fetch(`${hostUrl}/users/uid/${userData.uuid}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+      console.log(response)
+
+      if (response.ok) {
+        // La respuesta del servidor es exitosa, ahora verifica el valor booleano
+        const data = await response.json()
+
+        if (data === true) {
+          // El usuario ya existe en la base de datos, no es necesario guardarlo nuevamente.
+          console.log('El usuario existe')
+          console.log(userData)
+          return userCredential.user
+        } else if (data === false) {
+          // El usuario no existe en la base de datos, guárdalo en el endpoint personalizado.
+          console.log('El usuario no existe')
+          console.log(userData)
+          const createResponse = await fetch(`${hostUrl}/users/createfb`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+          })
+
+          if (createResponse.ok) {
+            // La solicitud POST fue exitosa
+            return userCredential.user
+          } else {
+            // Manejar errores en la solicitud POST, por ejemplo:
+            console.error(
+              'Error en la solicitud POST al endpoint personalizado'
+            )
+            throw new Error('Error en la solicitud POST')
+          }
+        } else {
+          // Manejar otros posibles valores de respuesta si es necesario
+          console.error('Respuesta inesperada del servidor')
+          throw new Error('Respuesta inesperada del servidor')
+        }
+      } else {
+        // Manejar errores en la solicitud GET, por ejemplo:
+        console.error('Error en la solicitud GET al endpoint')
+        throw new Error('Error en la solicitud GET')
+      }
+    } catch (error) {
+      // Maneja los errores al autenticar con Google
+      console.error('Error al autenticar con Google:', error)
+      throw error
+    }
   }
 
   const logout = async () => {
