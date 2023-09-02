@@ -1,6 +1,5 @@
 package com.oceanwinds.reservee.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oceanwinds.product.entity.Product;
 import com.oceanwinds.user.entity.User;
@@ -9,21 +8,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.mapping.Set;
 
-import java.sql.Date;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "Reservee")
-@Setter@Getter
-
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Reservee {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -35,12 +34,18 @@ public class Reservee {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private Date datInit;
-    private Date datEnd;
+    private LocalDate dateInit;
+    private LocalDate dateEnd;
 
-    @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<ReservaRating> ratings = new HashSet<>();
+    @OneToMany(mappedBy = "reservee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 
-    @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<ReservaMessage> message = new HashSet<>();
+    private Set<ReservaMessage> messages = new HashSet<>();
+
+    @OneToMany(mappedBy = "reservee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    private Set<ReservaRating> ratting = new HashSet<>();
+
+    private Boolean active;
+
+
 }

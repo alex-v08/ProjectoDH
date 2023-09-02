@@ -13,4 +13,8 @@ public class ReservaRating {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int rating; // Puntuación de la reserva (1-5 estrellas)
+
+    @ManyToOne
+    @JoinColumn(name = "reservee_ratting_id")
+    Reservee reservee;
 }
