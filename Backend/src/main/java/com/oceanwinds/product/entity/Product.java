@@ -4,7 +4,6 @@ package com.oceanwinds.product.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oceanwinds.category.entity.Category;
 
-import com.oceanwinds.favorites.entity.Favorites;
 import com.oceanwinds.feature.entity.Feature;
 import com.oceanwinds.user.entity.User;
 import jakarta.persistence.*;
