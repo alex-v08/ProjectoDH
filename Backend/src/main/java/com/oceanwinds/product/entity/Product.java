@@ -39,7 +39,6 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "product_feature", joinColumns = @JoinColumn(name = "product_id"),
     inverseJoinColumns = @JoinColumn(name = "feature_id"))
