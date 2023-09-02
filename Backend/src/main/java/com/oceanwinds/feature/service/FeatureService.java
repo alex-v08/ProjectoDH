@@ -35,14 +35,14 @@ public class FeatureService {
     }
 
     public Feature updateFeature(Long id, FeatureDto dto) throws AttributeException {
-        Feature feature = featureRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        Feature feature = featureRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Feature not found"));
         feature.setName(dto.getName());
         feature.setImage(dto.getImage());
         return featureRepository.save(feature);
     }
 
     public void deleteFeature(Long id) {
-        Feature feature = featureRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        Feature feature = featureRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Feature not found"));
         featureRepository.deleteById(id);
     }
 

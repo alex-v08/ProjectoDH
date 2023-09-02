@@ -9,7 +9,7 @@ async function getHeader(params) {
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 
   const response = await fetch(
-    `${hostUrl}/api/yachtByCategoryName/%7BcategoryName%7D?categoryName=${params.id}`,
+    `${hostUrl}/api/productByCategoryName/?categoryName=${params.id}`,
     {
       cache: 'no-store'
     }
