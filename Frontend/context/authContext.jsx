@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, use, useContext, useEffect, useState } from 'react'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -30,26 +30,54 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
-  const signup = (email, password, displayName) => {
-    return createUserWithEmailAndPassword(auth, email, password)
-      .then(userCredential => {
-        // Una vez que el usuario se ha creado correctamente, actualiza el displayName
-        return updateProfile(userCredential.user, { displayName: displayName })
-          .then(() => {
-            // Devuelve el usuario actualizado con el displayName
-            return userCredential.user
-          })
-          .catch(error => {
-            // Maneja los errores al actualizar el displayName
-            console.error('Error al actualizar el displayName:', error)
-            throw error
-          })
+  const signup = async (email, password, displayName) => {
+    try {
+      // Crea el usuario en Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
+
+      // Actualiza el displayName
+      await updateProfile(userCredential.user, { displayName: displayName })
+
+      // Construye un objeto con los datos del usuario
+      const userData = {
+        uid: userCredential.user.uid,
+        email: userCredential.user.email,
+        name: userCredential.user.displayName.split(' ')[0],
+        lastName: userCredential.user.displayName.split(' ')[1]
+      }
+
+      console.log(userData)
+
+      const hostUrl = process.env.NEXT_PUBLIC_HOST_URL // Realiza una solicitud POST a tu endpoint personalizado
+
+      const response = await fetch(`${hostUrl}/api/users/createfb`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
       })
-      .catch(error => {
-        // Maneja los errores al crear el usuario
-        console.error('Error al crear el usuario:', error)
-        throw error
-      })
+
+      if (response.ok) {
+        // La solicitud POST fue exitosa
+        return userCredential.user
+      } else {
+        // Manejar errores en la solicitud POST, por ejemplo:
+        console.error('Error en la solicitud POST al endpoint personalizado')
+        throw new Error('Error en la solicitud POST')
+      }
+    } catch (error) {
+      // Maneja los errores al crear el usuario o al actualizar el displayName
+      console.error(
+        'Error al crear el usuario o actualizar el displayName:',
+        error
+      )
+      throw error
+    }
   }
 
   const sendEmail = () => {
@@ -65,10 +93,9 @@ export function AuthProvider({ children }) {
     return signInWithPopup(auth, googleProvider)
   }
 
-  const logout = () => {
-    return signOut(auth).then(() => {
-      router.push('/')
-    })
+  const logout = async () => {
+    await signOut(auth)
+    router.push('/')
   }
 
   const resetPassword = async email => sendPasswordResetEmail(auth, email)
