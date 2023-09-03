@@ -1,8 +1,12 @@
 package com.oceanwinds.product.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oceanwinds.category.entity.Category;
+
 import com.oceanwinds.feature.entity.Feature;
+import com.oceanwinds.location.entity.Location;
+import com.oceanwinds.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +15,7 @@ import java.util.Set;
 
 
 @Entity
-@Data
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Product")
@@ -36,11 +40,20 @@ public class Product {
     private Category category;
 
     @ManyToMany
-    @JoinTable(name = "Product_feature", joinColumns = @JoinColumn(name = "Product_id"),
+    @JoinTable(name = "product_feature", joinColumns = @JoinColumn(name = "product_id"),
     inverseJoinColumns = @JoinColumn(name = "feature_id"))
     private Set<Feature> feature = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
+
     private Boolean available;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "favoriteProducts")
+    private Set<User> favoriteUsers = new HashSet<>();
+
 
     public Product(Long id, String name, String sku, String description, String imageUrl, Double pricePerDay, Double pricePerWeek, Double pricePerHour, Category category, Boolean available) {
         this.id = id;

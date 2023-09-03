@@ -1,5 +1,6 @@
-package com.oceanwinds.user.product.entity.dto;
+package com.oceanwinds.product.entity.dto;
 
+import com.oceanwinds.location.entity.dto.LocationDto;
 import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +11,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-
-
 
 public class ProductDto {
     @Column(name = "name" , nullable = false)
@@ -26,6 +25,7 @@ public class ProductDto {
 
     private Long categoryId;
     private Set<Long> featuresId;
+    private LocationDto location;
 
     private Boolean available;
 
