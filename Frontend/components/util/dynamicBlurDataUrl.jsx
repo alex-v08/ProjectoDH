@@ -1,4 +1,7 @@
-const baseURL = process.env.NEXT_PUBLIC_IMAGE_BLUR_HOST
+const baseURL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3000'
+    : process.env.NEXT_PUBLIC_IMAGE_BLUR_HOST
 
 export async function dynamicBlurDataUrl(url) {
   // generate the smallest image conver to base64
