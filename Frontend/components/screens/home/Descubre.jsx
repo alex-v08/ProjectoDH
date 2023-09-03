@@ -25,8 +25,6 @@ export default function Descubre() {
           src='/h1_images_bg1-min.png'
           alt='h1 bg'
           loading='eager'
-          blurDataURL='data:...'
-          placeholder='blur'
           width={790}
           height={723}
           style={{ objectFit: 'cover' }}
@@ -39,8 +37,6 @@ export default function Descubre() {
           src='/About-bg.png'
           alt='h1 bg'
           loading='eager'
-          blurDataURL='data:...'
-          placeholder='blur'
           width={1920}
           height={101}
           style={{ objectFit: 'cover' }}

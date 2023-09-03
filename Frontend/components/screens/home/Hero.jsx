@@ -1,15 +1,14 @@
-import { staticBlurDataUrl } from '@/components/util/staticBlurDataUrl'
 import Image from 'next/image'
+import imaHero from '../../../public/bg1-2.jpg'
 
 export default function Hero() {
   return (
     <div className='relative flex h-[50vh] items-center justify-center lg:h-[73vh]'>
       <Image
-        src='/bg1-2.jpg'
+        src={imaHero}
         alt='hero'
         priority={true}
         loading='eager'
-        blurDataURL={staticBlurDataUrl()}
         placeholder='blur'
         fill
         style={{ objectFit: 'cover' }}
