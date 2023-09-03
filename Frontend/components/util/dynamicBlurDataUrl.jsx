@@ -1,4 +1,4 @@
-const baseURL = process.env.NEXT_PUBLIC_IMAGE_OPTIMIZER_HOST
+const baseURL = process.env.NEXT_PUBLIC_IMAGE_BLUR_HOST
 
 export async function dynamicBlurDataUrl(url) {
   // generate the smallest image conver to base64

@@ -1,12 +1,16 @@
 export function RowUser(props) {
-  const { id, name, lastName, dni, password, email, phone, adress, role } =
+  const { id, name, lastName, dni, password, email, phone, address, role, uuid, active } =
     props
 
-  async function handleOnEditRole() {
+  async function handleOnEditRole(newRole) {
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
     const urlEditRole = `${hostUrl}/users/` + id
+    
+    const opcion = confirm(
+      newRole === "ADMIN"
+      ? `Designar como administrador el id: ${id}`
+      : `Descartar como administrador el id: ${id}`)
 
-    const opcion = confirm(`Designar como administrador el id: ${id}`)
     if (opcion) {
       try {
         const response = await fetch(urlEditRole, {
@@ -14,6 +18,7 @@ export function RowUser(props) {
           headers: {
             'Content-Type': 'application/json'
           },
+
           body: JSON.stringify({
             name: name,
             lastName: lastName,
@@ -21,21 +26,29 @@ export function RowUser(props) {
             dni: dni,
             password: password,
             phone: phone,
-            address: adress,
-            role: 'ADMIN'
+            address: address,
+            role: newRole,
+            uuid: uuid, 
+            active: active
           })
         })
+        
         if (!response.ok) {
           throw new Error(
-            'Error al intentar designar el usuario como administrador:. Response: ' +
-              response.status
+            `Error al intentar ${
+              newRole === "ADMIN"
+                ? "designar"
+                : "descartar"
+            } el usuario como administrador. Response: ${response.status}`
           )
         } else {
           location.assign()
         }
       } catch (error) {
         console.error(
-          'Error al designar como administrador el registro:',
+          `Error al ${
+            newRole === "ADMIN" ? "designar" : "descartar"
+          } como administrador el registro:`,
           error
         )
       }
@@ -55,16 +68,26 @@ export function RowUser(props) {
       <td className='px-6 py-4'>{dni}</td>
       <td className='px-6 py-4'>{email}</td>
       <td className='px-6 py-4'>{phone}</td>
-      <td className='px-6 py-4'>{adress}</td>
+      <td className='px-6 py-4'>{address}</td>
       <td className='px-6 py-4'>{role}</td>
       <td className='px-6 py-4 text-right'>
-        <button
-          value={id}
-          onClick={handleOnEditRole}
-          className='text-xs text-blue-600 hover:underline dark:text-blue-500'
-        >
-          Designar como admin.
-        </button>
+        { role === "ADMIN" ? (
+          <button
+            value={id}
+            onClick={() => handleOnEditRole("USER_DEFAULT")}
+            className='text-xs text-red-600 hover:underline dark:text-red-500'
+          >
+            Descartar como admin.
+          </button>
+        ): (
+          <button
+            value={id}
+            onClick={() => handleOnEditRole("ADMIN")}
+            className='text-xs text-blue-600 hover:underline dark:text-blue-500'
+          >
+            Designar como admin.
+          </button>
+        )}
       </td>
     </tr>
   )
