@@ -7,17 +7,23 @@ export default function Filters() {
   // Estado para almacenar el Array de categorias
   const [categories, setCategories] = useState([])
   // Estado para almacenar las opciones seleccionadas
-  const [selectedOption, setSelectedOption] = useState([])
+  const [selectedOption, setSelectedOption] = useState([]) 
 
   const urlBase = process.env.NEXT_PUBLIC_HOST_URL
   const urlCategories = `${urlBase}/api/category/all`
 
   const handleSelectChange = event => {
-    const checkEvent = event.target.value
-    setSelectedOption([...selectedOption, checkEvent])
-    console.log(selectedOption);
-    console.log(event);
+    const { value, checked } = event.target;
+
+    if (checked) {
+      // Agregar el valor al array si el checkbox está marcado
+      setSelectedOption([...selectedOption, value]);
+    } else {
+      // Eliminar el valor del array si el checkbox está desmarcado
+      setSelectedOption(selectedOption.filter(item => item !== value));
+    }
   }
+  console.log(selectedOption);
 
   const getCategories = async () => {
     try {
@@ -34,9 +40,28 @@ export default function Filters() {
     }
   }
 
+  const getCheckedCategories = async () => {
+    try {
+      const response = await fetch(`${urlBase}/api/all/?categoriesId=${selectedOption}`)
+      if (!response.ok) {
+        throw new Error(
+          'Error al realizar la petición: ' + response.status
+        )
+      }
+      const jsonData = await response.json()
+    } catch (error) {
+      console.error('Error al realizar la petición: ', error)
+    }
+  }
+
   useEffect(() => {
     getCategories()
   }, [])
+
+  useEffect(() => {
+    getCheckedCategories()
+  }, [selectedOption])
+  
 
   return (
     <>
