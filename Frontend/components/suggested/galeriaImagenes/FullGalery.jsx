@@ -3,7 +3,7 @@
 import { staticBlurDataUrl } from '@/components/util/staticBlurDataUrl'
 import Image from 'next/image'
 
-const FullGalery = ({ imagesGallery }) => {
+const FullGalery = ({ imagesGallery, placeHolders }) => {
   return (
     <>
       <div className='grid grid-cols-2 gap-3 pt-3 md:grid-cols-4'>
@@ -13,7 +13,7 @@ const FullGalery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
-            blurDataURL={staticBlurDataUrl()}
+            blurDataURL={placeHolders[5] || staticBlurDataUrl()}
             placeholder='blur'
             style={{ objectFit: 'cover' }}
             className='h-full rounded-lg'
@@ -25,7 +25,7 @@ const FullGalery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
-            blurDataURL={staticBlurDataUrl()}
+            blurDataURL={placeHolders[6] || staticBlurDataUrl()}
             placeholder='blur'
             style={{ objectFit: 'cover' }}
             className='h-full rounded-lg'
@@ -37,7 +37,7 @@ const FullGalery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
-            blurDataURL={staticBlurDataUrl()}
+            blurDataURL={placeHolders[7] || staticBlurDataUrl()}
             placeholder='blur'
             style={{ objectFit: 'cover' }}
             className='h-full rounded-lg'
@@ -49,7 +49,7 @@ const FullGalery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
-            blurDataURL={staticBlurDataUrl()}
+            blurDataURL={placeHolders[8] || staticBlurDataUrl()}
             placeholder='blur'
             style={{ objectFit: 'cover' }}
             className='h-full rounded-lg'

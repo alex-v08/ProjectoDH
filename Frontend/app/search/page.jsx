@@ -5,6 +5,7 @@ import React from 'react'
 import { CardDetailSearch } from '@/components/screens/search/CardDetailSearch'
 import PriceRangeSlider from '@/components/util/PriceRangeSlider'
 import Filters from '@/components/screens/search/Filters'
+import { dynamicBlurDataUrl } from '@/components/util/dynamicBlurDataUrl'
 
 async function getHeader() {
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
@@ -18,6 +19,9 @@ async function getHeader() {
 
 export default async function Search() {
   const results = await getHeader()
+  const placeHolders = await Promise.all(
+    results.map(product => dynamicBlurDataUrl(`${product.imageUrl}1.png`))
+  )
 
   return (
     <>
@@ -53,14 +57,17 @@ export default async function Search() {
               <div className='grid grid-cols-1 justify-items-center gap-x-6 gap-y-10 pt-10 sm:grid-cols-2 lg:grid-cols-1'>
                 {results &&
                   results.map(
-                    ({
-                      imageUrl,
-                      id,
-                      name,
-                      description,
-                      pricePerDay,
-                      category
-                    }) =>
+                    (
+                      {
+                        imageUrl,
+                        id,
+                        name,
+                        description,
+                        pricePerDay,
+                        category
+                      },
+                      index
+                    ) =>
                       imageUrl !== null ? (
                         <CardDetailSearch
                           key={id}
@@ -70,6 +77,7 @@ export default async function Search() {
                           description={description}
                           pricePerDay={pricePerDay}
                           category={category}
+                          placeHolder={placeHolders[index]}
                         />
                       ) : null
                   )}

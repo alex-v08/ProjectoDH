@@ -8,28 +8,51 @@ import Hero from '@/components/screens/home/Hero'
 import Tripulacion from '@/components/screens/home/Tripulacion'
 import RandomProducts from '@/components/suggested/RandomProducts'
 import PaginationControls from '@/components/suggested/paginationControls/PaginationControls'
+import { dynamicBlurDataUrl } from '@/components/util/dynamicBlurDataUrl'
 import { useState, useEffect } from 'react'
 
 export default function Home({ searchParams }) {
   const [totalProducts, setTotalProducts] = useState([])
   const [loading, setLoading] = useState(true)
+  const [placeHolders, setPlaceHolders] = useState([])
 
   useEffect(() => {
-    const getProducts = async () => {
+    const fetchProducts = async () => {
       try {
         const response = await fetch('/api/products')
         if (!response.ok) {
           throw new Error('Network response was not ok')
         }
         const products = await response.json()
+        return products
+      } catch (error) {
+        console.error('Error fetching products:', error)
+        throw error
+      }
+    }
+
+    const generatePlaceholders = async products => {
+      const placeholderData = await Promise.all(
+        products.map(async product => {
+          return await dynamicBlurDataUrl(`${product.imageUrl}1.png`)
+        })
+      )
+      return placeholderData
+    }
+
+    const initializeData = async () => {
+      try {
+        const products = await fetchProducts()
+        const placeholderData = await generatePlaceholders(products)
         setTotalProducts(products)
+        setPlaceHolders(placeholderData)
         setLoading(false)
       } catch (error) {
-        console.error('Error fetching data:', error)
         setLoading(false)
       }
     }
-    getProducts()
+
+    initializeData()
   }, [])
 
   const page = searchParams['page'] ?? '1'
@@ -38,6 +61,7 @@ export default function Home({ searchParams }) {
   const end = start + parseInt(per_page)
   const totalPage = Math.ceil(totalProducts?.length / per_page)
   const entries = totalProducts.slice(start, end)
+  const placeholders = placeHolders.slice(start, end)
 
   const skeletonCards = Array.from({ length: 9 }).map((_, index) => (
     <div
@@ -85,7 +109,7 @@ export default function Home({ searchParams }) {
         </>
       ) : (
         <>
-          <RandomProducts entries={entries} />
+          <RandomProducts entries={entries} placeHolders={placeholders} />
           <PaginationControls
             hasNextPage={end < totalProducts?.length ?? ''}
             hasPrevPage={start > 0}

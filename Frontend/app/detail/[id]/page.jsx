@@ -5,6 +5,7 @@ import { HiLocationMarker } from 'react-icons/hi'
 import { BsStarFill, BsStar } from 'react-icons/bs'
 import { ButtonBack } from '@/components/suggested/buttonBack/ButtonBack'
 import Image from 'next/image'
+import { dynamicBlurDataUrl } from '@/components/util/dynamicBlurDataUrl'
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 const itemsUrl = `${hostUrl}/api/`
@@ -31,6 +32,11 @@ export default async function Detalle({ params }) {
   const results = await getItem(index)
   // console.log('RESULTS', results)
   const imagesGallery = await getGallery(index)
+  // Create placeholders for images
+  const imgUrls = imagesGallery.map(image => image.url)
+  const placeHolders = await Promise.all(
+    imgUrls.map(url => dynamicBlurDataUrl(url))
+  )
 
   return (
     <div className='bg-[#f2f5fa] p-4 pt-0 sm:p-10 sm:pt-0'>
@@ -60,7 +66,7 @@ export default async function Detalle({ params }) {
         className='container rounded-lg bg-[#fcfcfc] pb-10 pt-5'
         href={`/detail/${index}`}
       >
-        <Galeria imagesGallery={imagesGallery} />
+        <Galeria imagesGallery={imagesGallery} placeHolders={placeHolders} />
 
         {/* Container */}
         <div className='flex flex-col items-start gap-8 pt-6 lg:flex-row'>

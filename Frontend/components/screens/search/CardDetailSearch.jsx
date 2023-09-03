@@ -11,7 +11,8 @@ export const CardDetailSearch = ({
   name,
   description,
   pricePerDay,
-  category
+  category,
+  placeHolder
 }) => {
   return (
     <>
@@ -25,7 +26,7 @@ export const CardDetailSearch = ({
             alt='Picture of the author'
             loading='eager'
             fill
-            blurDataURL={staticBlurDataUrl()}
+            blurDataURL={placeHolder || staticBlurDataUrl()}
             placeholder='blur'
             sizes='(max-width: 768px) 100vw'
             style={{ objectFit: 'cover' }}

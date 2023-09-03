@@ -3,7 +3,7 @@
 import { staticBlurDataUrl } from '@/components/util/staticBlurDataUrl'
 import Image from 'next/image'
 
-const SmallGallery = ({ imagesGallery }) => {
+const SmallGallery = ({ imagesGallery, placeHolders }) => {
   return (
     <>
       <div className='relative grid h-full w-full grid-cols-2 gap-3 pt-4 md:grid-cols-4'>
@@ -13,7 +13,7 @@ const SmallGallery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
-            blurDataURL={staticBlurDataUrl()}
+            blurDataURL={placeHolders[0] || staticBlurDataUrl()}
             placeholder='blur'
             style={{ objectFit: 'cover' }}
             quality={100}
@@ -26,7 +26,7 @@ const SmallGallery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
-            blurDataURL={staticBlurDataUrl()}
+            blurDataURL={placeHolders[1] || staticBlurDataUrl()}
             placeholder='blur'
             style={{ objectFit: 'cover' }}
             className='h-full rounded-lg'
@@ -38,7 +38,7 @@ const SmallGallery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
-            blurDataURL={staticBlurDataUrl()}
+            blurDataURL={placeHolders[2] || staticBlurDataUrl()}
             placeholder='blur'
             style={{ objectFit: 'cover' }}
             className='h-full rounded-lg'
@@ -50,7 +50,7 @@ const SmallGallery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
-            blurDataURL={staticBlurDataUrl()}
+            blurDataURL={placeHolders[3] || staticBlurDataUrl()}
             placeholder='blur'
             style={{ objectFit: 'cover' }}
             className='h-full rounded-lg '
@@ -62,7 +62,7 @@ const SmallGallery = ({ imagesGallery }) => {
             alt='gallery'
             loading='eager'
             fill
-            blurDataURL={staticBlurDataUrl()}
+            blurDataURL={placeHolders[4] || staticBlurDataUrl()}
             placeholder='blur'
             style={{ objectFit: 'cover' }}
             className='h-full rounded-lg'
