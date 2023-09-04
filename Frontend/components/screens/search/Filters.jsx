@@ -2,18 +2,26 @@
 
 import PriceRangeSlider from '@/components/util/PriceRangeSlider'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
-export default function Filters() {
+export default function Filters(props) {
+  const { idCategory = [] } = props
   // Estado para almacenar el Array de categorias
   const [categories, setCategories] = useState([])
   // Estado para almacenar las opciones seleccionadas
-  const [selectedOption, setSelectedOption] = useState([]) 
+  const [selectedOption, setSelectedOption] = useState(idCategory)
+
+  const router = useRouter()
 
   const urlBase = process.env.NEXT_PUBLIC_HOST_URL
   const urlCategories = `${urlBase}/api/category/all`
+  const urlCategoriesIds = `${urlBase}/api/all/?categoriesId=`
 
   const handleSelectChange = event => {
     const { value, checked } = event.target;
+    let link
+    console.log("prop " + idCategory)
+    console.log("state " + selectedOption)
 
     if (checked) {
       // Agregar el valor al array si el checkbox está marcado
@@ -22,8 +30,13 @@ export default function Filters() {
       // Eliminar el valor del array si el checkbox está desmarcado
       setSelectedOption(selectedOption.filter(item => item !== value));
     }
+    link = selectedOption
+    if (link.length !== 0) {
+      router.replace(`/search/filter/${link}`)
+    }
   }
-  console.log(selectedOption);
+  //console.log(`${urlCategoriesIds}${selectedOption}`);
+  console.log("updated state " + selectedOption)
 
   const getCategories = async () => {
     try {
