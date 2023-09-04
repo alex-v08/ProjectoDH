@@ -4,7 +4,7 @@ import { GiShipWheel } from 'react-icons/gi'
 export default function Descubre() {
   return (
     <div className='relative'>
-      <div className='container flex pb-40 pt-[35rem] sm:pt-[29rem] lg:pb-44 lg:pt-40 xl:pb-44'>
+      <div className='container flex pb-40 pt-[29rem] lg:pb-44 lg:pt-40 xl:pb-44'>
         <div className='flex flex-col items-center lg:w-[45%] lg:items-start'>
           <GiShipWheel className='mb-4 text-4xl text-[#dbdfe4]' />
           <h3 className='font-autography text-5xl text-sky-500'>
