@@ -45,7 +45,7 @@ public class Product {
     inverseJoinColumns = @JoinColumn(name = "feature_id"))
     private Set<Feature> feature = new HashSet<>();
 
-    @JsonIgnore
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     private Set<PictureData> pictureDataSet;
 
@@ -60,9 +60,19 @@ public class Product {
     private Set<User> favoriteUsers = new HashSet<>();
 
 
-
-
-
+    public Product(Long id, String name, String sku, String description, String imageUrl, Double pricePerDay, Double pricePerWeek, Double pricePerHour, Category category, Boolean available,Set<PictureData> pictureDataSet) {
+        this.id = id;
+        this.name = name;
+        this.sku = sku;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.pricePerDay = pricePerDay;
+        this.pricePerWeek = pricePerWeek;
+        this.pricePerHour = pricePerHour;
+        this.category = category;
+        this.available = available;
+        this.pictureDataSet = pictureDataSet;
+    }
 
 
 }

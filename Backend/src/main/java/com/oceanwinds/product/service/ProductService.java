@@ -10,6 +10,7 @@ import com.oceanwinds.feature.entity.Feature;
 import com.oceanwinds.location.entity.Location;
 import com.oceanwinds.location.repository.LocationRepository;
 import com.oceanwinds.pictures.entity.PictureData;
+import com.oceanwinds.pictures.repository.PictureDataRepository;
 import com.oceanwinds.pictures.service.S3Service;
 import com.oceanwinds.product.entity.Product;
 import com.oceanwinds.product.entity.dto.ProductDto;
@@ -36,6 +37,9 @@ public class ProductService {
 
     @Autowired
     FeatureRepository featureRepository;
+
+    @Autowired
+    PictureDataRepository pictureDataRepository;
 
     @Autowired
     LocationRepository locationRepository;
@@ -97,7 +101,6 @@ public class ProductService {
         }
 
 
-        product.setPictureDataSet(dto.getPictures());
         product.setName(dto.getName());
         product.setSku(dto.getSku());
         product.setDescription(dto.getDescription());
@@ -107,7 +110,16 @@ public class ProductService {
         product.setPricePerWeek(dto.getPricePerWeek());
         product.setLocation(location);
         product.setAvailable(dto.getAvailable());
-        return productRepository.save(product);
+
+
+        Product savedProduct = productRepository.save(product);
+
+        for(PictureData picture:dto.getPictures()){
+            picture.setProduct(savedProduct);
+            pictureDataRepository.save(picture);
+        }
+
+        return product;
     }
 
 
@@ -142,7 +154,7 @@ public class ProductService {
                 }
             }
         }
-        product.setPictureDataSet(dto.getPictures());
+
         product.setName(dto.getName());
         product.setSku(dto.getSku());
         product.setDescription(dto.getDescription());
@@ -152,13 +164,9 @@ public class ProductService {
         product.setPricePerWeek(dto.getPricePerWeek());
         product.setLocation(location);
         product.setAvailable(dto.getAvailable());
-        Long generatedId = productRepository.save(product).getId();
 
-        for(PictureData picture:product.getPictureDataSet()){
-            picture.set;
-        }
 
-        return product;
+        return productRepository.save(product);
     }
 
     public void deleteProduct(Long id) {
