@@ -16,8 +16,9 @@ export default function Dropdown({ openMenu }) {
     // Realiza una solicitud HTTP para obtener los datos del usuario y su rol.
     const fetchUserRole = async () => {
       try {
+        const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
         const response = await fetch(
-          `http://3.145.122.234:8080/users/list/{uuid}?uuid=${user.uid}`
+          `${hostUrl}/users/list/{uuid}?uuid=${user.uid}`
         )
         if (response.ok) {
           const userData = await response.json()
