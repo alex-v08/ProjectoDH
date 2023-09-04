@@ -132,6 +132,10 @@ public class UserService {
         return usersRepository.existsByUuid(uuid);
 
     }
+public Set<User> getUsersByUuid(String uuid){
+    Set<User> listUser = usersRepository.getUsersByUuid(uuid);
+        return listUser;
 
+}
 
 }
