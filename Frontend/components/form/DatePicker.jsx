@@ -32,8 +32,9 @@ export default function DatePicker() {
         primaryColor={'rose'}
         i18n={'es'}
         startWeekOn='mon'
-        placeholder={'Desde - Hasta'}
+        placeholder={'Llegada --> Salida'}
         separator={'-'}
+        popoverDirection='down'
         showFooter={true}
         configs={{
           footer: {

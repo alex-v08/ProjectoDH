@@ -17,10 +17,7 @@ export default function Login() {
   useEffect(() => {
     if (user) {
       // si hay historial vover a la pagina previa sino a inicio
-      if (
-        window.history.length > 1 &&
-        document.referrer.indexOf(window.location.host) !== -1
-      ) {
+      if (window.history.length > 1) {
         router.back({ scroll: false })
       } else {
         router.push('/')
