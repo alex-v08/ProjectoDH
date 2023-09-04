@@ -6,7 +6,8 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@Data
+@ToString
+
 public class UserDtoFirebase {
 
         private String name;
