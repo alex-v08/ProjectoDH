@@ -1,4 +1,4 @@
-/*
+
 package com.oceanwinds.product.controller;
 import  com.oceanwinds.product.service.S3Service;
 
@@ -15,6 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/assets")
+@CrossOrigin(origins = "*")
 public class ImageAssetController {
 
 
@@ -53,4 +54,3 @@ public class ImageAssetController {
         s3Service.deleteObject(key);
     }
 }
-*/

@@ -1,4 +1,4 @@
-/*package com.oceanwinds.product.service;
+package com.oceanwinds.product.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
@@ -65,4 +65,3 @@ public class S3Service {
         return String.format("https://%s.s3.amazonaws.com/%s",BUCKET,key);
     }
 }
-*/
