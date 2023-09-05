@@ -30,7 +30,8 @@ deploy_Backend:
     - ssh-add ok_hosts/.ssh/id_rsa  # Add the private key to SSH agent
     - ssh-keyscan -H $EC2_PUBLIC_IP >> ok_hosts/.ssh/known_hosts
     - echo "Host key added to known_hosts."
-    - ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl stop back.service"
-    - scp Backend/target/pi-project-0.0.1-SNAPSHOT.jar ubuntu@$DEPLOY_SERVER_IP:~/home/ubuntu/backend
-    - ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl start back.service"
+    - ssh -o StrictHostKeyChecking=no ubuntu@$EC2_PUBLIC_IP "sudo systemctl stop back.service"
+    - ssh ubuntu@$EC2_PUBLIC_IP "sudo systemctl stop back.service"
+    - scp Backend/target/pi-project-0.0.1-SNAPSHOT.jar ubuntu@$EC2_PUBLIC_IP:~/home/ubuntu/backend
+    - ssh ubuntu@$EC2_PUBLIC_IP "sudo systemctl start back.service"
     - echo "Finished deploying the app."
