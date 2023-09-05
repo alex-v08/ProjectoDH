@@ -6,7 +6,8 @@ build_backend:
   stage: build
   image: maven:3.8.6-openjdk-18
   rules:
-    - changes:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
         - Backend/**/*
   script:
     - cd Backend/
@@ -22,7 +23,8 @@ deploy_Backend:
   stage: deploy
   image: python:3.8
   rules:
-    - changes:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
         - Backend/**/*
 
   before_script:
