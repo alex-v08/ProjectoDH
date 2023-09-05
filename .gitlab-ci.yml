@@ -32,6 +32,6 @@ deploy_Backend:
     - echo "Host key added to known_hosts."
     - ssh -o StrictHostKeyChecking=no ubuntu@$EC2_PUBLIC_IP "sudo systemctl stop back.service"
     - ssh ubuntu@$EC2_PUBLIC_IP "sudo systemctl stop back.service"
-    - scp Backend/target/pi-project-0.0.1-SNAPSHOT.jar ubuntu@$EC2_PUBLIC_IP:~/home/ubuntu/backend
+    - scp Backend/target/pi-project-0.0.1-SNAPSHOT.jar ubuntu@$EC2_PUBLIC_IP:~/backend
     - ssh ubuntu@$EC2_PUBLIC_IP "sudo systemctl start back.service"
     - echo "Finished deploying the app."
