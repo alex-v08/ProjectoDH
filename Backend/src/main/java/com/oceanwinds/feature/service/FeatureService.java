@@ -5,6 +5,8 @@ import Global.exceptions.ResourceNotFoundException;
 import com.oceanwinds.feature.entity.Feature;
 import com.oceanwinds.feature.entity.dto.FeatureDto;
 import com.oceanwinds.feature.repository.FeatureRepository;
+import com.oceanwinds.product.entity.Product;
+import com.oceanwinds.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,9 @@ import java.util.Optional;
 public class FeatureService {
     @Autowired
     FeatureRepository featureRepository;
+
+    @Autowired
+    ProductRepository productRepository;
 
     public List<Feature> getAllFeature() {
         return featureRepository.findAll();
@@ -43,6 +48,18 @@ public class FeatureService {
 
     public void deleteFeature(Long id) {
         Feature feature = featureRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Feature not found"));
+
+        if (feature != null) {
+
+            List<Product> productsWithFeature = productRepository.findByFeatureContaining(feature);
+
+            for (Product product : productsWithFeature) {
+                product.getFeature().remove(feature);
+            }
+
+            productRepository.saveAll(productsWithFeature);
+        }
+
         featureRepository.deleteById(id);
     }
 

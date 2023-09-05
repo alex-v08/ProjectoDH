@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react'
 
-export function Form(props) {
-  const { formEditData } = props
+export function FormProduct(props) {
+  const { formEditData, onClose, onRefreshData } = props
   const [yacht, setYatcht] = useState(formEditData)
   const [name, setName] = useState(yacht == undefined ? '' : yacht.name)
   const [sku, setSku] = useState(yacht == undefined ? '' : yacht.sku)
@@ -124,7 +124,8 @@ export function Form(props) {
               response.status
           )
         } else {
-          window.location.reload()
+          onRefreshData()
+          onClose()
         }
 
         const data = await response.json()

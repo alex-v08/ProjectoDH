@@ -1,17 +1,24 @@
 import { useState, useEffect } from 'react'
 import { Modal } from '../util/modal'
-import { Form } from '../register-edit/formProduct'
+import { FormProduct } from '../register-edit/formProduct'
 import Image from 'next/image'
 
-export function Row(props) {
-  const { id, name, urlImage, category, features } = props
+export function RowProduct(props) {
+  const {
+    id,
+    name,
+    urlImage,
+    category,
+    features,
+    isChangeData,
+    onRefreshData
+  } = props
   const [yacht, setYatcht] = useState({})
   const [modalEditOpen, setModalEditOpen] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [isChangeData])
 
   async function fetchData() {
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
@@ -50,7 +57,7 @@ export function Row(props) {
               response.status
           )
         } else {
-          window.location.reload()
+          onRefreshData()
         }
       } catch (error) {
         console.error('Error al eliminar el registro:', error)
@@ -69,29 +76,29 @@ export function Row(props) {
   return (
     <>
       <tr
-        className='border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600'
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        className='border-b bg-white hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600'
         onClick={handleOpenModalEdit}
       >
-        <td className='px-8 py-4'>
+        <td className='px-16 py-4'>
           <div>
-            <Image
+            {/* <Image
               className='h-11 w-11 rounded-full border-2 border-sky-500'
               width='50'
               height='50'
               src={`${urlImage}1.png`}
-              alt='imagen de la embarcacion'
-            />
+              alt='imagen de la embarcación'
+              quality={100}
+            /> */}
           </div>
         </td>
         <th
           scope='row'
-          className='whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white'
+          className='whitespace-nowrap px-16 py-4 font-medium text-gray-900 dark:text-white'
         >
           {id}
         </th>
-        <td className='px-6 py-4'>{name}</td>
+        <td className='px-16 py-4'>{name}</td>
+        <td className='px-8 py-4'><button className="shadow-md w-28 py-1 no-underline rounded-full bg-sky-500 text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none">{category != null ? category.name : 'Sin categorizar'}</button></td>
         <td className='px-6 py-4 text-right'>
           <div>
             <button
@@ -119,30 +126,12 @@ export function Row(props) {
           </div>
         </td>
       </tr>
-      <tr className='border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600'>
-        {isHovered && (
-          <>
-            <td colSpan='2' className='p-2'>
-              <div>
-                {category == null
-                  ? 'Sin categorizar'
-                  : `Categoría: ${category.name}`}
-              </div>
-            </td>
-            <td colSpan='2' className='p-2'>
-              <div>
-                {features.length === 0
-                  ? 'Sin características'
-                  : `Características: ${features.map(
-                      feature => ` ${feature.name}`
-                    )}`}
-              </div>
-            </td>
-          </>
-        )}
-      </tr>
       <Modal isOpen={modalEditOpen} onClose={handleCloseModalEdit}>
-        <Form formEditData={yacht} />
+        <FormProduct
+          formEditData={yacht}
+          onClose={handleCloseModalEdit}
+          onRefreshData={onRefreshData}
+        />
       </Modal>
     </>
   )
