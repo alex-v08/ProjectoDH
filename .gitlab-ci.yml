@@ -26,8 +26,9 @@ deploy_Backend:
 
   script:
     - echo "Deploying started..."
+    - ssh-keyscan $DEPLOY_SERVER_IP >> ~/.ssh/known_hosts
     - ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl stop back.service"
     - scp Backend/target/pi-project-0.0.1-SNAPSHOT.jar ubuntu@$DEPLOY_SERVER_IP:~/home/ubuntu/backend
     - ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl start back.service"
-    - echo "Finished deploying the app."
+    - echo "Finished deploying the app.""
 
