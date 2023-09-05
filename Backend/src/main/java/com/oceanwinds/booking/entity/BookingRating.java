@@ -1,11 +1,12 @@
 package com.oceanwinds.booking.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "RESERVA_RATINGS")
+@Table(name = "reserve_rating")
 @Getter
 @Setter
 public class BookingRating {
@@ -13,8 +14,10 @@ public class BookingRating {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int rating; // Puntuación de la reserva (1-5 estrellas)
+    private String uuid;
 
-    @ManyToOne
-    @JoinColumn(name = "booking_rating_id")
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "rating")
     Booking booking;
 }

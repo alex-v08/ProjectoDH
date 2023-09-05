@@ -15,7 +15,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "Reservee")
+@Table(name = "Reserve")
 @Setter
 @Getter
 @AllArgsConstructor
@@ -29,7 +29,6 @@ public class Booking {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
@@ -37,15 +36,17 @@ public class Booking {
     private LocalDate dateInit;
     private LocalDate dateEnd;
 
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne
+    @JoinColumn(name = "message_id", referencedColumnName = "id")
+    private BookingMessage message;
 
-    private Set<BookingMessage> messages = new HashSet<>();
-
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-
-    private Set<BookingRating> rating = new HashSet<>();
+    @OneToOne
+    @JoinColumn(name = "rating_id", referencedColumnName = "id")
+    private BookingRating rating;
 
     private Boolean active;
+
+    private Boolean complete = false;
 
 
 }

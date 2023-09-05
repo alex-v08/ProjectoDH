@@ -1,7 +1,10 @@
 package com.oceanwinds.booking.service;
 
+import Global.exceptions.ResourceNotFoundException;
 import com.oceanwinds.booking.entity.BookingMessage;
 import com.oceanwinds.booking.entity.BookingRating;
+import com.oceanwinds.booking.repository.BookingMessageRepository;
+import com.oceanwinds.booking.repository.BookingRatingRepository;
 import com.oceanwinds.product.entity.Product;
 import com.oceanwinds.product.repository.ProductRepository;
 import com.oceanwinds.booking.entity.Booking;
@@ -15,24 +18,31 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 @Service
 public class BookingService {
 
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
+    private final BookingRatingRepository bookingRatingRepository;
+    private final BookingMessageRepository bookingMessageRepository;
 
     private final ProductRepository productRepository;
 
     @Autowired
-    public BookingService(BookingRepository bookingRepository, UserRepository userRepository, ProductRepository productRepository) {
-        this.productRepository = productRepository;
-        this.userRepository = userRepository;
+    public BookingService(BookingRepository bookingRepository, UserRepository userRepository, BookingRatingRepository bookingRatingRepository, BookingMessageRepository bookingMessageRepository, ProductRepository productRepository) {
         this.bookingRepository = bookingRepository;
+        this.userRepository = userRepository;
+        this.bookingRatingRepository = bookingRatingRepository;
+        this.bookingMessageRepository = bookingMessageRepository;
+        this.productRepository = productRepository;
     }
 
+
+
     @Transactional
-    public Booking createReservee(BookingDto bookingDto) {
+    public Booking createReserve(BookingDto bookingDto) {
         Booking booking = new Booking();
 
         booking.setDateInit(bookingDto.getDateInit());
@@ -52,35 +62,35 @@ public class BookingService {
 
 
     @Transactional
-    public void deleteReservee(Long id) {
-        // Busca la entidad Reservee por su ID
-        Optional<Booking> reservee = bookingRepository.findById(id);
-        if (reservee.isPresent()) {
+    public void deleteReserve(Long id) {
+        // Busca la entidad Reserve por su ID
+        Optional<Booking> reserve = bookingRepository.findById(id);
+        if (reserve.isPresent()) {
             // Elimina la entidad
-            reservee.get().setActive(false);
+            reserve.get().setActive(false);
         } else {
             // Manejo de error si no se encuentra la entidad
             throw new IllegalArgumentException("Reservee with ID " + id + " not found");
         }
     }
 
-    public List<Booking> getAllReservees() {
+    public List<Booking> getAllReserves() {
         // Recupera todas las entidades Reservee
         return bookingRepository.findAll();
     }
 
-    public Booking getReserveeById(Long id) {
+    public Booking getReserveById(Long id) {
         // Recupera la entidad Reservee por su ID
-        Optional<Booking> reservee = bookingRepository.findById(id);
-        return reservee.orElse(null);
+        Optional<Booking> reserve = bookingRepository.findById(id);
+        return reserve.orElse(null);
     }
     @Transactional
-    public List<Booking> getReserveesByUserId(Long userId) {
+    public List<Booking> getReservesByUserId(Long userId) {
         // Recupera todas las entidades Reservee asociadas a un usuario específico
         return null;
     }
     @Transactional
-    public List<Booking> getReserveesByProductId(Long productId) {
+    public List<Booking> getReservesByProductId(Long productId) {
         // Recupera todas las entidades Reservee asociadas a un producto específico
         return null;
     }
@@ -88,13 +98,14 @@ public class BookingService {
     @Transactional
     public void addMessageToBooking(Long bookingId, BookingMessage message) {
         Optional<Booking> bookingOptional = bookingRepository.findById(bookingId);
-        if (bookingOptional.isPresent()) {
-            Booking booking = bookingOptional.get();
+        Booking booking = bookingOptional.get();
+        if (bookingOptional.isPresent() && booking.getComplete()) {
             message.setBooking(booking);
-            booking.getMessages().add(message);
+            message.setUuid(booking.getUser().getUuid());
+            booking.setMessage(bookingMessageRepository.save(message));
             bookingRepository.save(booking);
         } else {
-            throw new IllegalArgumentException("Booking with ID " + bookingId + " not found");
+            throw new IllegalArgumentException("Booking with ID " + bookingId + " not found or complete");
         }
     }
 
@@ -102,14 +113,33 @@ public class BookingService {
     @Transactional
     public void addRatingToBooking(Long bookingId, BookingRating rating) {
         Optional<Booking> bookingOptional = bookingRepository.findById(bookingId);
-        if (bookingOptional.isPresent()) {
-            Booking booking = bookingOptional.get();
+        Booking booking = bookingOptional.get();
+        if (bookingOptional.isPresent() && booking.getComplete()) {
             rating.setBooking(booking);
-            booking.getRating().add(rating);
+            rating.setUuid(booking.getUser().getUuid());
+            booking.setRating(bookingRatingRepository.save(rating));
             bookingRepository.save(booking);
         } else {
-            throw new IllegalArgumentException("Booking with ID " + bookingId + " not found");
+            throw new IllegalArgumentException("Booking with ID " + bookingId + " not found or complete");
         }
 
+    }
+
+    @Transactional
+    public Booking updateReserve(Long id, BookingDto bookingDto) throws IllegalAccessException {
+
+        Booking booking = bookingRepository.findById(id).orElseThrow(IllegalAccessException::new);
+
+        booking.setDateInit(bookingDto.getDateInit());
+        booking.setDateEnd(bookingDto.getDateEnd());
+        booking.setActive(true);
+        return bookingRepository.save(booking);
+    }
+
+    @Transactional
+    public Booking completeReserve(Long id) {
+        Booking booking = bookingRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+        booking.setComplete(true);
+        return bookingRepository.save(booking);
     }
 }

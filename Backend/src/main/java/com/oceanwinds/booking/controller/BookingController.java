@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -23,37 +24,49 @@ public class BookingController {
 
     @PostMapping
     public Booking createBooking(@RequestBody BookingDto bookingDto) {
-        return bookingService.createReservee(bookingDto);
+        return bookingService.createReserve(bookingDto);
     }
 
     @PutMapping("/{id}")
-    public Booking updateBooking(@PathVariable Long id, @RequestBody BookingDto bookingDto) {
-        return bookingService.updateReservee(id, bookingDto);
+    public Booking updateBooking(@PathVariable Long id, @RequestBody BookingDto bookingDto) throws IllegalAccessException {
+        return bookingService.updateReserve(id, bookingDto);
+    }
+
+    @PutMapping("/complete/{id}")
+    public Booking completeBooking(@PathVariable Long id){
+        return bookingService.completeReserve(id);
     }
 
     @DeleteMapping("/{id}")
     public void deleteBooking(@PathVariable Long id) {
-        bookingService.deleteReservee(id);
+        bookingService.deleteReserve(id);
     }
 
     @GetMapping
     public List<Booking> getAllBookings() {
-        return bookingService.getAllReservees();
+        return bookingService.getAllReserves();
+    }
+
+    @GetMapping("/actives")
+    public List<Booking> getAllActiveBookings(){
+        List<Booking> activeBookings = bookingService.getAllReserves().stream().filter(booking -> booking.getActive().equals(true)).collect(Collectors.toList());
+
+        return activeBookings;
     }
 
     @GetMapping("/{id}")
     public Booking getBookingById(@PathVariable Long id) {
-        return bookingService.getReserveeById(id);
+        return bookingService.getReserveById(id);
     }
 
     @GetMapping("/user/{userId}")
     public List<Booking> getBookingsByUserId(@PathVariable Long userId) {
-        return bookingService.getReserveesByUserId(userId);
+        return bookingService.getReservesByUserId(userId);
     }
 
     @GetMapping("/product/{productId}")
     public List<Booking> getBookingsByProductId(@PathVariable Long productId) {
-        return bookingService.getReserveesByProductId(productId);
+        return bookingService.getReservesByProductId(productId);
     }
 
     @PostMapping("/{bookingId}/messages")
@@ -63,6 +76,12 @@ public class BookingController {
 
     @PostMapping("/{bookingId}/ratings")
     public void addRatingToBooking(@PathVariable Long bookingId, @RequestBody BookingRating rating) {
-        bookingService.addRatingToBooking(bookingId, rating);
+        int score = rating.getRating();
+        if(score>0 && score<=5){
+            bookingService.addRatingToBooking(bookingId, rating);
+        }else{
+            throw new IllegalArgumentException("Score out of 1-5 range");
+        }
+
     }
 }
