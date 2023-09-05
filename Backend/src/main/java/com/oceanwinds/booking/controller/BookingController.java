@@ -71,9 +71,9 @@ public class BookingController {
         return bookingService.getReservesByProductId(productId);
     }
 
-    @GetMapping("/allRatings")
-    public List<RatingDto> getAllRatings(){
-        List<Booking> bookings = bookingService.getAllReserves();
+    @GetMapping("/allRatings/{id}")
+    public List<RatingDto> getAllRatings(@PathVariable Long id){
+        List<Booking> bookings = bookingService.getAllReserves().stream().filter(booking -> booking.getProduct().getId().equals(id)).toList();
         List<RatingDto> ratings = new ArrayList<>();
 
         for(Booking reserve: bookings){
