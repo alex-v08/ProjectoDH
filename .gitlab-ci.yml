@@ -7,6 +7,7 @@ build_backend:
   image: maven:3.8.6-openjdk-18
   rules:
     - changes:
+        - main
         - Backend/**/*
   script:
     - cd Backend/
