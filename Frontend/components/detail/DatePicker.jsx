@@ -27,6 +27,7 @@ export default function DatePicker() {
             endDate: '2023-09-15'
           }
         ]}
+        readOnly={true}
         useRange={false}
         popoverDirection='down'
         minDate={new Date()}

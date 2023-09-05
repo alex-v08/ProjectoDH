@@ -8,6 +8,7 @@ import Alert from '@/components/alert'
 import { FcGoogle } from 'react-icons/fc'
 import { BsEyeSlashFill, BsEyeFill } from 'react-icons/bs'
 import Image from 'next/image'
+import imgRegister from '@/public/form/h4-background05-min.png'
 
 export default function Register() {
   const { signup, loginWithGoogle, sendEmail, user } = useAuth()
@@ -85,12 +86,13 @@ export default function Register() {
   return (
     <div className='min-h-screen bg-[#f2f5fa] pb-10'>
       <div className='container flex justify-center pt-5 sm:pt-10'>
-        <div className='hidden shadow-md sm:block'>
+        <div className='hidden w-full max-w-[420px] shadow-md sm:block'>
           <Image
-            src='/form/h2-luxury01.jpg'
-            width={420}
-            height={540}
+            src={imgRegister}
+            width={560}
+            height={700}
             style={{ objectFit: 'cover' }}
+            placeholder='blur'
             alt='register image'
             className='h-full max-h-[504] w-full max-w-[420px] rounded-s '
           />
@@ -100,37 +102,39 @@ export default function Register() {
             <div className='pb-6 text-center text-2xl font-black'>
               Registrar cuenta
             </div>
-            <div className='mb-4'>
-              <label
-                htmlFor='name'
-                className='mb-2 block text-sm font-bold text-gray-700'
-              >
-                Nombre
-              </label>
-              <input
-                type='text'
-                name='name'
-                id='name'
-                onChange={handleChange}
-                className='focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none'
-                placeholder='Nombre'
-              />
-            </div>
-            <div className='mb-4'>
-              <label
-                htmlFor='nickname'
-                className='mb-2 block text-sm font-bold text-gray-700'
-              >
-                Apellido
-              </label>
-              <input
-                type='text'
-                name='nickname'
-                id='nickname'
-                onChange={handleChange}
-                className='focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none'
-                placeholder='Apellido'
-              />
+            <div className='flex flex-col sm:flex-row'>
+              <div className='mb-4 mr-0 sm:mr-4'>
+                <label
+                  htmlFor='name'
+                  className='mb-2 block text-sm font-bold text-gray-700'
+                >
+                  Nombre
+                </label>
+                <input
+                  type='text'
+                  name='name'
+                  id='name'
+                  onChange={handleChange}
+                  className='focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none'
+                  placeholder='Nombre'
+                />
+              </div>
+              <div className='mb-4'>
+                <label
+                  htmlFor='nickname'
+                  className='mb-2 block text-sm font-bold text-gray-700'
+                >
+                  Apellido
+                </label>
+                <input
+                  type='text'
+                  name='nickname'
+                  id='nickname'
+                  onChange={handleChange}
+                  className='focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none'
+                  placeholder='Apellido'
+                />
+              </div>
             </div>
             <div className='mb-4'>
               <label
