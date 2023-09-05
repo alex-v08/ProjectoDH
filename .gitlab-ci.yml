@@ -18,6 +18,10 @@ deploy_Backend:
   needs: [build_backend]
   image: alpine:3.11
 
+  before_script:
+    - apk update
+    - apk add openssh-client
+
   script:
     - echo "Deploying started..."
     - ssh ubuntu@ "sudo systemctl stop back.service"
