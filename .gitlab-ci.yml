@@ -17,15 +17,12 @@ build_backend:
 
 deploy_Backend:
   stage: deploy
-  needs: [build_backend]
-  image: alpine:3.11
-
+  image: python:3.8  
   before_script:
-    - apk update
-    - apk add openssh-client  # Install openssh-client package
-
+    - apt-get update && apt-get install -y awscli
+  variables:
+    AWS_DEFAULT_REGION: us-east-2
   script:
-    - echo "Deploying started..."  
     - mkdir -p ok_hosts/.ssh
     - echo "$EC2_PEM_PRIVATE_KEY" > ok_hosts/.ssh/id_rsa
     - chmod 600 ok_hosts/.ssh/id_rsa
