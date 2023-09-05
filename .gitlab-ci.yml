@@ -1,6 +1,7 @@
 stages:
   - build
   - deploy
+
 build_backend:
   stage: build
   image: maven:3.8.6-openjdk-18
@@ -13,6 +14,7 @@ build_backend:
   artifacts:
     paths:
       - Backend/target/pi-project-0.0.1-SNAPSHOT.jar
+
 deploy_Backend:
   stage: deploy
   needs: [build_backend]
@@ -20,14 +22,13 @@ deploy_Backend:
 
   before_script:
     - apk update
-    - apk add openssh-client
+    - apk add openssh-client  # Install openssh-client package
 
   script:
     - echo "Deploying started..."
-    - ssh ubuntu@ "sudo systemctl stop back.service"
+    - ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl stop back.service"
     - scp Backend/target/pi-project-0.0.1-SNAPSHOT.jar ubuntu@$DEPLOY_SERVER_IP:~/home/ubuntu/backend
     - ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl start back.service"
     - echo "Finished deploying the app."
   rules:
-    - changes:
-        - Backend/**/*
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_COMMIT_REF_PATH == "Backend/*"'
