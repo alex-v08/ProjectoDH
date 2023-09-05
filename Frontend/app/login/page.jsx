@@ -16,7 +16,12 @@ export default function Login() {
 
   useEffect(() => {
     if (user) {
-      router.push('/')
+      // si hay historial vover a la pagina previa sino a inicio
+      if (window.history.length > 1) {
+        router.back({ scroll: false })
+      } else {
+        router.push('/')
+      }
     }
   })
 

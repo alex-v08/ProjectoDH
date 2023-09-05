@@ -1,16 +1,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { GiShipWheel } from 'react-icons/gi'
+import imgEmbarcaciones from '../../../public/h1_images_bg-min.jpg'
 
 export default function Embarcaciones() {
   return (
     <div className='relative flex items-center px-4 py-32 md:px-8 lg:h-[798px] '>
       <Image
-        src='/h1_images_bg-min.jpg'
+        src={imgEmbarcaciones}
         alt='Embarcaciones'
         priority={true}
         loading='eager'
-        blurDataURL='data:...'
         placeholder='blur'
         fill
         style={{ objectFit: 'cover' }}

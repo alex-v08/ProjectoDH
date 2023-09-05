@@ -5,10 +5,37 @@ import { BiLogOut } from 'react-icons/bi'
 import { AiOutlineHome } from 'react-icons/ai'
 import { MdOutlineAdminPanelSettings } from 'react-icons/md'
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 export default function Dropdown({ openMenu }) {
   const { user, logout } = useAuth()
   const router = useRouter()
+  const [userRole, setUserRole] = useState(null)
+
+  useEffect(() => {
+    // Realiza una solicitud HTTP para obtener los datos del usuario y su rol.
+    const fetchUserRole = async () => {
+      try {
+        const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+        const response = await fetch(
+          `${hostUrl}/users/list/{uuid}?uuid=${user.uid}`
+        )
+        if (response.ok) {
+          const userData = await response.json()
+          setUserRole(userData[0].role)
+          console.log(userData[0].role) // Suponiendo que el rol se encuentra en userData.role
+        } else {
+          // Maneja los errores de la solicitud aquí.
+        }
+      } catch (error) {
+        console.error(error.message)
+      }
+    }
+
+    if (user) {
+      fetchUserRole()
+    }
+  }, [user])
 
   const handleLogout = async () => {
     try {
@@ -37,13 +64,15 @@ export default function Dropdown({ openMenu }) {
         <BsGear className='mr-2 inline-block text-base' />
         Configuración
       </Link>
-      <Link
-        href='/administracion'
-        className='rounded-lg px-3 py-2 hover:bg-slate-200'
-      >
-        <MdOutlineAdminPanelSettings className='mr-2 inline-block text-base' />
-        Administración
-      </Link>
+      {userRole === 'ADMIN' && (
+        <Link
+          href='/administracion'
+          className='rounded-lg px-3 py-2 hover:bg-slate-200'
+        >
+          <MdOutlineAdminPanelSettings className='mr-2 inline-block text-base' />
+          Administración
+        </Link>
+      )}
       <button
         onClick={handleLogout}
         className='rounded-lg px-3 py-2 text-left hover:bg-rose-200 hover:text-pink-600 '
