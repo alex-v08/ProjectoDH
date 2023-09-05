@@ -30,5 +30,5 @@ deploy_Backend:
     - scp Backend/target/pi-project-0.0.1-SNAPSHOT.jar ubuntu@$DEPLOY_SERVER_IP:~/home/ubuntu/backend
     - ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl start back.service"
     - echo "Finished deploying the app."
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main" && $CI_COMMIT_REF_PATH == "Backend/*"'
+rules:
+  - if: '$CI_COMMIT_BRANCH == "main" && $CI_COMMIT_REF_PATH == "Backend/*"'
