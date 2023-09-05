@@ -17,9 +17,10 @@ build_backend:
 
 deploy_Backend:
   stage: deploy
-  image: python:3.8  
+  image: python:3.8
   before_script:
     - apt-get update && apt-get install -y awscli
+    - eval $(ssh-agent -s)  # Start the SSH agent
   variables:
     AWS_DEFAULT_REGION: us-east-2
   script:
@@ -33,4 +34,3 @@ deploy_Backend:
     - scp Backend/target/pi-project-0.0.1-SNAPSHOT.jar ubuntu@$DEPLOY_SERVER_IP:~/home/ubuntu/backend
     - ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl start back.service"
     - echo "Finished deploying the app."
-
