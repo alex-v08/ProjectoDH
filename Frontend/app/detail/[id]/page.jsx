@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { HiLocationMarker } from 'react-icons/hi'
 import { BsStarFill } from 'react-icons/bs'
 import { ButtonBack } from '@/components/suggested/buttonBack/ButtonBack'
+import ShareButton from '@/components/favs/ShareButton'
+import HeartButton from '@/components/favs/HeartButton'
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 const itemsUrl = `${hostUrl}/api/`
@@ -59,6 +61,10 @@ export default async function Detalle({ params }) {
         className='container rounded-lg bg-[#fcfcfc] pb-10 pt-5'
         href={`/detail/${index}`}
       >
+        <div className='flex justify-end space-x-4 mr-2'>
+          <ShareButton />
+          <HeartButton fillColor='#0EA5E9' />
+        </div>
         <Galeria imagesGallery={imagesGallery} />
 
         {/* Container */}

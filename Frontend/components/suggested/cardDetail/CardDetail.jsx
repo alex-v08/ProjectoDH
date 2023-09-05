@@ -2,6 +2,7 @@ import CurrencyFormatter from '@/components/util/CurrencyFormatter'
 import Image from 'next/image'
 import Link from 'next/link'
 import { BsStarFill } from 'react-icons/bs'
+import HeartButton from '@/components/favs/HeartButton'
 
 export const CardDetail = ({
   imageUrl,
@@ -26,6 +27,10 @@ export const CardDetail = ({
           style={{ objectFit: 'cover' }}
           className='rounded-t-lg bg-gray-300 transition duration-150 ease-in-out group-hover:brightness-105'
         />
+        <div className='w-full h-1/4 absolute bg-gradient-to-b from-black to-transparent opacity-30'></div>
+        <div className='absolute top-0 right-0 m-5'>
+          <HeartButton fillColor='white' behaivour='hidden group-hover:block' />
+        </div>          
       </div>
       <div className='transition duration-300 ease-in-out group-hover:bg-white'>
         <div className='flex flex-col px-5 py-6 text-xs sm:px-7'>
