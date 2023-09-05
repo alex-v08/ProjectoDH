@@ -6,7 +6,6 @@ import com.oceanwinds.category.entity.Category;
 
 import com.oceanwinds.feature.entity.Feature;
 import com.oceanwinds.location.entity.Location;
-import com.oceanwinds.pictures.entity.PictureData;
 import com.oceanwinds.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,7 +22,7 @@ import java.util.Set;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "name" , nullable = false)
@@ -45,10 +44,6 @@ public class Product {
     inverseJoinColumns = @JoinColumn(name = "feature_id"))
     private Set<Feature> feature = new HashSet<>();
 
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
-    private Set<PictureData> pictureDataSet;
-
     @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;
@@ -60,7 +55,7 @@ public class Product {
     private Set<User> favoriteUsers = new HashSet<>();
 
 
-    public Product(Long id, String name, String sku, String description, String imageUrl, Double pricePerDay, Double pricePerWeek, Double pricePerHour, Category category, Boolean available,Set<PictureData> pictureDataSet) {
+    public Product(Long id, String name, String sku, String description, String imageUrl, Double pricePerDay, Double pricePerWeek, Double pricePerHour, Category category, Boolean available) {
         this.id = id;
         this.name = name;
         this.sku = sku;
@@ -71,8 +66,9 @@ public class Product {
         this.pricePerHour = pricePerHour;
         this.category = category;
         this.available = available;
-        this.pictureDataSet = pictureDataSet;
     }
+
+
 
 
 }

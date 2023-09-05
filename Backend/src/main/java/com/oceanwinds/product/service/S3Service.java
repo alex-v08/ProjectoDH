@@ -1,9 +1,9 @@
-package com.oceanwinds.pictures.service;
+/*package com.oceanwinds.product.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
-import com.oceanwinds.pictures.entity.vm.PictureAsset;
+import com.oceanwinds.product.entity.vm.ImageAsset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -41,7 +41,7 @@ public class S3Service {
         }
     }
 
-    public PictureAsset getObject(String key){
+    public ImageAsset getObject(String key){
         S3Object s3Object = s3Client.getObject(BUCKET,key);
         ObjectMetadata metadata = s3Object.getObjectMetadata();
 
@@ -50,7 +50,7 @@ public class S3Service {
             S3ObjectInputStream inputStream = s3Object.getObjectContent();
             byte[] bytes = IOUtils.toByteArray(inputStream);
 
-            return new PictureAsset(bytes,metadata.getContentType());
+            return new ImageAsset(bytes,metadata.getContentType());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -65,3 +65,4 @@ public class S3Service {
         return String.format("https://%s.s3.amazonaws.com/%s",BUCKET,key);
     }
 }
+*/

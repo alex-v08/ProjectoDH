@@ -4,12 +4,10 @@ import com.oceanwinds.booking.entity.Booking;
 import com.oceanwinds.booking.entity.BookingMessage;
 import com.oceanwinds.booking.entity.BookingRating;
 import com.oceanwinds.booking.entity.dto.BookingDto;
-import com.oceanwinds.booking.entity.dto.RatingDto;
 import com.oceanwinds.booking.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,23 +67,6 @@ public class BookingController {
     @GetMapping("/product/{productId}")
     public List<Booking> getBookingsByProductId(@PathVariable Long productId) {
         return bookingService.getReservesByProductId(productId);
-    }
-
-    @GetMapping("/allReviews")
-    public List<RatingDto> getAllReviews(){
-        List<Booking> bookings = bookingService.getAllReserves();
-        List<RatingDto> ratings = new ArrayList<>();
-        for(Booking reserve:bookings){
-            RatingDto ratingDto = new RatingDto();
-            ratingDto.setRating(reserve.getRating().getRating());
-            ratingDto.setName(reserve.getUser().getName() + " " + reserve.getUser().getLastName());
-            ratingDto.setComment(reserve.getMessage().getMensaje());
-            ratingDto.setDate(reserve.getMessage().getDateMessage());
-
-            ratings.add(ratingDto);
-        }
-
-        return ratings;
     }
 
     @PostMapping("/{bookingId}/messages")

@@ -9,9 +9,6 @@ import com.oceanwinds.category.repository.CategoryRepository;
 import com.oceanwinds.feature.entity.Feature;
 import com.oceanwinds.location.entity.Location;
 import com.oceanwinds.location.repository.LocationRepository;
-import com.oceanwinds.pictures.entity.PictureData;
-import com.oceanwinds.pictures.repository.PictureDataRepository;
-import com.oceanwinds.pictures.service.S3Service;
 import com.oceanwinds.product.entity.Product;
 import com.oceanwinds.product.entity.dto.ProductDto;
 import com.oceanwinds.feature.repository.FeatureRepository;
@@ -22,7 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -39,13 +35,7 @@ public class ProductService {
     FeatureRepository featureRepository;
 
     @Autowired
-    PictureDataRepository pictureDataRepository;
-
-    @Autowired
     LocationRepository locationRepository;
-
-    @Autowired
-    S3Service s3Service;
 
     public List<Product> getAllProduct() {
         return productRepository.findAll();
@@ -100,7 +90,6 @@ public class ProductService {
             product.setFeature(new HashSet<>());
         }
 
-
         product.setName(dto.getName());
         product.setSku(dto.getSku());
         product.setDescription(dto.getDescription());
@@ -110,16 +99,7 @@ public class ProductService {
         product.setPricePerWeek(dto.getPricePerWeek());
         product.setLocation(location);
         product.setAvailable(dto.getAvailable());
-
-
-        Product savedProduct = productRepository.save(product);
-
-        for(PictureData picture:dto.getPictures()){
-            picture.setProduct(savedProduct);
-            pictureDataRepository.save(picture);
-        }
-
-        return product;
+        return productRepository.save(product);
     }
 
 
