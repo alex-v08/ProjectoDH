@@ -51,7 +51,7 @@ public class UserService {
     }
 
     public User saveUser(UserDto dto) throws AttributeException {
-        validateUserAttributes(dto);
+
 
         if (usersRepository.existsByemail(dto.getEmail())) {
             throw new AttributeException("El correo electrónico ya está registrado.");
@@ -78,17 +78,17 @@ public class UserService {
     public User updateUser(UserDto dto, Long id) throws AttributeException {
         User user = usersRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        if (!user.getEmail().equals(dto.getEmail()) && usersRepository.existsByemail(dto.getEmail())) {
+
+        if (usersRepository.existsByemail(dto.getEmail()) && !user.getEmail().equals(dto.getEmail())) {
             throw new AttributeException("El correo electrónico ya está registrado.");
         }
-
-        if (!user.getDni().equals(dto.getDni()) && usersRepository.existsByDni(dto.getDni())) {
-            throw new AttributeException("El DNI ya está registrado.");
+        if (usersRepository.existsByUuid(dto.getUuid()) && !user.getUuid().equals(dto.getUuid())) {
+            throw new AttributeException("El uid ya se encuentra registrado.");
         }
 
-        validateUserAttributes(dto);
         user.setName(dto.getName());
         user.setLastName(dto.getLastName());
+        user.setDni(dto.getDni());
         user.setEmail(dto.getEmail());
         user.setPhone(dto.getPhone());
         user.setAddress(dto.getAddress());
@@ -133,6 +133,10 @@ public class UserService {
         return usersRepository.existsByUuid(uuid);
 
     }
+public Set<User> getUsersByUuid(String uuid){
+    Set<User> listUser = usersRepository.getUsersByUuid(uuid);
+        return listUser;
 
+}
 
 }

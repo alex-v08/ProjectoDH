@@ -24,6 +24,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     List<Product> findByCategoryIn(List<Category> categories);
 
+    List<Product> findByFeatureContaining(Feature feature);
+
     List<Product> findByFeatureIn(Set<Feature> features);
     List<Product> findByLocation(Location location);
     List<Product> findByLocationAndCategoryIn(Location location, List<Category> categories);

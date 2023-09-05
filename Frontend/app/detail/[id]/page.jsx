@@ -6,6 +6,8 @@ import { BsStarFill, BsStar } from 'react-icons/bs'
 import { ButtonBack } from '@/components/suggested/buttonBack/ButtonBack'
 import Image from 'next/image'
 import { dynamicBlurDataUrl } from '@/components/util/dynamicBlurDataUrl'
+import DatePicker from '@/components/detail/DatePicker'
+import Comentarios from '@/components/detail/Comentarios'
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 const itemsUrl = `${hostUrl}/api/`
@@ -258,12 +260,15 @@ export default async function Detalle({ params }) {
                     <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
                   </div>
                   <div className='font-semibold'>
-                    Nombre{' '}
+                    Abel D. Retido{' '}
                     <span className='text-sm font-normal text-gray-500'>
-                      - Fechas
+                      - 05/09/2023
                     </span>
                   </div>
-                  <div>Quedé muy satisfecho con la atencion del vendedor</div>
+                  <div>
+                    El producto era lo que esperaba y superó ampliamente mis
+                    espectativas.
+                  </div>
                 </div>
               </div>
               <div className='comment-body flex border-b pb-5 pt-6'>
@@ -283,34 +288,25 @@ export default async function Detalle({ params }) {
                     <BsStar className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
                   </div>
                   <div className='font-semibold'>
-                    Nombre{' '}
+                    Adrian Droide{' '}
                     <span className='text-sm font-normal text-gray-500'>
-                      - Fechas
+                      - 07/09/2023
                     </span>
                   </div>
-                  <div>Quedé muy satisfecho con la atencion del vendedor</div>
+                  <div>Quedé muy satisfecho con la atención del vendedor.</div>
                 </div>
               </div>
               <div className='pt-6'>
                 <h2 className='pb-2 text-xl font-bold text-sky-950'>
                   Agregar un comentario
                 </h2>
-                <p>
-                  Debes{' '}
-                  <Link
-                    href='/login'
-                    className='font-semibold transition ease-in-out hover:text-sky-500'
-                  >
-                    iniciar sesión
-                  </Link>{' '}
-                  para publicar un comentario.
-                </p>
+                <Comentarios />
               </div>
             </div>
           </div>
           {/* Reserva */}
           <div className='sticky top-[94px] w-full rounded-lg border border-gray-100 bg-white shadow-lg shadow-gray-200 lg:max-w-[438px]'>
-            <div className='px-12 pb-10 pt-5 text-gray-500'>
+            <div className='px-5 pb-10 pt-5 text-gray-500 sm:px-12'>
               <div className='mb-8 flex items-center border-b pb-2'>
                 <span className='pr-2 text-xs font-semibold uppercase'>
                   desde:
@@ -322,21 +318,10 @@ export default async function Detalle({ params }) {
               <div>
                 <div className='flex items-center pb-2 text-sky-950'>
                   <span className='floaty-icon-calendar pr-3 text-xl'></span>
-                  <h2 className='text-sm font-semibold uppercase'>Ingreso</h2>
+                  <h2 className='text-sm font-semibold uppercase'>Fecha</h2>
                 </div>
-                <input
-                  type='date'
-                  className='mb-5 w-full rounded-lg border-2 p-3 text-gray-400 dark:[color-scheme:light]'
-                />
-                <div className='flex items-center pb-2 text-sky-950'>
-                  <span className='floaty-icon-calendar pr-3 text-xl'></span>
-                  <h2 className='text-sm font-semibold uppercase'>Salida</h2>
-                </div>
-                <input
-                  type='date'
-                  className='mb-5 w-full rounded-lg border-2 p-3 text-gray-400 dark:[color-scheme:light]'
-                />
-                <div className='flex items-center pb-2 text-sky-950'>
+                <DatePicker />
+                <div className='mt-5 flex items-center pb-2 text-sky-950'>
                   <span className='floaty-icon-guestes pr-3 text-xl'></span>
                   <h2 className='text-sm font-semibold uppercase'>Pasajeros</h2>
                 </div>
