@@ -3,6 +3,8 @@ package com.oceanwinds.booking.service;
 import Global.exceptions.ResourceNotFoundException;
 import com.oceanwinds.booking.entity.BookingMessage;
 import com.oceanwinds.booking.entity.BookingRating;
+import com.oceanwinds.booking.entity.dto.MediaRatingDto;
+import com.oceanwinds.booking.entity.dto.RatingDto;
 import com.oceanwinds.booking.repository.BookingMessageRepository;
 import com.oceanwinds.booking.repository.BookingRatingRepository;
 import com.oceanwinds.product.entity.Product;
@@ -16,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -141,5 +145,46 @@ public class BookingService {
         Booking booking = bookingRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
         booking.setComplete(true);
         return bookingRepository.save(booking);
+    }
+
+    @Transactional
+    public List<RatingDto> getAllRatings(Long id) {
+        List<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getProduct().getId().equals(id)).toList();
+        List<RatingDto> ratings = new ArrayList<>();
+
+        for(Booking reserve: bookings){
+            RatingDto ratingDto = new RatingDto();
+
+            ratingDto.setDate(reserve.getMessage().getDateMessage());
+            ratingDto.setName(reserve.getUser().getName() + " " + reserve.getUser().getLastName());
+            ratingDto.setRating(reserve.getRating().getRating());
+            ratingDto.setMessage(reserve.getMessage().getMessage());
+
+            ratings.add(ratingDto);
+        }
+        return  ratings;
+    }
+
+    public MediaRatingDto getMediaRating(Long id) {
+        List<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getProduct().getId().equals(id)).toList();
+        bookings = bookings.stream().filter(booking -> booking.getComplete().equals(true)).toList();
+        MediaRatingDto mediaRatingDto = new MediaRatingDto();
+
+        Double media;
+        int sum= 0;
+        int cont=0;
+
+        for(Booking reserve:bookings){
+            sum += reserve.getRating().getRating();
+            cont++;
+        }
+
+        media = Double.valueOf(sum) / Double.valueOf(cont);
+        DecimalFormat decimalFormat = new DecimalFormat("#.#");
+
+        mediaRatingDto.setTotalRatings(cont);
+        mediaRatingDto.setMedia(decimalFormat.format(media));
+
+        return mediaRatingDto;
     }
 }
