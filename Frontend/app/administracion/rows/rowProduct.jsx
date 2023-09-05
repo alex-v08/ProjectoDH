@@ -81,14 +81,14 @@ export function RowProduct(props) {
       >
         <td className='px-16 py-4'>
           <div>
-            {/* <Image
+            <Image
               className='h-11 w-11 rounded-full border-2 border-sky-500'
               width='50'
               height='50'
               src={`${urlImage}1.png`}
               alt='imagen de la embarcación'
               quality={100}
-            /> */}
+            />
           </div>
         </td>
         <th
