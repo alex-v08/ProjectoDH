@@ -51,7 +51,7 @@ public class UserService {
     }
 
     public User saveUser(UserDto dto) throws AttributeException {
-        validateUserAttributes(dto);
+
 
         if (usersRepository.existsByemail(dto.getEmail())) {
             throw new AttributeException("El correo electrónico ya está registrado.");
@@ -85,9 +85,10 @@ public class UserService {
         if (usersRepository.existsByUuid(dto.getUuid()) && !user.getUuid().equals(dto.getUuid())) {
             throw new AttributeException("El uid ya se encuentra registrado.");
         }
-        validateUserAttributes(dto);
+
         user.setName(dto.getName());
         user.setLastName(dto.getLastName());
+        user.setDni(dto.getDni());
         user.setEmail(dto.getEmail());
         user.setPhone(dto.getPhone());
         user.setAddress(dto.getAddress());
