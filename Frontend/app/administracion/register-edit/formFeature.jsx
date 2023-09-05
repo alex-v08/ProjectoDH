@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Select from 'react-select'
 
 export function FormFeature(props) {
-  const { formEditData } = props
+  const { formEditData, onClose, onRefreshData } = props
   const [feature, setFeature] = useState(formEditData)
   const [data, setData] = useState([])
   const [name, setName] = useState(feature == undefined ? '' : feature.name)
@@ -72,7 +72,7 @@ export function FormFeature(props) {
   }
 
   function handleChangeName(e) {
-    setName(e.target.value.trim())
+    setName(e.target.value)
   }
 
   function handleChangeImage(selectedOption) {
@@ -116,7 +116,8 @@ export function FormFeature(props) {
               response.status
           )
         } else {
-          window.location.reload()
+          onRefreshData()
+          onClose()
         }
         const data = await response.json()
         console.log('Respuesta del servidor:', data)

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 export function FormCat(props) {
-  const { formEditData } = props
+  const { formEditData, onClose, onRefreshData} = props
   const [category, setCategory] = useState(formEditData)
   const [name, setName] = useState(category == undefined ? '' : category.name)
   const [description, setDescription] = useState(category == undefined ? '' : category.description == null ? '' : category.description)
@@ -59,9 +59,9 @@ export function FormCat(props) {
               response.status
           )
         } else {
-          window.location.reload()
+          onRefreshData()
+          onClose()
         }
-
         const data = await response.json()
         console.log('Respuesta del servidor:', data)
       } catch (error) {

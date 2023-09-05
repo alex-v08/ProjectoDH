@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react'
 
-export function Form(props) {
-  const { formEditData } = props
+export function FormProduct(props) {
+  const { formEditData, onClose, onRefreshData } = props
   const [yacht, setYatcht] = useState(formEditData)
   const [name, setName] = useState(yacht == undefined ? '' : yacht.name)
   const [sku, setSku] = useState(yacht == undefined ? '' : yacht.sku)
@@ -32,6 +32,12 @@ export function Form(props) {
   )
   const [categories, setCategories] = useState([])
   const [features, setFeatures] = useState([])
+  const [country, setCountry] = useState(
+    yacht == undefined ? '' : yacht.location == null ? '' : yacht.location.country
+  )
+  const [city, setCity] = useState(
+    yacht == undefined ? '' : yacht.location == null ? '' : yacht.location.city
+  )
   const [available, setAvailable] = useState(
     yacht == undefined ? true : yacht.available
   )
@@ -76,6 +82,14 @@ export function Form(props) {
     setFeaturesId(selectedValues)
   }
 
+  function handleChangeCountry(e) {
+    setCountry(e.target.value)
+  }
+
+  function handleChangeCity(e) {
+    setCity(e.target.value)
+  }
+
   function handleChangeAvailable() {
     setAvailable(!available)
   }
@@ -92,6 +106,10 @@ export function Form(props) {
       pricePerHour: pricePerHour,
       categoryId: categoryId,
       featuresId: featuresId,
+      location: {
+        country: country,
+        city: city
+      },
       available: available
     }
     console.log(JSON.stringify(yachtForm))
@@ -124,7 +142,8 @@ export function Form(props) {
               response.status
           )
         } else {
-          window.location.reload()
+          onRefreshData()
+          onClose()
         }
 
         const data = await response.json()
@@ -158,6 +177,8 @@ export function Form(props) {
         ? []
         : yacht.feature.map(feature => feature.id)
     )
+    setCountry(yacht == undefined ? '' : yacht.location == null ? '' : yacht.location.country)
+    setCity(yacht == undefined ? '' : yacht.location == null ? '' : yacht.location.city)
     setAvailable(yacht == undefined ? true : yacht.available)
   }
 
@@ -343,6 +364,38 @@ export function Form(props) {
                 </option>
               ))}
             </select>
+          </div>
+          <div className='col-span-6 sm:col-span-3'>
+            <label
+              htmlFor='country'
+              className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
+            >
+              Pais de inicio
+            </label>
+            <input
+              type='text'
+              value={country}
+              onChange={handleChangeCountry}
+              placeholder='Ingrese pais de inicio'
+              id='country'
+              className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500'
+            />
+          </div>
+          <div className='col-span-6 sm:col-span-3'>
+            <label
+              htmlFor='city'
+              className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
+            >
+              Ciudad de inicio
+            </label>
+            <input
+              type='text'
+              value={city}
+              onChange={handleChangeCity}
+              placeholder='Ingrese ciudad de inicio'
+              id='city'
+              className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500'
+            />
           </div>
           <div className='col-span-6 sm:col-span-3'>
             <label
