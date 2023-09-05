@@ -16,7 +16,7 @@ public class BookingMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String mensaje; // Mensaje relacionado con la reserva
+    private String message; // Mensaje relacionado con la reserva
     private String uuid;
     private LocalDate dateMessage;
 
