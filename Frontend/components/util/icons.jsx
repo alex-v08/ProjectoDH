@@ -1,9 +1,10 @@
 'use client'
 import { useState } from 'react'
+import Select from 'react-select'
 
-export default function Icons() {
+export default function Icons(props) {
+
   const icons_name = [
-    'floaty-icon-acreage',
     'floaty-icon-air-conditioning',
     'floaty-icon-anchor1',
     'floaty-icon-aqualodge',
@@ -265,6 +266,258 @@ export default function Icons() {
     'floaty-icon-youtube'
   ]
 
+  const icons_name_spanish = [
+    'Aire Acondicionado',
+    'Ancla',
+    'Aqualodge',
+    'Sistema de Audio',
+    'Piloto automatico',
+    'Premio',
+    'Nota Bancaria',
+    'Barco sin Tripulacian',
+    'Bañera',
+    'Barbacoa',
+    'Camas',
+    'Mejor Precio',
+    'Ancla 2',
+    'Reserva 1',
+    'Reserva',
+    'Desayuno',
+    'Crucero en Cabina',
+    'Calendario 1',
+    'Calendario 2',
+    'Calendario 3',
+    'Capitan',
+    'Cheque de Tarjeta',
+    'Catamaranes',
+    'Cheque 1',
+    'Cheque 2',
+    'Reloj',
+    'Cafetera',
+    'Comentarios 1',
+    'Aire Acondicionado',
+    'Cocina',
+    'Dedicado',
+    'Destino',
+    'Diamante',
+    'Cenar',
+    'Descuento',
+    'Tripulacian',
+    'Sobre de Correo',
+    'Correo Abierto',
+    'Gimnasio',
+    'Nevera',
+    'Totalmente con Tripulacian',
+    'Galerias',
+    'Generador',
+    'Huéspedes',
+    'Secador de Pelo',
+    'Calefaccian',
+    'Timon',
+    'Hotel',
+    'Imagen Mas 1',
+    'Altavoces Internos',
+    'Moto Acuatica',
+    'Niño',
+    'Utensilios de Cocina',
+    'Lavanderia',
+    'Chaleco Salvavidas',
+    'Ubicacian de Oficina',
+    'Ubicacion 1',
+    'Ubicacion 2',
+    'Cerrar',
+    'Inicio de Sesian',
+    'Marca',
+    'Reuniones y Eventos',
+    'Menu',
+    'Menos',
+    'Dinero',
+    'Motobarco',
+    'Lanchas',
+    'Ducha Exterior',
+    'Avian de Papel',
+    'Estacionamiento',
+    'Teléfono 3',
+    'Teléfono 1',
+    'Avian',
+    'Reproducir',
+    'Profesionales',
+    'Calidad',
+    'Pregunta',
+    'Cita 2',
+    'Cita 3',
+    'Radar',
+    'Caja Fuerte',
+    'Velero',
+    'Veleros',
+    'Barco de Vela',
+    'Caja de Seguridad',
+    'Buscar',
+    'Compartir',
+    'Compartir',
+    'Compras 1',
+    'Spa',
+    'Estrella 2',
+    'Estrella Audaz',
+    'Estrellas 1',
+    'Piscina',
+    'Etiqueta Izquierda',
+    'Teléfono',
+    'Boleto',
+    'Toallas',
+    'Tren',
+    'De Confianza',
+    'Televisian',
+    'Usuario',
+    'Usuarios 1',
+    'Usuarios 2',
+    'Usuarios 3',
+    'Wifi Grande',
+    'Yates',
+    'Abajo',
+    'Izquierda',
+    'Derecha',
+    'Arriba',
+    'Izquierda',
+    'Derecha',
+    'Horizontal',
+    'Barra',
+    'Calendario Alternativo',
+    'Camara Alternativa',
+    'Abajo',
+    'Izquierda',
+    'Derecha',
+    'Arriba',
+    'Circulo',
+    'Reloj',
+    'Descarga de Nube Alternativa',
+    'Comentario',
+    'Comentarios Alternativos',
+    'Comentarios',
+    'Contacto',
+    'Tarjeta de Crédito',
+    'Circulo con Punto',
+    'Editar',
+    'Sobre',
+    'Expandir Alternativa',
+    'Enlace Externo Alternativo',
+    'Ojo',
+    'Ventilador',
+    'Archivo Alternativo',
+    'Archivo de Archivo',
+    'Filtro',
+    'Carpeta Abierta',
+    'Carpeta',
+    'Envio Gratuito',
+    'Ceño Fruncido',
+    'Regalo',
+    'Agarre Horizontal',
+    'Corazan Lleno',
+    'Corazan',
+    'Historia',
+    'Casa',
+    'Circulo de Informacian',
+    'Instagram',
+    'Nivel Superior Alternativo',
+    'Circulo de Ubicacian',
+    'Flecha Larga Hacia Abajo Alternativa',
+    'Flecha Larga Hacia la Izquierda Alternativa',
+    'Flecha Larga Hacia la Derecha Alternativa',
+    'Flecha Larga Hacia Arriba Alternativa',
+    'Marca de Verificacian de Marcador de Mapa',
+    'Indiferente',
+    'Circulo con Menos',
+    'Mavil Android Alternativo',
+    'Billete de Dinero',
+    'Lapiz Alternativo',
+    'Reproducir 2',
+    'Circulo con Mas',
+    'Mas',
+    'Cita',
+    'Aleatorio',
+    'Responder a Todos',
+    'Responder',
+    'Ampliar Busqueda',
+    'Marca de Verificacian de Escudo',
+    'Cesta de la Compra',
+    'Carro de la Compra',
+    'Iniciar Sesian Alternativo',
+    'Cerrar Sesian Alternativo',
+    'Sonrisa',
+    'Spinner',
+    'Cuadrado',
+    'Estrella',
+    'Sincronizar',
+    'Tacametro Alternativo',
+    'Etiquetas',
+    'Cuadricula Grande',
+    'Lista Grande',
+    'Chincheta',
+    'Marca de Verificacian de Circulo con Menos',
+    'Marca de Verificacian de Menos',
+    'Copa Alternativa',
+    'Camian',
+    'Desbloquear',
+    'Usuario con Auriculares',
+    'Usuario Escudo',
+    'Usuario',
+    'Usuarios',
+    'Video',
+    'Adobe',
+    'Amazon',
+    'Android',
+    'Angular',
+    'Apper',
+    'Apple',
+    'Atlassian',
+    'Behance',
+    'Bitbucket',
+    'Bitcoin',
+    'Bity',
+    'Bluetooth',
+    'BTC',
+    'CentOS',
+    'Chrome',
+    'CodePen',
+    'cPanel',
+    'Discord',
+    'DocHub',
+    'Docker',
+    'Dribbble',
+    'Dropbox',
+    'Drupal',
+    'eBay',
+    'Facebook F',
+    'Facebook',
+    'Figma',
+    'Firefox',
+    'Google Plus',
+    'Google',
+    'Grunt',
+    'Gulp',
+    'HTML5',
+    'Jenkins',
+    'Joomla',
+    'Marca de Enlace',
+    'LinkedIn',
+    'Mailchimp',
+    'OpenCart',
+    'PayPal',
+    'Pinterest P',
+    'Reddit',
+    'Skype',
+    'Slack',
+    'Snapchat',
+    'Spotify',
+    'Trello',
+    'Twitter',
+    'Vimeo',
+    'WhatsApp',
+    'WordPress',
+    'Yoast',
+    'YouTube'
+  ];
+  
   const icons_content = [
     '',
     '',
@@ -772,33 +1025,48 @@ export default function Icons() {
     ''
   ]
 
-  // Unificar los dos arreglos en uno solo
+  // Unificar los tres arreglos en uno solo
   const icons = icons_name.map((name, index) => ({
     name: name,
+    nameSpanish: icons_name_spanish[index],
     content: icons_content[index]
   }))
 
-  // Estado para almacenar la opción seleccionada
-  const [selectedOption, setSelectedOption] = useState('')
+  const options = icons.map(option => ({
+    value: option.name,
+    label: option.nameSpanish,
+    icon: option.content
+  }))
 
-  // Función para manejar el cambio de opción seleccionada
-  const handleSelectChange = event => {
-    setSelectedOption(event.target.value)
+
+  const customStyles = {
+    control: provided => ({
+      ...provided,
+      padding: 2,
+      margin: 0,
+      borderRadius: 8,
+    })
   }
 
   return (
-    <select
-      name=''
-      id=''
-      onChange={handleSelectChange} // Manejar el cambio de opción seleccionada
-      value={selectedOption} // Establecer el valor seleccionado en el estado
-      className='w-full min-w-[210px] rounded-lg border-2 bg-white p-3 font-floaty text-xl text-sky-600'
-    >
-      {icons.map((icon, index) => (
-        <option key={index} value={icon.name}>
-          {icon.content}
-        </option>
-      ))}
-    </select>
+    <Select
+    styles={customStyles}
+    value={props.selectedOption}
+    defaultValue={props.default}
+    onChange={props.onChange}
+    options={options}
+    placeholder='Seleccione un icono'
+    isClearable={true}
+    components={{
+      Option: ({ innerProps, data }) => (
+        <div className='flex align-items-center ' {...innerProps}>
+          <i
+            className={`${data.value} text-2xl text-center w-20 px-2`}
+          ></i>
+          <span className='text-center self-center'>{data.label}</span>
+        </div>
+      ),
+    }}
+    />
   )
 }

@@ -18,11 +18,11 @@ export default function PageProduct() {
   const [modalOpen, setModalOpen] = useState(false)
   const [changeData, setChangeData] = useState(true)
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-  const urlGetYacht = `${hostUrl}/api/all`
+  const urlGetProduct = `${hostUrl}/api/all`
   
   async function fetchData() {
     try {
-      const response = await fetch(urlGetYacht)
+      const response = await fetch(urlGetProduct)
       if (!response.ok) {
         throw new Error(
           'Error al intentar cargar todos los registros: . Response: ' +
@@ -63,19 +63,19 @@ export default function PageProduct() {
             className='rounded border border-sky-500 bg-transparent px-4 py-2 font-semibold text-sky-700 transition ease-in-out hover:border-transparent hover:bg-sky-500 hover:text-white dark:text-white sm:block'
             onClick={handleOpenModal}
           >
-            Registrar Yate
+            Registrar Producto
           </button>
         </div>
         <div className='relative mx-auto mt-12  w-full overflow-x-auto rounded-lg shadow-md'>
           <Table>
-            {data.map(yacht => (
+            {data.map(product => (
               <RowProduct
-                key={yacht.id}
-                id={yacht.id}
-                name={yacht.name}
-                urlImage={yacht.imageUrl}
-                category={yacht.category}
-                features={yacht.feature}
+                key={product.id}
+                id={product.id}
+                name={product.name}
+                urlImage={product.imageUrl}
+                category={product.category}
+                features={product.feature}
                 isChangeData={changeData}
                 onClose={handleCloseModal}
                 onRefreshData={refreshData}

@@ -5,10 +5,12 @@ import { FormFeature } from '../register-edit/formFeature'
 export function RowFeature(props) {
   const { id, name, icon, isChangeData, onRefreshData } = props
   const [feature, setFeature] = useState({})
+  const [dataFeature, setDataFeature] = useState([])
   const [modalEditOpen, setModalEditOpen] = useState(false)
 
   useEffect(() => {
     fetchData()
+    fetchDataFeature()
   }, [isChangeData])
 
   async function fetchData() {
@@ -23,6 +25,23 @@ export function RowFeature(props) {
       }
       const jsonData = await response.json()
       setFeature(jsonData)
+    } catch (error) {
+      console.error('Error al intentar cargar los datos del registro: ', error)
+    }
+  }
+
+  async function fetchDataFeature() {
+    const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+    const urlGetDataFeature = `${hostUrl}/api/all/?featuresId=${id}`
+    try {
+      const response = await fetch(urlGetDataFeature)
+      if (!response.ok) {
+        throw new Error(
+          'Error al intentar cargar los datos del registro: ' + response.status
+        )
+      }
+      const jsonData = await response.json()
+      setDataFeature(jsonData)
     } catch (error) {
       console.error('Error al intentar cargar los datos del registro: ', error)
     }
@@ -83,6 +102,7 @@ export function RowFeature(props) {
             {id}
           </th>
           <td className='px-16 py-4'>{name}</td>
+          <td className='px-8 py-4'><button className="shadow-md w-28 py-1 no-underline rounded-full bg-sky-500 text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none text-center">{dataFeature.length}</button></td>
           <td className='px-6 py-4 text-right'>
             <div>
               <button

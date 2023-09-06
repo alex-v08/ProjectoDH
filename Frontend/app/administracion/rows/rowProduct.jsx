@@ -13,7 +13,7 @@ export function RowProduct(props) {
     isChangeData,
     onRefreshData
   } = props
-  const [yacht, setYatcht] = useState({})
+  const [product, setYatcht] = useState({})
   const [modalEditOpen, setModalEditOpen] = useState(false)
 
   useEffect(() => {
@@ -22,9 +22,9 @@ export function RowProduct(props) {
 
   async function fetchData() {
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const urlGetYacht = `${hostUrl}/api/${id}`
+    const urlGetProduct = `${hostUrl}/api/${id}`
     try {
-      const response = await fetch(urlGetYacht)
+      const response = await fetch(urlGetProduct)
       if (!response.ok) {
         throw new Error(
           'Error al intentar cargar los datos del registro: ' + response.status
@@ -91,14 +91,14 @@ export function RowProduct(props) {
             />
           </div>
         </td>
-        <th
+        <td
           scope='row'
           className='whitespace-nowrap px-16 py-4 font-medium text-gray-900 dark:text-white'
         >
           {id}
-        </th>
+        </td>
         <td className='px-16 py-4'>{name}</td>
-        <td className='px-8 py-4'><button className="shadow-md w-28 py-1 no-underline rounded-full bg-sky-500 text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none">{category != null ? category.name : 'Sin categorizar'}</button></td>
+        <td className='px-8 py-4'><button className="shadow-md w-28 py-1 no-underline rounded-full bg-sky-500 text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none text-center">{category != null ? category.name : 'Sin categorizar'}</button></td>
         <td className='px-6 py-4 text-right'>
           <div>
             <button
@@ -128,7 +128,7 @@ export function RowProduct(props) {
       </tr>
       <Modal isOpen={modalEditOpen} onClose={handleCloseModalEdit}>
         <FormProduct
-          formEditData={yacht}
+          formEditData={product}
           onClose={handleCloseModalEdit}
           onRefreshData={onRefreshData}
         />
