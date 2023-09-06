@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { dynamicBlurDataUrl } from '@/components/util/dynamicBlurDataUrl'
 import DatePicker from '@/components/detail/DatePicker'
 import Comentarios from '@/components/detail/Comentarios'
+import MediaShare from '@/components/mediaShare/MediaShare'
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 const itemsUrl = `${hostUrl}/api/`
@@ -64,10 +65,15 @@ export default async function Detalle({ params }) {
           <ButtonBack />
         </div>
       </div>
+
       <div
-        className='container rounded-lg bg-[#fcfcfc] pb-10 pt-5'
+        className='container relative rounded-lg bg-[#fcfcfc] pb-10 pt-5'
         href={`/detail/${index}`}
       >
+        <div className='absolute left-[45px] top-[50px] z-30'>
+          <MediaShare />
+        </div>
+
         <Galeria imagesGallery={imagesGallery} placeHolders={placeHolders} />
 
         {/* Container */}
