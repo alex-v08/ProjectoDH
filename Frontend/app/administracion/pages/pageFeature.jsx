@@ -8,6 +8,7 @@ import { Modal } from '../util/modal'
 import Table from '../util/table'
 
 import { Spline_Sans } from 'next/font/google'
+import Swal from 'sweetalert2'
 const spline = Spline_Sans({
   weight: '600',
   subsets: ['latin'],
@@ -32,6 +33,10 @@ export default function PageFeature() {
       const jsonData = await response.json()
       setData(jsonData)
     } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        text: `Error durante la carga de registros o no hay registros para mostrar.`
+      })
       console.error('Error cargando los registros: ', error)
     }
   }
@@ -68,20 +73,31 @@ export default function PageFeature() {
         </div>
         <div className='relative mx-auto mt-12  w-full overflow-x-auto rounded-lg shadow-md'>
           <Table className='mx-auto w-full text-left text-sm text-gray-500 dark:text-gray-400'>
-            {data.map(feature => (
-              <RowFeature
-                key={feature.id}
-                id={feature.id}
-                name={feature.name}
-                icon={feature.image}
-                isChangeData={changeData}
-                onRefreshData={refreshData}
-              />
-            ))}
+            {data.length !== 0 ? (
+              data.map(feature => (
+                <RowFeature
+                  key={feature.id}
+                  id={feature.id}
+                  name={feature.name}
+                  icon={feature.image}
+                  isChangeData={changeData}
+                  onRefreshData={refreshData}
+                />
+              ))
+            ) : (
+              <tr>
+                <td colSpan='5' className='text-center'>
+                  No hay registros para mostrar
+                </td>
+              </tr>
+            )}
           </Table>
         </div>
         <Modal isOpen={modalFeatureOpen} onClose={handleCloseModalFeature}>
-          <FormFeature onClose={handleCloseModalFeature} onRefreshData={refreshData}/>
+          <FormFeature
+            onClose={handleCloseModalFeature}
+            onRefreshData={refreshData}
+          />
         </Modal>
       </div>
     </div>

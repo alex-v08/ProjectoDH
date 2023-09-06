@@ -5,7 +5,7 @@ import { Modal } from '../util/modal'
 import Table from '../util/table'
 import { FormProduct } from '../register-edit/formProduct'
 import { RowProduct } from '../rows/rowProduct'
-
+import Swal from 'sweetalert2'
 import { Spline_Sans } from 'next/font/google'
 const spline = Spline_Sans({
   weight: '600',
@@ -32,6 +32,10 @@ export default function PageProduct() {
       const jsonData = await response.json()
       setData(jsonData)
     } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        text: `Error durante la carga de registros o no hay registros para mostrar.`
+      })
       console.error('Error cargando los registros: ', error)
     }
   }
@@ -68,7 +72,7 @@ export default function PageProduct() {
         </div>
         <div className='relative mx-auto mt-12  w-full overflow-x-auto rounded-lg shadow-md'>
           <Table>
-            {data.map(product => (
+            {data.length !== 0 ? data.map(product => (
               <RowProduct
                 key={product.id}
                 id={product.id}
@@ -80,7 +84,13 @@ export default function PageProduct() {
                 onClose={handleCloseModal}
                 onRefreshData={refreshData}
               />
-            ))}
+            )) : (
+              <tr>
+                <td colSpan='5' className='text-center'>
+                  No hay registros para mostrar
+                </td>
+              </tr>
+            )}
           </Table>
         </div>
 

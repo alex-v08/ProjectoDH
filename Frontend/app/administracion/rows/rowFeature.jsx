@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Modal } from '../util/modal'
 import { FormFeature } from '../register-edit/formFeature'
+import Swal from 'sweetalert2'
 
 export function RowFeature(props) {
   const { id, name, icon, isChangeData, onRefreshData } = props
@@ -52,8 +53,15 @@ export function RowFeature(props) {
     e.stopPropagation()
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
     const urlDelete = `${hostUrl}/api/feature/delete/${id}`
-    const opcion = confirm(`Desea eliminar el registro con el id: ${id}`)
-    if (opcion) {
+    const opcion = await Swal.fire({
+      title: `¿Estás seguro de que quieres eliminar la caracteristica '${name}'?`,
+      text: `En caso de eliminar esta caracteristica de la base de datos, todos los productos que esten asociados a ella podrian quedar sin caracteristicas asociadas.`,
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      icon: 'warning'
+    })
+    if (opcion.isConfirmed) {
       try {
         const response = await fetch(urlDelete, {
           method: 'DELETE',
@@ -67,9 +75,17 @@ export function RowFeature(props) {
               response.status
           )
         } else {
+          Swal.fire({
+            icon: 'success',
+            text: `La caracteristica '${name}' a sido eliminada correctamente.`
+          })
           onRefreshData()
         }
       } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          text: `La caracteristica '${name}' no pudo ser eliminada correctamente. Por favor comuniquese con el proveedor del servicio.`
+        })
         console.error('Error al eliminar el registro:', error)
       }
     }

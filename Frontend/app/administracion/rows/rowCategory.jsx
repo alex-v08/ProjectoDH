@@ -84,7 +84,7 @@ export function RowCategory(props) {
         }
       } catch (error) {
         Swal.fire({
-          icon: 'info',
+          icon: 'error',
           text: `La categoria '${name}' no pudo ser eliminada correctamente. Por favor comuniquese con el proveedor del servicio.`
         })
         console.error('Error al eliminar el registro:', error)

@@ -2,6 +2,7 @@
 
 import Icons from '@/components/util/icons'
 import { useEffect, useState } from 'react'
+import Swal from 'sweetalert2'
 
 export function FormFeature(props) {
   const { formEditData, onClose, onRefreshData } = props
@@ -55,14 +56,20 @@ export function FormFeature(props) {
         ? `Seguro que desea crear un registro para la caracteristica: ${name}`
         : `Seguro que desea modificar el registro para la caracteristica: ${name}`
 
-    const opcion = confirm(msg)
+        const opcion = await Swal.fire({
+          title: msg,
+          showCancelButton: true,
+          confirmButtonText: 'Aceptar',
+          cancelButtonText: 'Cancelar',
+          icon: 'warning'
+        })
 
     const featureSubmit = {
       name: name,
       image: image
     }
 
-    if (opcion) {
+    if (opcion.isConfirmed) {
       try {
         const response = await fetch(url, {
           method: feature == undefined ? 'POST' : 'PUT',
@@ -79,11 +86,19 @@ export function FormFeature(props) {
           )
         } else {
           onRefreshData()
+          Swal.fire({
+            icon: 'success',
+            text: `La caracteristica '${name}' a sido creada correctamente.`
+          })
           onClose()
         }
         const data = await response.json()
         console.log('Respuesta del servidor:', data)
       } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          text: `La categoria '${name}' no pudo ser creada/modificada correctamente. Por favor comuniquese con el proveedor del servicio.`
+        })
         console.error('Error al realizar la solicitud POST:', error)
       }
     }

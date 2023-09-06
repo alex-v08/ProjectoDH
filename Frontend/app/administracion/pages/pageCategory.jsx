@@ -8,6 +8,7 @@ import { Modal } from '../util/modal'
 import Table from '../util/table'
 
 import { Spline_Sans } from 'next/font/google'
+import Swal from 'sweetalert2'
 const spline = Spline_Sans({
   weight: '600',
   subsets: ['latin'],
@@ -20,7 +21,6 @@ export default function PageCategory() {
   const [changeData, setChangeData] = useState(true)
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
   const urlGetCategory = `${hostUrl}/api/category/all`
-  
   async function fetchData() {
     try {
       const response = await fetch(urlGetCategory)
@@ -33,6 +33,10 @@ export default function PageCategory() {
       const jsonData = await response.json()
       setData(jsonData)
     } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        text: `Error durante la carga de registros o no hay registros para mostrar.`
+      })
       console.error('Error cargando los registros: ', error)
     }
   }
@@ -69,20 +73,32 @@ export default function PageCategory() {
         </div>
         <div className='relative mx-auto mt-12  w-full overflow-x-auto rounded-lg shadow-md'>
           <Table>
-            {data.map(category => (
-              <RowCategory
-                key={category.id}
-                id={category.id}
-                name={category.name}
-                icon={category.image}
-                isChangeData={changeData}
-                onRefreshData={refreshData}
-              />
-            ))}
+            {data.length !== 0 ? (
+              data.map(category => (
+                <RowCategory
+                  key={category.id}
+                  id={category.id}
+                  name={category.name}
+                  icon={category.image}
+                  isChangeData={changeData}
+                  onRefreshData={refreshData}
+                />
+              ))
+            ) : (
+              <tr>
+                <td colSpan='5' className='text-center'>
+                  No hay registros para mostrar
+                </td>
+              </tr>
+            )}
           </Table>
         </div>
         <Modal isOpen={modalCatOpen} onClose={handleCloseModalCat}>
-          <FormCat isOpen={modalCatOpen} onClose={handleCloseModalCat} onRefreshData={refreshData}/>
+          <FormCat
+            isOpen={modalCatOpen}
+            onClose={handleCloseModalCat}
+            onRefreshData={refreshData}
+          />
         </Modal>
       </div>
     </div>

@@ -114,9 +114,10 @@ export function FormCat(props) {
         console.log('Respuesta del servidor:', data)
       } catch (error) {
         Swal.fire({
-          icon: 'info',
-          text: `La categoria '${name}' no pudo ser creada correctamente. Por favor comuniquese con el proveedor del servicio.`
+          icon: 'error',
+          text: `La categoria '${name}' no pudo ser creada/modificada correctamente. Por favor comuniquese con el proveedor del servicio.`
         })
+        console.error('Error al realizar la solicitud POST:', error)
       }
     }
   }

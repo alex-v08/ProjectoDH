@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-
+import Swal from 'sweetalert2'
 export function FormProduct(props) {
   const { formEditData, onClose, onRefreshData } = props
   const [product, setProduct] = useState(formEditData)
@@ -10,7 +10,9 @@ export function FormProduct(props) {
   const [description, setDescription] = useState(
     product == undefined ? '' : product.description
   )
-  const [image, setImage] = useState(product == undefined ? '' : product.imageUrl)
+  const [image, setImage] = useState(
+    product == undefined ? '' : product.imageUrl
+  )
   const [pricePerDay, setPricePerDay] = useState(
     product == undefined ? '' : product.pricePerDay
   )
@@ -21,7 +23,11 @@ export function FormProduct(props) {
     product == undefined ? '' : product.pricePerHour
   )
   const [categoryId, setCategoryId] = useState(
-    product == undefined ? '' : product.category == null ? '' : product.category.id
+    product == undefined
+      ? ''
+      : product.category == null
+      ? ''
+      : product.category.id
   )
   const [featuresId, setFeaturesId] = useState(
     product == undefined
@@ -40,7 +46,11 @@ export function FormProduct(props) {
       : product.location.country
   )
   const [city, setCity] = useState(
-    product == undefined ? '' : product.location == null ? '' : product.location.city
+    product == undefined
+      ? ''
+      : product.location == null
+      ? ''
+      : product.location.city
   )
   const [available, setAvailable] = useState(
     product == undefined ? true : product.available
@@ -105,6 +115,25 @@ export function FormProduct(props) {
 
   async function handleSubmit(e) {
     e.preventDefault()
+    const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+    const url =
+      product == undefined
+        ? `${hostUrl}/api/create`
+        : `${hostUrl}/api/update/${product.id}`
+
+    const msg =
+      product == undefined
+        ? `Seguro que desea crear un registro para el producto: ${name} con el sku: ${sku}`
+        : `Seguro que desea modificar el registro para el producto: ${name} con el sku: ${sku}`
+
+    const opcion = await Swal.fire({
+      title: msg,
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      icon: 'warning'
+    })
+
     const productForm = {
       name: name,
       sku: sku,
@@ -121,21 +150,8 @@ export function FormProduct(props) {
       },
       available: available
     }
-    console.log(JSON.stringify(productForm))
-    const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const url =
-      product == undefined
-        ? `${hostUrl}/api/create`
-        : `${hostUrl}/api/update/${product.id}`
 
-    const msg =
-      product == undefined
-        ? `Seguro que desea crear un registro para el producto: ${name} con el sku: ${sku}`
-        : `Seguro que desea modificar el registro para el producto: ${name} con el sku: ${sku}`
-
-    const opcion = confirm(msg)
-
-    if (opcion) {
+    if (opcion.isConfirmed) {
       try {
         const response = await fetch(url, {
           method: product == undefined ? 'POST' : 'PUT',
@@ -152,12 +168,20 @@ export function FormProduct(props) {
           )
         } else {
           onRefreshData()
+          Swal.fire({
+            icon: 'success',
+            text: `El producto '${name}' a sido creado correctamente.`
+          })
           onClose()
         }
 
         const data = await response.json()
         console.log('Respuesta del servidor:', data)
       } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          text: `El producto '${name}' no pudo ser creado/modificado correctamente. Por favor comuniquese con el proveedor del servicio.`
+        })
         console.error('Error al realizar la solicitud POST:', error)
       }
     }
