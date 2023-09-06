@@ -63,7 +63,7 @@ export default function PageFeature() {
             className='rounded border border-sky-500 bg-transparent px-4 py-2 font-semibold text-sky-700 transition ease-in-out hover:border-transparent hover:bg-sky-500 hover:text-white dark:text-white sm:block'
             onClick={handleOpenModalFeature}
           >
-            Registrar Características
+            Registrar Característica
           </button>
         </div>
         <div className='relative mx-auto mt-12  w-full overflow-x-auto rounded-lg shadow-md'>

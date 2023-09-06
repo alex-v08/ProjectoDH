@@ -58,8 +58,8 @@ export function RowCategory(props) {
       title: `¿Estás seguro de que quieres eliminar la categoria '${name}'?`,
       text: `En caso de eliminar esta categoria de la base de datos, todos los productos que esten asociados a ella quedaran sin categorizar.`,
       showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'No, cancelar',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
       icon: 'warning'
     })
     if (opcion.isConfirmed) {

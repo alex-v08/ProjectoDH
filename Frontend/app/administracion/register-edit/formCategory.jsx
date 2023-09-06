@@ -2,14 +2,25 @@
 
 import Icons from '@/components/util/icons'
 import { useState } from 'react'
+import Swal from 'sweetalert2'
 
 export function FormCat(props) {
-  const { formEditData, onClose, onRefreshData} = props
+  const { formEditData, onClose, onRefreshData } = props
   const [category, setCategory] = useState(formEditData)
   const [name, setName] = useState(category == undefined ? '' : category.name)
-  const [description, setDescription] = useState(category == undefined ? '' : category.description == null ? '' : category.description)
+  const [description, setDescription] = useState(
+    category == undefined
+      ? ''
+      : category.description == null
+      ? ''
+      : category.description
+  )
   const [image, setImage] = useState(
-    category == undefined ? null : category.image == null ? null : category.image
+    category == undefined
+      ? null
+      : category.image == null
+      ? null
+      : category.image
   )
   const [selectedOption, setSelectedOption] = useState(
     category == undefined
@@ -58,10 +69,16 @@ export function FormCat(props) {
 
     const msg =
       category == undefined
-        ? `Seguro que desea crear un registro para la categoria: ${name}`
-        : `Seguro que desea modificar el registro para la categoria: ${name}`
+        ? `¿Estás seguro de que quieres crear la categoria '${name}'?`
+        : `¿Estás seguro de que quieres modificar la categoria '${name}'?`
 
-    const opcion = confirm(msg)
+    const opcion = await Swal.fire({
+      title: msg,
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      icon: 'warning'
+    })
 
     const categorySubmit = {
       name: name,
@@ -70,7 +87,7 @@ export function FormCat(props) {
     }
     console.log(JSON.stringify(categorySubmit))
 
-    if (opcion) {
+    if (opcion.isConfirmed) {
       try {
         const response = await fetch(url, {
           method: category == undefined ? 'POST' : 'PUT',
@@ -86,13 +103,20 @@ export function FormCat(props) {
               response.status
           )
         } else {
-          onRefreshData()
           onClose()
+          Swal.fire({
+            icon: 'success',
+            text: `La categoria '${name}' a sido creada correctamente.`
+          })
+          onRefreshData()
         }
         const data = await response.json()
         console.log('Respuesta del servidor:', data)
       } catch (error) {
-        console.error('Error al realizar la solicitud POST:', error)
+        Swal.fire({
+          icon: 'info',
+          text: `La categoria '${name}' no pudo ser creada correctamente. Por favor comuniquese con el proveedor del servicio.`
+        })
       }
     }
   }
@@ -153,7 +177,11 @@ export function FormCat(props) {
               Icono de la categoría
             </label>
             <div>
-              <Icons default={defaultOption} selectedOption={selectedOption} onChange={handleChangeImage}/>
+              <Icons
+                default={defaultOption}
+                selectedOption={selectedOption}
+                onChange={handleChangeImage}
+              />
             </div>
           </div>
           <div className='col-span-6 flex items-center space-x-2 rounded-b border-t border-gray-200 p-6 dark:border-gray-600'>
