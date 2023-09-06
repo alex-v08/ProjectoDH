@@ -3,15 +3,17 @@
 import { useState } from 'react'
 import Datepicker from 'react-tailwindcss-datepicker'
 
-export default function DatePicker() {
+export default function DatePicker({ setSelectedDate }) {
   const [value, setValue] = useState({
     startDate: null,
     endDate: null
   })
 
   const handleValueChange = newValue => {
-    // console.log('newValue:', newValue)
+    console.log('newValue:', newValue)
     setValue(newValue)
+    // Actualiza el estado en el componente padre cuando se selecciona una fecha
+    setSelectedDate(newValue)
   }
 
   return (

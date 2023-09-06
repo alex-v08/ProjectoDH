@@ -34,12 +34,12 @@ export default function Checkout() {
           <div className='sticky top-[94px] w-full rounded-lg border border-gray-100 bg-white shadow-lg shadow-gray-200 lg:max-w-[438px]'>
             <div className='px-5 pb-10 pt-5 text-gray-500 sm:px-12'>
               <div className='mb-8 flex items-center border-b pb-2'>
-                <span className='pr-2 text-xs font-semibold uppercase'>
-                  desde:
+                <span className='pr-2 font-semibold text-sky-950'>
+                  Información de contacto
                 </span>
-                <span className='text-lg font-bold tracking-tight text-sky-500'>
-                  {/* <CurrencyFormatter value={results.pricePerDay} /> */}/ Día
-                </span>
+                {/* <span className='text-lg font-bold tracking-tight text-sky-500'>
+                  <CurrencyFormatter value={results.pricePerDay} />
+                </span> */}
               </div>
               <div>
                 <div className='flex items-center pb-2 text-sky-950'>
