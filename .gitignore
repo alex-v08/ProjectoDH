@@ -33,5 +33,6 @@ build/
 .vscode/
 **/.idea/**
 .idea/sonarlint/*
+.gitlab-ci.yml
 
 

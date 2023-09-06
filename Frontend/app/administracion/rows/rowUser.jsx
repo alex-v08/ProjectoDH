@@ -1,5 +1,5 @@
 export function RowUser(props) {
-  const { id, name, lastName, dni, password, email, phone, address, role, uuid, active } =
+  const { id, name, lastName, dni, password, email, phone, address, role, uuid, active, onRefreshData } =
     props
 
   async function handleOnEditRole(newRole) {
@@ -42,7 +42,7 @@ export function RowUser(props) {
             } el usuario como administrador. Response: ${response.status}`
           )
         } else {
-          location.assign()
+          onRefreshData()
         }
       } catch (error) {
         console.error(
