@@ -22,8 +22,7 @@ export default function Dropdown({ openMenu }) {
         )
         if (response.ok) {
           const userData = await response.json()
-          setUserRole(userData[0].role)
-          console.log(userData[0].role) // Suponiendo que el rol se encuentra en userData.role
+          setUserRole(userData[0].role) // Suponiendo que el rol se encuentra en userData.role
         } else {
           // Maneja los errores de la solicitud aquí.
         }
@@ -60,7 +59,7 @@ export default function Dropdown({ openMenu }) {
         <AiOutlineHome className='mr-2 inline-block text-base' />
         Inicio
       </Link>
-      <Link href='/' className='rounded-lg px-3 py-2 hover:bg-slate-200'>
+      <Link href='/user' className='rounded-lg px-3 py-2 hover:bg-slate-200'>
         <BsGear className='mr-2 inline-block text-base' />
         Configuración
       </Link>

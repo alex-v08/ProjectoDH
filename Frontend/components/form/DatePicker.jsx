@@ -27,6 +27,7 @@ export default function DatePicker() {
         //     endDate: '2023-09-20'
         //   }
         // ]}
+        readOnly={true}
         minDate={new Date()}
         maxDate={new Date().setMonth(22)}
         primaryColor={'rose'}
