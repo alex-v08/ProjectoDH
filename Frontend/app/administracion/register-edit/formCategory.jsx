@@ -1,13 +1,50 @@
 'use client'
 
+import Icons from '@/components/util/icons'
 import { useState } from 'react'
+import Swal from 'sweetalert2'
 
 export function FormCat(props) {
-  const { formEditData, onClose, onRefreshData} = props
+  const { formEditData, onClose, onRefreshData } = props
   const [category, setCategory] = useState(formEditData)
   const [name, setName] = useState(category == undefined ? '' : category.name)
-  const [description, setDescription] = useState(category == undefined ? '' : category.description == null ? '' : category.description)
-  const [image, setImage] = useState(category == undefined ? '' : category.image == null ? '' : category.image)
+  const [description, setDescription] = useState(
+    category == undefined
+      ? ''
+      : category.description == null
+      ? ''
+      : category.description
+  )
+  const [image, setImage] = useState(
+    category == undefined
+      ? null
+      : category.image == null
+      ? null
+      : category.image
+  )
+  const [selectedOption, setSelectedOption] = useState(
+    category == undefined
+      ? null
+      : category.image == null
+      ? null
+      : {
+          value: category.image,
+          label: category.image,
+          icon: category.image
+        }
+  )
+
+  const [defaultOption, setDefaultOption] = useState(
+    category == undefined
+      ? null
+      : category.image == null
+      ? null
+      : {
+          value: category.image,
+          label: category.image,
+          icon: category.image
+        }
+  )
 
   function handleChangeName(e) {
     setName(e.target.value)
@@ -17,8 +54,9 @@ export function FormCat(props) {
     setDescription(e.target.value)
   }
 
-  function handleChangeImage(e) {
-    setImage(e.target.value)
+  function handleChangeImage(selectedOption) {
+    setSelectedOption(selectedOption)
+    setImage(selectedOption != null ? selectedOption.value : null)
   }
 
   async function handleSubmit(e) {
@@ -31,10 +69,16 @@ export function FormCat(props) {
 
     const msg =
       category == undefined
-        ? `Seguro que desea crear un registro para la categoria: ${name}`
-        : `Seguro que desea modificar el registro para la categoria: ${name}`
+        ? `¿Estás seguro de que quieres crear la categoria '${name}'?`
+        : `¿Estás seguro de que quieres modificar la categoria '${name}'?`
 
-    const opcion = confirm(msg)
+    const opcion = await Swal.fire({
+      title: msg,
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      icon: 'warning'
+    })
 
     const categorySubmit = {
       name: name,
@@ -43,7 +87,7 @@ export function FormCat(props) {
     }
     console.log(JSON.stringify(categorySubmit))
 
-    if (opcion) {
+    if (opcion.isConfirmed) {
       try {
         const response = await fetch(url, {
           method: category == undefined ? 'POST' : 'PUT',
@@ -59,12 +103,20 @@ export function FormCat(props) {
               response.status
           )
         } else {
-          onRefreshData()
           onClose()
+          Swal.fire({
+            icon: 'success',
+            text: `La categoria '${name}' a sido creada correctamente.`
+          })
+          onRefreshData()
         }
         const data = await response.json()
         console.log('Respuesta del servidor:', data)
       } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          text: `La categoria '${name}' no pudo ser creada/modificada correctamente. Por favor comuniquese con el proveedor del servicio.`
+        })
         console.error('Error al realizar la solicitud POST:', error)
       }
     }
@@ -74,7 +126,7 @@ export function FormCat(props) {
     e.preventDefault()
     setName(category == undefined ? '' : category.name)
     setDescription(category == undefined ? '' : category.description)
-    setImage(category == undefined ? '' : category.image)
+    setSelectedOption(category == undefined ? '' : defaultOption)
   }
 
   return (
@@ -123,16 +175,15 @@ export function FormCat(props) {
               htmlFor='image'
               className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
             >
-              Imagen de la categoría
+              Icono de la categoría
             </label>
-            <input
-              type='text'
-              value={image}
-              onChange={handleChangeImage}
-              placeholder='Ingrese la imagen de la categoría'
-              id='image'
-              className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500'
-            />
+            <div>
+              <Icons
+                default={defaultOption}
+                selectedOption={selectedOption}
+                onChange={handleChangeImage}
+              />
+            </div>
           </div>
           <div className='col-span-6 flex items-center space-x-2 rounded-b border-t border-gray-200 p-6 dark:border-gray-600'>
             <div className='mx-auto'>

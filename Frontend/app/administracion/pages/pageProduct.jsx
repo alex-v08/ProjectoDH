@@ -5,7 +5,7 @@ import { Modal } from '../util/modal'
 import Table from '../util/table'
 import { FormProduct } from '../register-edit/formProduct'
 import { RowProduct } from '../rows/rowProduct'
-
+import Swal from 'sweetalert2'
 import { Spline_Sans } from 'next/font/google'
 const spline = Spline_Sans({
   weight: '600',
@@ -18,11 +18,11 @@ export default function PageProduct() {
   const [modalOpen, setModalOpen] = useState(false)
   const [changeData, setChangeData] = useState(true)
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-  const urlGetYacht = `${hostUrl}/api/all`
+  const urlGetProduct = `${hostUrl}/api/all`
   
   async function fetchData() {
     try {
-      const response = await fetch(urlGetYacht)
+      const response = await fetch(urlGetProduct)
       if (!response.ok) {
         throw new Error(
           'Error al intentar cargar todos los registros: . Response: ' +
@@ -32,6 +32,10 @@ export default function PageProduct() {
       const jsonData = await response.json()
       setData(jsonData)
     } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        text: `Error durante la carga de registros o no hay registros para mostrar.`
+      })
       console.error('Error cargando los registros: ', error)
     }
   }
@@ -63,24 +67,30 @@ export default function PageProduct() {
             className='rounded border border-sky-500 bg-transparent px-4 py-2 font-semibold text-sky-700 transition ease-in-out hover:border-transparent hover:bg-sky-500 hover:text-white dark:text-white sm:block'
             onClick={handleOpenModal}
           >
-            Registrar Yate
+            Registrar Producto
           </button>
         </div>
         <div className='relative mx-auto mt-12  w-full overflow-x-auto rounded-lg shadow-md'>
           <Table>
-            {data.map(yacht => (
+            {data.length !== 0 ? data.map(product => (
               <RowProduct
-                key={yacht.id}
-                id={yacht.id}
-                name={yacht.name}
-                urlImage={yacht.imageUrl}
-                category={yacht.category}
-                features={yacht.feature}
+                key={product.id}
+                id={product.id}
+                name={product.name}
+                urlImage={product.imageUrl}
+                category={product.category}
+                features={product.feature}
                 isChangeData={changeData}
                 onClose={handleCloseModal}
                 onRefreshData={refreshData}
               />
-            ))}
+            )) : (
+              <tr>
+                <td colSpan='5' className='text-center'>
+                  No hay registros para mostrar
+                </td>
+              </tr>
+            )}
           </Table>
         </div>
 

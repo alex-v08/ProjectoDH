@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Modal } from '../util/modal'
 import { FormProduct } from '../register-edit/formProduct'
 import Image from 'next/image'
-
+import Swal from 'sweetalert2'
 export function RowProduct(props) {
   const {
     id,
@@ -13,7 +13,7 @@ export function RowProduct(props) {
     isChangeData,
     onRefreshData
   } = props
-  const [yacht, setYatcht] = useState({})
+  const [product, setYatcht] = useState({})
   const [modalEditOpen, setModalEditOpen] = useState(false)
 
   useEffect(() => {
@@ -22,9 +22,9 @@ export function RowProduct(props) {
 
   async function fetchData() {
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const urlGetYacht = `${hostUrl}/api/${id}`
+    const urlGetProduct = `${hostUrl}/api/${id}`
     try {
-      const response = await fetch(urlGetYacht)
+      const response = await fetch(urlGetProduct)
       if (!response.ok) {
         throw new Error(
           'Error al intentar cargar los datos del registro: ' + response.status
@@ -42,8 +42,15 @@ export function RowProduct(props) {
     e.stopPropagation()
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
     const urlDelete = `${hostUrl}/api/delete/${id}`
-    const opcion = confirm(`Desea eliminar el registro con el id: ${id}`)
-    if (opcion) {
+    const opcion = await Swal.fire({
+      title: `¿Estás seguro de que quieres eliminar el producto '${name}'?`,
+      text: `En caso de eliminar este producto de la base de datos, este ya no aparecera en la pagina y se perderan todos sus datos.`,
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      icon: 'warning'
+    })
+    if (opcion.isConfirmed) {
       try {
         const response = await fetch(urlDelete, {
           method: 'DELETE',
@@ -57,9 +64,17 @@ export function RowProduct(props) {
               response.status
           )
         } else {
+          Swal.fire({
+            icon: 'success',
+            text: `El producto '${name}' a sido eliminado correctamente.`
+          })
           onRefreshData()
         }
       } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          text: `El producto '${name}' no pudo ser eliminado correctamente. Por favor comuniquese con el proveedor del servicio.`
+        })
         console.error('Error al eliminar el registro:', error)
       }
     }
@@ -98,7 +113,7 @@ export function RowProduct(props) {
           {id}
         </th>
         <td className='px-16 py-4'>{name}</td>
-        <td className='px-8 py-4'><button className="shadow-md w-28 py-1 no-underline rounded-full bg-sky-500 text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none">{category != null ? category.name : 'Sin categorizar'}</button></td>
+        <td className='px-8 py-4'><button className="shadow-md w-28 py-1 no-underline rounded-full bg-sky-500 text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none text-center">{category != null ? category.name : 'Sin categorizar'}</button></td>
         <td className='px-6 py-4 text-right'>
           <div>
             <button
@@ -128,7 +143,7 @@ export function RowProduct(props) {
       </tr>
       <Modal isOpen={modalEditOpen} onClose={handleCloseModalEdit}>
         <FormProduct
-          formEditData={yacht}
+          formEditData={product}
           onClose={handleCloseModalEdit}
           onRefreshData={onRefreshData}
         />
