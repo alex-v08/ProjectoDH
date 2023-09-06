@@ -58,7 +58,7 @@ export default async function Detalle({ params }) {
               Barcos
             </Link>
             <span className='px-2'>{'>'}</span>
-            {results.name}
+            <div className='line-clamp-1 pr-2'>{results.name}</div>
           </div>
           <ButtonBack />
         </div>
