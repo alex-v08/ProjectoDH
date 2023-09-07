@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/context/authContext'
 import Swal from 'sweetalert2' // Importa SweetAlert2
-import Link from 'next/link'
 
 const HeartButton = ({ fillColor, behaivour, productId }) => {
   const { user } = useAuth()
