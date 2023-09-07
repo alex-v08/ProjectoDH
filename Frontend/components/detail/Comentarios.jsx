@@ -34,13 +34,23 @@ export default function Comentarios() {
       <h2 className='text-2xl font-bold text-sky-950'>Comentarios</h2>
       {comentarios.map((comentario, index) => (
         <div key={index} className='comment-body flex border-b pb-5 pt-6'>
-          <Image
-            src={comentario.photoUrl}
-            alt='avatar'
-            width={60}
-            height={60}
-            className='mr-5 hidden h-[60px] w-[60px] rounded-full sm:block'
-          />
+          {comentario.photoUrl ? (
+            <Image
+              src={comentario.photoUrl}
+              alt='avatar'
+              width={60}
+              height={60}
+              className='mr-5 hidden h-[60px] w-[60px] rounded-full sm:block'
+            />
+          ) : (
+            <Image
+              src='/avatar.png'
+              alt='avatar'
+              width={60}
+              height={60}
+              className='mr-5 hidden h-[60px] w-[60px] rounded-full sm:block'
+            />
+          )}
           <div>
             <div>
               {Array(comentario.rating)
