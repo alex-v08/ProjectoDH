@@ -191,6 +191,10 @@ public class ProductService {
     }
 
     public List<Product> getAllProductFilter(String city, List<Long> categoriesId, List<Long> featuresId) {
+        if (city == null || city.isEmpty() && (categoriesId == null || categoriesId.isEmpty()) && (featuresId == null || featuresId.isEmpty())) {
+            return new ArrayList<>();
+        }
+
         Specification<Product> spec = Specification.where(null);
 
         if (city != null && !city.isEmpty()) {
