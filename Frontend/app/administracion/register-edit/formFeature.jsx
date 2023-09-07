@@ -32,8 +32,8 @@ export function FormFeature(props) {
           label: feature.image,
           icon: feature.image
         }
-  )      
-  
+  )
+
   function handleChangeName(e) {
     setName(e.target.value)
   }
@@ -53,16 +53,21 @@ export function FormFeature(props) {
 
     const msg =
       feature == undefined
-        ? `Seguro que desea crear un registro para la caracteristica: ${name}`
-        : `Seguro que desea modificar el registro para la caracteristica: ${name}`
+        ? `¿Seguro que desea crear un registro para la caracteristica: ${name}?`
+        : `¿Seguro que desea modificar el registro de la caracteristica: ${name}?`
 
-        const opcion = await Swal.fire({
-          title: msg,
-          showCancelButton: true,
-          confirmButtonText: 'Aceptar',
-          cancelButtonText: 'Cancelar',
-          icon: 'warning'
-        })
+    const msgFeature =
+      feature == undefined
+        ? `La caracteristica '${name}' fue creada correctamente.`
+        : `La caracteristica '${name}' fue modificada correctamente.`
+
+    const opcion = await Swal.fire({
+      title: msg,
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      icon: 'warning'
+    })
 
     const featureSubmit = {
       name: name,
@@ -88,7 +93,7 @@ export function FormFeature(props) {
           onRefreshData()
           Swal.fire({
             icon: 'success',
-            text: `La caracteristica '${name}' a sido creada correctamente.`
+            text: `${msgFeature}`
           })
           onClose()
         }
@@ -142,7 +147,11 @@ export function FormFeature(props) {
               Icono de la caracteristica
             </label>
             <div>
-              <Icons default={defaultOption} selectedOption={selectedOption} onChange={handleChangeImage}/>
+              <Icons
+                default={defaultOption}
+                selectedOption={selectedOption}
+                onChange={handleChangeImage}
+              />
             </div>
           </div>
           <div className='col-span-6 flex items-center space-x-2 rounded-b border-t border-gray-200 p-6 dark:border-gray-600'>
