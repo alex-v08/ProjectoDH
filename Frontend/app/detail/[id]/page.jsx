@@ -71,12 +71,9 @@ export default async function Detalle({ params }) {
         className='container relative rounded-lg bg-[#fcfcfc] pb-10 pt-5'
         href={`/detail/${index}`}
       >
-        <div className='mr-2 flex justify-end space-x-4'>
+        <div className='mr-2 flex items-center justify-end space-x-4'>
           <ShareButton />
           <HeartButton fillColor='#0EA5E9' productId={index} />
-        </div>
-        <div className='absolute left-[45px] top-[70px] z-30'>
-          <MediaShare />
         </div>
 
         <Galeria imagesGallery={imagesGallery} placeHolders={placeHolders} />

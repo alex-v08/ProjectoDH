@@ -19,7 +19,7 @@ export default function MediaShare() {
   const url = process.env.NEXT_PUBLIC_HOST_URL_NOIP + usePathname()
   //console.log(url)
   return (
-    <div>
+    <div className='absolute -top-1 right-8 flex'>
       <EmailShareButton url={url}>
         <EmailIcon size={32} round />
       </EmailShareButton>
