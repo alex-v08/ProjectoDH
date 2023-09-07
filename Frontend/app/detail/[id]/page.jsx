@@ -11,7 +11,6 @@ import Comentarios from '@/components/detail/Comentarios'
 import MediaShare from '@/components/mediaShare/MediaShare'
 import MenuReserva from '@/components/detail/MenuReserva'
 
-
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 const itemsUrl = `${hostUrl}/api/`
 const imageUrl = `${hostUrl}/api/urlImage/`
@@ -72,12 +71,11 @@ export default async function Detalle({ params }) {
         className='container relative rounded-lg bg-[#fcfcfc] pb-10 pt-5'
         href={`/detail/${index}`}
       >
-        <div className='flex justify-end space-x-4 mr-2'>
+        <div className='mr-2 flex justify-end space-x-4'>
           <ShareButton />
           <HeartButton fillColor='#0EA5E9' productId={index} />
         </div>
-        <Galeria imagesGallery={imagesGallery} />
-        <div className='absolute left-[45px] top-[50px] z-30'>
+        <div className='absolute left-[45px] top-[70px] z-30'>
           <MediaShare />
         </div>
 
