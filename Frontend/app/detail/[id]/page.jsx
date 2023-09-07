@@ -1,15 +1,15 @@
 import Galeria from '@/components/suggested/galeriaImagenes/Galeria'
-import CurrencyFormatter from '@/components/util/CurrencyFormatter'
 import Link from 'next/link'
 import { HiLocationMarker } from 'react-icons/hi'
-import { BsStarFill, BsStar } from 'react-icons/bs'
+import { BsStarFill } from 'react-icons/bs'
 import { ButtonBack } from '@/components/suggested/buttonBack/ButtonBack'
 import ShareButton from '@/components/favs/ShareButton'
 import HeartButton from '@/components/favs/HeartButton'
 import Image from 'next/image'
 import { dynamicBlurDataUrl } from '@/components/util/dynamicBlurDataUrl'
-import DatePicker from '@/components/detail/DatePicker'
 import Comentarios from '@/components/detail/Comentarios'
+import MediaShare from '@/components/mediaShare/MediaShare'
+import MenuReserva from '@/components/detail/MenuReserva'
 
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
@@ -62,13 +62,14 @@ export default async function Detalle({ params }) {
               Barcos
             </Link>
             <span className='px-2'>{'>'}</span>
-            {results.name}
+            <div className='line-clamp-1 pr-2'>{results.name}</div>
           </div>
           <ButtonBack />
         </div>
       </div>
+
       <div
-        className='container rounded-lg bg-[#fcfcfc] pb-10 pt-5'
+        className='container relative rounded-lg bg-[#fcfcfc] pb-10 pt-5'
         href={`/detail/${index}`}
       >
         <div className='flex justify-end space-x-4 mr-2'>
@@ -76,6 +77,10 @@ export default async function Detalle({ params }) {
           <HeartButton fillColor='#0EA5E9' productId={index} />
         </div>
         <Galeria imagesGallery={imagesGallery} />
+        <div className='absolute left-[45px] top-[50px] z-30'>
+          <MediaShare />
+        </div>
+
         <Galeria imagesGallery={imagesGallery} placeHolders={placeHolders} />
 
         {/* Container */}
@@ -249,110 +254,10 @@ export default async function Detalle({ params }) {
             </div>
 
             {/* Comentarios */}
-            <div className='mt-8 border-b pb-8'>
-              <h2 className='text-2xl font-bold text-sky-950'>Comentarios</h2>
-              <div className='comment-body flex border-b pb-5 pt-6'>
-                <Image
-                  src='/avatar.png'
-                  alt='avatar'
-                  width={60}
-                  height={60}
-                  className='mr-5 hidden h-[60px] w-[60px] rounded-full sm:block'
-                />
-                <div>
-                  <div>
-                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
-                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
-                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
-                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
-                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
-                  </div>
-                  <div className='font-semibold'>
-                    Abel D. Retido{' '}
-                    <span className='text-sm font-normal text-gray-500'>
-                      - 05/09/2023
-                    </span>
-                  </div>
-                  <div>
-                    El producto era lo que esperaba y superó ampliamente mis
-                    espectativas.
-                  </div>
-                </div>
-              </div>
-              <div className='comment-body flex border-b pb-5 pt-6'>
-                <Image
-                  src='/avatar.png'
-                  alt='avatar'
-                  width={60}
-                  height={60}
-                  className='mr-5 hidden h-[60px] w-[60px] rounded-full sm:block'
-                />
-                <div>
-                  <div>
-                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
-                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
-                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
-                    <BsStarFill className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
-                    <BsStar className='mr-1 inline-block h-[14px] w-[14px] text-sky-500' />
-                  </div>
-                  <div className='font-semibold'>
-                    Adrian Droide{' '}
-                    <span className='text-sm font-normal text-gray-500'>
-                      - 07/09/2023
-                    </span>
-                  </div>
-                  <div>Quedé muy satisfecho con la atención del vendedor.</div>
-                </div>
-              </div>
-              <div className='pt-6'>
-                <h2 className='pb-2 text-xl font-bold text-sky-950'>
-                  Agregar un comentario
-                </h2>
-                <Comentarios />
-              </div>
-            </div>
+            <Comentarios />
           </div>
           {/* Reserva */}
-          <div className='sticky top-[94px] w-full rounded-lg border border-gray-100 bg-white shadow-lg shadow-gray-200 lg:max-w-[438px]'>
-            <div className='px-5 pb-10 pt-5 text-gray-500 sm:px-12'>
-              <div className='mb-8 flex items-center border-b pb-2'>
-                <span className='pr-2 text-xs font-semibold uppercase'>
-                  desde:
-                </span>
-                <span className='text-lg font-bold tracking-tight text-sky-500'>
-                  <CurrencyFormatter value={results.pricePerDay} />/ Día
-                </span>
-              </div>
-              <div>
-                <div className='flex items-center pb-2 text-sky-950'>
-                  <span className='floaty-icon-calendar pr-3 text-xl'></span>
-                  <h2 className='text-sm font-semibold uppercase'>Fecha</h2>
-                </div>
-                <DatePicker />
-                <div className='mt-5 flex items-center pb-2 text-sky-950'>
-                  <span className='floaty-icon-guestes pr-3 text-xl'></span>
-                  <h2 className='text-sm font-semibold uppercase'>Pasajeros</h2>
-                </div>
-                <input
-                  type='number'
-                  placeholder='Cantidad de personas'
-                  className='mb-10 w-full rounded-lg border-2 p-3 text-gray-400 dark:[color-scheme:light]'
-                />
-              </div>
-              <div className=''>
-                <button
-                  type='button'
-                  className='mb-5 w-full rounded-md bg-sky-500 py-3.5 text-center text-sm font-semibold text-white transition ease-in-out hover:bg-sky-900'
-                >
-                  Reservar ahora
-                </button>
-              </div>
-              <p className='px-0 text-center text-sm xl:px-5'>
-                Ponte en contacto con el propietario para planificar tu viaje o
-                consultar cualquier duda.
-              </p>
-            </div>
-          </div>
+          <MenuReserva price={results.pricePerDay} />
         </div>
       </div>
     </div>

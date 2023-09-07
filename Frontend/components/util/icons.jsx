@@ -1,7 +1,9 @@
 'use client'
 import { useState } from 'react'
+import Select from 'react-select'
 
-export default function Icons() {
+export default function Icons(props) {
+
   const icons_name = [
     'floaty-icon-acreage',
     'floaty-icon-air-conditioning',
@@ -265,6 +267,270 @@ export default function Icons() {
     'floaty-icon-youtube'
   ]
 
+  const icons_name_spanish = [
+    'superficie',
+    'aire acondicionado',
+    'ancla',
+    'aqualodge',
+    'sistema de audio',
+    'piloto automatico',
+    'premio',
+    'billete de banco',
+    'barco sin tripulacion',
+    'baño',
+    'barbacoa',
+    'camas',
+    'mejor precio',
+    'tipo de barco',
+    'reserva 1',
+    'reserva',
+    'desayuno',
+    'crucero en cabina',
+    'calendario menos',
+    'calendario',
+    'calendario 3',
+    'capitan',
+    'comprobar tarjeta 0',
+    'catamaranes',
+    'comprobar 1',
+    'comprobar 2',
+    'reloj',
+    'cafetera',
+    'comentarios 1',
+    'acondicionamiento',
+    'cocina',
+    'dedicado',
+    'destino',
+    'diamante',
+    'cenar',
+    'descuento',
+    'facil tripulacion',
+    'sobre abierto',
+    'abrir sobre',
+    'gimnasio',
+    'nevera',
+    'completamente tripulado',
+    'galerias',
+    'generador',
+    'invitados',
+    'secador de pelo',
+    'calefaccion',
+    'timon',
+    'hotel',
+    'imagen mas 1',
+    'altavoces interiores',
+    'moto acuatica',
+    'niño',
+    'utensilios de cocina',
+    'lavanderia',
+    'aro salvavidas',
+    'ubicacion 0',
+    'ubicacion 1',
+    'ubicacion 2',
+    'cerradura',
+    'inicio de sesion 0',
+    'marca',
+    'reuniones y eventos',
+    'menu',
+    'menos',
+    'dinero',
+    'moto acuatica',
+    'barcos a motor',
+    'ducha exterior',
+    'avion de papel',
+    'estacionamiento',
+    'telefono 3',
+    'telefono 1',
+    'avion',
+    'jugar',
+    'profesionales',
+    'calidad',
+    'pregunta',
+    'cotizacion 2',
+    'cotizacion 3',
+    'radar',
+    'caja fuerte',
+    'barco de vela',
+    'veleros',
+    'barco de vela',
+    'caja de ahorro',
+    'buscar',
+    'compartir 0',
+    'compartir',
+    'compras 1',
+    'spa',
+    'estrella 2',
+    'estrella en negrita',
+    'estrellas 1',
+    'piscina',
+    'etiqueta izquierda',
+    'telefono',
+    'boleto',
+    'toallas',
+    'tren',
+    'de confianza',
+    'television',
+    'usuario 1',
+    'usuarios 2',
+    'usuarios 3',
+    'usuarios 4',
+    'wifi grande',
+    'yates',
+    'angulo abajo',
+    'angulo izquierdo',
+    'angulo derecho',
+    'angulo arriba',
+    'flecha izquierda',
+    'flecha derecha',
+    'flechas horizontales',
+    'barras',
+    'calendario alternativo',
+    'camara alternativa',
+    'flecha abajo',
+    'flecha izquierda',
+    'flecha derecha',
+    'flecha arriba',
+    'carrito vacio',
+    'circulo de verificacion',
+    'cuadro de verificacion',
+    'verificar',
+    'chevron circulo izquierdo',
+    'chevron circulo derecho',
+    'chevron abajo',
+    'chevron izquierdo',
+    'chevron derecho',
+    'chevron arriba',
+    'circulo',
+    'reloj',
+    'nube de descarga alternativa',
+    'comentario',
+    'comentarios alternativos',
+    'comentarios',
+    'contacto',
+    'tarjeta de credito',
+    'circulo de punto',
+    'editar',
+    'sobre',
+    'expandir alternativo',
+    'enlace externo alternativo',
+    'ojo',
+    'ventilador',
+    'archivo alternativo',
+    'archivo de archivo',
+    'filtro',
+    'abrir carpeta',
+    'carpeta',
+    'envio gratuito',
+    'ceño fruncido',
+    'regalo',
+    'agarre horizontal',
+    'corazon lleno',
+    'corazon',
+    'historial',
+    'casa',
+    'circulo de informacion',
+    'instagram',
+    'nivel arriba alternativo',
+    'circulo de ubicacion',
+    'flecha larga alternativa',
+    'flecha larga alternativa',
+    'flecha larga alternativa',
+    'flecha larga alternativa',
+    'marca de verificacion del marcador de mapa',
+    'meh',
+    'circulo de menos',
+    'movil android alternativo',
+    'billete de dinero',
+    'lapiz alternativo',
+    'reproducir 2',
+    'circulo mas',
+    'mas',
+    'cita',
+    'aleatorio',
+    'responder a todos',
+    'responder',
+    'buscar mas',
+    'marca de verificacion del escudo',
+    'cesta de compras',
+    'carro de compras',
+    'iniciar sesion alternativo',
+    'cerrar sesion alternativo',
+    'sonreir',
+    'girador',
+    'cuadrado',
+    'estrella',
+    'sincronizacion',
+    'cuentakilometros alternativo',
+    'etiquetas',
+    'th grande',
+    'th lista',
+    'chincheta',
+    'circulo de veces',
+    'veces',
+    'trofeo alternativo',
+    'camion',
+    'desbloquear',
+    'auricular de usuario',
+    'escudo de usuario',
+    'usuario',
+    'usuarios',
+    'video',
+    'adobe',
+    'amazon',
+    'Android',
+    'angular',
+    'apper',
+    'manzana',
+    'atlassian',
+    'behance',
+    'bitbucket',
+    'bitcoin',
+    'bity',
+    'bluetooth',
+    'btc',
+    'centos',
+    'cromo',
+    'codepen',
+    'cpanel',
+    'discordia',
+    'dochub',
+    'docker',
+    'dribbble',
+    'dropbox',
+    'drupal',
+    'ebay',
+    'facebook f',
+    'facebook',
+    'figma',
+    'firefox',
+    'google plus',
+    'google',
+    'grunt',
+    'gulp',
+    'html5',
+    'jenkins',
+    'joomla',
+    'enlace de marca',
+    'linkedin',
+    'mailchimp',
+    'opencart',
+    'paypal',
+    'pinterest p',
+    'reddit',
+    'skype',
+    'slack',
+    'snapchat',
+    'spotify',
+    'trello',
+    'twitter',
+    'vimeo',
+    'whatsapp',
+    'wordpress',
+    'yoast',
+    'youtube'
+]
+
+  
   const icons_content = [
     '',
     '',
@@ -772,33 +1038,48 @@ export default function Icons() {
     ''
   ]
 
-  // Unificar los dos arreglos en uno solo
+  // Unificar los tres arreglos en uno solo
   const icons = icons_name.map((name, index) => ({
     name: name,
+    nameSpanish: icons_name_spanish[index],
     content: icons_content[index]
   }))
 
-  // Estado para almacenar la opción seleccionada
-  const [selectedOption, setSelectedOption] = useState('')
+  const options = icons.map(option => ({
+    value: option.name,
+    label: option.nameSpanish,
+    icon: option.content
+  }))
 
-  // Función para manejar el cambio de opción seleccionada
-  const handleSelectChange = event => {
-    setSelectedOption(event.target.value)
+
+  const customStyles = {
+    control: provided => ({
+      ...provided,
+      padding: 2,
+      margin: 0,
+      borderRadius: 8,
+    })
   }
 
   return (
-    <select
-      name=''
-      id=''
-      onChange={handleSelectChange} // Manejar el cambio de opción seleccionada
-      value={selectedOption} // Establecer el valor seleccionado en el estado
-      className='w-full min-w-[210px] rounded-lg border-2 bg-white p-3 font-floaty text-xl text-sky-600'
-    >
-      {icons.map((icon, index) => (
-        <option key={index} value={icon.name}>
-          {icon.content}
-        </option>
-      ))}
-    </select>
+    <Select
+    styles={customStyles}
+    value={props.selectedOption}
+    defaultValue={props.default}
+    onChange={props.onChange}
+    options={options}
+    placeholder='Seleccione un icono'
+    isClearable={true}
+    components={{
+      Option: ({ innerProps, data }) => (
+        <div className='flex align-items-center ' {...innerProps}>
+          <i
+            className={`${data.value} text-2xl text-center w-20 px-2`}
+          ></i>
+          <span className='text-center self-center'>{data.label}</span>
+        </div>
+      ),
+    }}
+    />
   )
 }

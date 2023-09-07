@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react'
 import { Modal } from '../util/modal'
 import { FormCat } from '../register-edit/formCategory'
+import Swal from 'sweetalert2'
 
 export function RowCategory(props) {
-  const { id, name, icon, isChangeData, onRefreshData} = props
+  const { id, name, icon, isChangeData, onRefreshData } = props
   const [category, setCategory] = useState({})
+  const [dataCategory, setDataCategory] = useState([])
   const [modalEditOpen, setModalEditOpen] = useState(false)
 
   useEffect(() => {
     fetchData()
+    fetchDataCategory()
   }, [isChangeData])
 
   async function fetchData() {
@@ -28,13 +31,38 @@ export function RowCategory(props) {
     }
   }
 
+  async function fetchDataCategory() {
+    const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+    const urlGetDataCategory = `${hostUrl}/api/all/?categoriesId=${id}`
+    try {
+      const response = await fetch(urlGetDataCategory)
+      if (!response.ok) {
+        throw new Error(
+          'Error al intentar cargar los datos del registro: ' + response.status
+        )
+      }
+      const jsonData = await response.json()
+      setDataCategory(jsonData)
+    } catch (error) {
+      console.error('Error al intentar cargar los datos del registro: ', error)
+    }
+  }
+
+
   async function handleOnDelete(e) {
     e.preventDefault()
     e.stopPropagation()
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
     const urlDelete = `${hostUrl}/api/category/delete/${id}`
-    const opcion = confirm(`Desea eliminar el registro con el id: ${id}`)
-    if (opcion) {
+    const opcion = await Swal.fire({
+      title: `¿Estás seguro de que quieres eliminar la categoria '${name}'?`,
+      text: `En caso de eliminar esta categoria de la base de datos, todos los productos que esten asociados a ella quedaran sin categorizar.`,
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      icon: 'warning'
+    })
+    if (opcion.isConfirmed) {
       try {
         const response = await fetch(urlDelete, {
           method: 'DELETE',
@@ -47,11 +75,18 @@ export function RowCategory(props) {
             'Error al intentar eliminar el registro:. Response: ' +
               response.status
           )
-        }
-        else{
+        } else {
+          Swal.fire({
+            icon: 'success',
+            text: `La categoria '${name}' a sido eliminada correctamente.`
+          })
           onRefreshData()
         }
       } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          text: `La categoria '${name}' no pudo ser eliminada correctamente. Por favor comuniquese con el proveedor del servicio.`
+        })
         console.error('Error al eliminar el registro:', error)
       }
     }
@@ -83,6 +118,7 @@ export function RowCategory(props) {
           {id}
         </th>
         <td className='px-16 py-4'>{name}</td>
+        <td className='px-8 py-4'><button className="shadow-md w-28 py-1 no-underline rounded-full bg-sky-500 text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none text-center">{dataCategory.length}</button></td>
         <td className='px-6 py-4 text-right'>
           <div>
             <button
@@ -111,7 +147,12 @@ export function RowCategory(props) {
         </td>
       </tr>
       <Modal isOpen={modalEditOpen} onClose={handleCloseModalEdit}>
-        <FormCat formEditData={category} onClose={handleCloseModalEdit} onRefreshData={onRefreshData}/>
+        <FormCat
+          formEditData={category}
+          isChangeData={isChangeData}
+          onClose={handleCloseModalEdit}
+          onRefreshData={onRefreshData}
+        />
       </Modal>
     </>
   )

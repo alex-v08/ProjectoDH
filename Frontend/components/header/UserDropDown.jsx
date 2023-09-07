@@ -23,8 +23,7 @@ export default function Dropdown({ openMenu }) {
         )
         if (response.ok) {
           const userData = await response.json()
-          setUserRole(userData[0].role)
-          console.log(userData[0].role) // Suponiendo que el rol se encuentra en userData.role
+          setUserRole(userData[0].role) // Suponiendo que el rol se encuentra en userData.role
         } else {
           // Maneja los errores de la solicitud aquí.
         }
