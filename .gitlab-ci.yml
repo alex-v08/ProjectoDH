@@ -19,7 +19,7 @@ build_backend:
     paths:
       - Backend/target/pi-project-0.0.1-SNAPSHOT.jar
 
-deploy_Backend:
+deploy_Backend_PROD:
   stage: deploy
   image: python:3.8
   rules:
@@ -37,10 +37,37 @@ deploy_Backend:
     - echo "$EC2_PEM_PRIVATE_KEY" > ok_hosts/.ssh/id_rsa
     - chmod 600 ok_hosts/.ssh/id_rsa
     - ssh-add ok_hosts/.ssh/id_rsa  
-    - ssh-keyscan -H $EC2_PUBLIC_IP >> ok_hosts/.ssh/known_hosts
+    - ssh-keyscan -H $EC2_PROD_IP >> ok_hosts/.ssh/known_hosts
     - echo "Host key added to known_hosts."
-    - ssh -o StrictHostKeyChecking=no ubuntu@$EC2_PUBLIC_IP "sudo systemctl stop back.service"
-    - ssh ubuntu@$EC2_PUBLIC_IP "sudo systemctl stop back.service"
-    - scp Backend/target/pi-project-0.0.1-SNAPSHOT.jar ubuntu@$EC2_PUBLIC_IP:~/backend
-    - ssh ubuntu@$EC2_PUBLIC_IP "sudo systemctl start back.service"
+    - ssh -o StrictHostKeyChecking=no ubuntu@$EC2_PROD_IP "sudo systemctl stop back.service"
+    - ssh ubuntu@$EC2_PROD_IP "sudo systemctl stop back.service"
+    - scp Backend/target/pi-project-0.0.1-SNAPSHOT.jar ubuntu@$EC2_PROD_IP:~/backend
+    - ssh ubuntu@$EC2_PROD_IP "sudo systemctl start back.service"
     - echo "Finished deploying the app."
+
+deploy_Backend_DEV:
+  stage: deploy
+  image: python:3.8
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - Backend/**/*
+
+  before_script:
+    - apt-get update && apt-get install -y awscli
+    - eval $(ssh-agent -s)  
+  variables:
+    AWS_DEFAULT_REGION: us-east-2
+  script:
+    - mkdir -p ok_hosts/.ssh
+    - echo "$EC2_PEM_PRIVATE_KEY" > ok_hosts/.ssh/id_rsa
+    - chmod 600 ok_hosts/.ssh/id_rsa
+    - ssh-add ok_hosts/.ssh/id_rsa  
+    - ssh-keyscan -H $EC2_DEV_IP >> ok_hosts/.ssh/known_hosts
+    - echo "Host key added to known_hosts."
+    - ssh -o StrictHostKeyChecking=no ubuntu@$EC2_DEV_IP "sudo systemctl stop back.service"
+    - ssh ubuntu@$EC2_DEV_IP "sudo systemctl stop back.service"
+    - scp Backend/target/pi-project-0.0.1-SNAPSHOT.jar ubuntu@$EC2_DEV_IP:~/backend
+    - ssh ubuntu@$EC2_DEV_IP "sudo systemctl start back.service"
+    - echo "Finished deploying the app."
+
