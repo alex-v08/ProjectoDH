@@ -193,7 +193,7 @@ public class ProductService {
     public List<Product> getAllProductFilter(String city, List<Long> categoriesId, List<Long> featuresId) {
         Specification<Product> spec = Specification.where(null);
 
-        if (city != null) {
+        if (city != null && !city.isEmpty()) {
             spec = spec.and((root, query, builder) ->
                     builder.equal(root.get("location").get("city"), city)
             );
