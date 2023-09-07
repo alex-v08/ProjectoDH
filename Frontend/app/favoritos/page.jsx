@@ -20,7 +20,6 @@ const CurrentFavs = () => {
                   const userData = await response.json()
                   setUserId(userData[0].id)
                   fetchData(userId)
-                  return userId                  
               } else {
                   // Maneja los errores de la solicitud aquí.
               }
