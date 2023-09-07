@@ -2,7 +2,7 @@ stages:
   - build
   - deploy
 
-build_backend:
+build_backend_PROD:
   stage: build
   image: maven:3.8.6-openjdk-18
   rules:
@@ -49,7 +49,7 @@ deploy_Backend_DEV:
   stage: deploy
   image: python:3.8
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "developer"'
       changes:
         - Backend/**/*
 
@@ -71,3 +71,20 @@ deploy_Backend_DEV:
     - ssh ubuntu@$EC2_DEV_IP "sudo systemctl start back.service"
     - echo "Finished deploying the app."
 
+
+build_backend_DEV:
+  stage: build
+  image: maven:3.8.6-openjdk-18
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "developer"'
+      changes:
+        - Backend/**/*
+  script:
+    - cd Backend/
+    - echo "Building app..."
+    - mvn clean
+    - mvn clean install
+    - echo "Finished building the app."
+  artifacts:
+    paths:
+      - Backend/target/pi-project-0.0.1-SNAPSHOT.jar
