@@ -60,14 +60,14 @@ export default function Dropdown({ openMenu }) {
         <AiOutlineHome className='mr-2 inline-block text-base' />
         Inicio
       </Link>
-      <Link 
-        href='/favoritos' 
+      <Link
+        href='/favoritos'
         className='rounded-lg px-3 py-2 hover:bg-slate-200'
       >
         <AiOutlineHeart className='mr-2 inline-block text-base' />
         Favoritos
       </Link>
-      <Link href='/' className='rounded-lg px-3 py-2 hover:bg-slate-200'>
+      <Link href='/user' className='rounded-lg px-3 py-2 hover:bg-slate-200'>
         <BsGear className='mr-2 inline-block text-base' />
         Configuración
       </Link>
