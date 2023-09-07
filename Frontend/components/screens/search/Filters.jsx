@@ -2,49 +2,50 @@
 
 import PriceRangeSlider from '@/components/util/PriceRangeSlider'
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 
-export default function Filters(props) {
-  const { idCategory = [] } = props
+export default function Filters({
+  handleSelectChange,
+  handleSelectChangeFeatures
+}) {
+  // const { idCategory = [] } = props
   // Estado para almacenar el Array de categorias
   const [categories, setCategories] = useState([])
   // Estado para almacenar las opciones seleccionadas
-  const [selectedOption, setSelectedOption] = useState(idCategory)
+  // const [selectedOption, setSelectedOption] = useState(idCategory)
 
-  const router = useRouter()
+  // const router = useRouter()
 
   const urlBase = process.env.NEXT_PUBLIC_HOST_URL
   const urlCategories = `${urlBase}/api/category/all`
-  const urlCategoriesIds = `${urlBase}/api/all/?categoriesId=`
+  // const urlCategoriesIds = `${urlBase}/api/all/?categoriesId=`
 
-  const handleSelectChange = event => {
-    const { value, checked } = event.target;
-    let link
-    console.log("prop " + idCategory)
-    console.log("state " + selectedOption)
+  // const handleSelectChange = event => {
+  //   const { value, checked } = event.target
+  //   let link
+  // console.log('prop ' + idCategory)
+  // console.log('state ' + selectedOption)
 
-    if (checked) {
-      // Agregar el valor al array si el checkbox está marcado
-      setSelectedOption([...selectedOption, value]);
-    } else {
-      // Eliminar el valor del array si el checkbox está desmarcado
-      setSelectedOption(selectedOption.filter(item => item !== value));
-    }
-    link = selectedOption
-    if (link.length !== 0) {
-      router.replace(`/search/filter/${link}`)
-    }
-  }
+  // if (checked) {
+  // Agregar el valor al array si el checkbox está marcado
+  //   setSelectedOption([...selectedOption, value])
+  // } else {
+  // Eliminar el valor del array si el checkbox está desmarcado
+  //   setSelectedOption(selectedOption.filter(item => item !== value))
+  // }
+  // link = selectedOption
+  // if (link.length !== 0) {
+  //   router.replace(`/search/${link}`)
+  // }
+  // }
   //console.log(`${urlCategoriesIds}${selectedOption}`);
-  console.log("updated state " + selectedOption)
+  // console.log('updated state ' + selectedOption)
 
   const getCategories = async () => {
     try {
       const response = await fetch(`${urlCategories}`)
       if (!response.ok) {
-        throw new Error(
-          'Error al realizar la petición: ' + response.status
-        )
+        throw new Error('Error al realizar la petición: ' + response.status)
       }
       const jsonData = await response.json()
       setCategories(jsonData)
@@ -53,28 +54,27 @@ export default function Filters(props) {
     }
   }
 
-  const getCheckedCategories = async () => {
-    try {
-      const response = await fetch(`${urlBase}/api/all/?categoriesId=${selectedOption}`)
-      if (!response.ok) {
-        throw new Error(
-          'Error al realizar la petición: ' + response.status
-        )
-      }
-      const jsonData = await response.json()
-    } catch (error) {
-      console.error('Error al realizar la petición: ', error)
-    }
-  }
+  // const getCheckedCategories = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       `${urlBase}/api/all/?categoriesId=${selectedOption}`
+  //     )
+  //     if (!response.ok) {
+  //       throw new Error('Error al realizar la petición: ' + response.status)
+  //     }
+  //     const jsonData = await response.json()
+  //   } catch (error) {
+  //     console.error('Error al realizar la petición: ', error)
+  //   }
+  // }
 
   useEffect(() => {
     getCategories()
   }, [])
 
-  useEffect(() => {
-    getCheckedCategories()
-  }, [selectedOption])
-  
+  // useEffect(() => {
+  //   getCheckedCategories()
+  // }, [selectedOption])
 
   return (
     <>
@@ -89,7 +89,8 @@ export default function Filters(props) {
         </div>
         <div className='px-14 pb-10 lg:px-9 xl:px-14'>
           <div className='flex flex-col gap-4 text-lg font-medium text-gray-500'>
-              {categories && categories.map((category, index) => (
+            {categories &&
+              categories.map((category, index) => (
                 <div className='group flex items-center' key={index}>
                   <input
                     onChange={handleSelectChange}
@@ -100,12 +101,12 @@ export default function Filters(props) {
                     className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
                   />
                   <label
-                  htmlFor={category.name}
-                  className='truncate pl-2 transition group-hover:text-sky-500'
-                >
-                  {category.name}
-                </label>
-              </div>
+                    htmlFor={category.name}
+                    className='truncate pl-2 transition group-hover:text-sky-500'
+                  >
+                    {category.name}
+                  </label>
+                </div>
               ))}
           </div>
         </div>
@@ -138,6 +139,7 @@ export default function Filters(props) {
           <div className='flex flex-col gap-4 text-lg font-medium text-gray-500'>
             <div className='group flex items-center'>
               <input
+                onChange={handleSelectChangeFeatures}
                 type='checkbox'
                 name=''
                 id='acondicionado'
@@ -152,6 +154,7 @@ export default function Filters(props) {
             </div>
             <div className='group flex items-center'>
               <input
+                onChange={handleSelectChangeFeatures}
                 type='checkbox'
                 name=''
                 id='parrilla'
@@ -166,6 +169,7 @@ export default function Filters(props) {
             </div>
             <div className='group flex items-center'>
               <input
+                onChange={handleSelectChangeFeatures}
                 type='checkbox'
                 name=''
                 id='television'
@@ -180,6 +184,7 @@ export default function Filters(props) {
             </div>
             <div className='group flex items-center'>
               <input
+                onChange={handleSelectChangeFeatures}
                 type='checkbox'
                 name=''
                 id='cubiertos'
@@ -194,6 +199,7 @@ export default function Filters(props) {
             </div>
             <div className='group flex items-center'>
               <input
+                onChange={handleSelectChangeFeatures}
                 type='checkbox'
                 name=''
                 id='toallas'
@@ -208,6 +214,7 @@ export default function Filters(props) {
             </div>
             <div className='group flex items-center'>
               <input
+                onChange={handleSelectChangeFeatures}
                 type='checkbox'
                 name=''
                 id='audio'
@@ -222,6 +229,7 @@ export default function Filters(props) {
             </div>
             <div className='group flex items-center'>
               <input
+                onChange={handleSelectChangeFeatures}
                 type='checkbox'
                 name=''
                 id='cafetera'
@@ -236,6 +244,7 @@ export default function Filters(props) {
             </div>
             <div className='group flex items-center'>
               <input
+                onChange={handleSelectChangeFeatures}
                 type='checkbox'
                 name=''
                 id='heladera'
@@ -250,6 +259,7 @@ export default function Filters(props) {
             </div>
             <div className='group flex items-center'>
               <input
+                onChange={handleSelectChangeFeatures}
                 type='checkbox'
                 name=''
                 id='ducha'
@@ -264,6 +274,7 @@ export default function Filters(props) {
             </div>
             <div className='group flex items-center'>
               <input
+                onChange={handleSelectChangeFeatures}
                 type='checkbox'
                 name=''
                 id='generador'
@@ -278,6 +289,7 @@ export default function Filters(props) {
             </div>
             <div className='group flex items-center'>
               <input
+                onChange={handleSelectChangeFeatures}
                 type='checkbox'
                 name=''
                 id='piloto'
@@ -292,6 +304,7 @@ export default function Filters(props) {
             </div>
             <div className='group flex items-center'>
               <input
+                onChange={handleSelectChangeFeatures}
                 type='checkbox'
                 name=''
                 id='horno'
@@ -306,6 +319,7 @@ export default function Filters(props) {
             </div>
             <div className='group flex items-center'>
               <input
+                onChange={handleSelectChangeFeatures}
                 type='checkbox'
                 name=''
                 id='calefaccion'
@@ -320,6 +334,7 @@ export default function Filters(props) {
             </div>
             <div className='group flex items-center'>
               <input
+                onChange={handleSelectChangeFeatures}
                 type='checkbox'
                 name=''
                 id='radar'
@@ -334,6 +349,7 @@ export default function Filters(props) {
             </div>
             <div className='group flex items-center'>
               <input
+                onChange={handleSelectChangeFeatures}
                 type='checkbox'
                 name=''
                 id='altavoces'

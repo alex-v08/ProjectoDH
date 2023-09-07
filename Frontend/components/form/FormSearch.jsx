@@ -15,6 +15,7 @@ export default function FormSearch() {
   const [selectedOption, setSelectedOption] = useState('')
   // Estado para almacenar el Array de categorias
   const [categories, setCategories] = useState([])
+  const [locations, setLocations] = useState([])
 
   // Función para manejar el cambio de opción seleccionada
   const handleSelectChange = event => {
@@ -23,17 +24,16 @@ export default function FormSearch() {
 
   const urlBase = process.env.NEXT_PUBLIC_HOST_URL
   const urlCategories = `${urlBase}/api/category/all`
-
+  const urlLocations = `${urlBase}/api/location/all`
 
   const getCategories = async () => {
     try {
       const response = await fetch(`${urlCategories}`)
       if (!response.ok) {
-        throw new Error(
-          'Error al realizar la petición: ' + response.status
-        )
+        throw new Error('Error al realizar la petición: ' + response.status)
       }
       const jsonData = await response.json()
+      console.log(jsonData, 'ESTO ES categories')
       setCategories(jsonData)
     } catch (error) {
       console.error('Error al realizar la petición: ', error)
@@ -42,7 +42,25 @@ export default function FormSearch() {
 
   useEffect(() => {
     getCategories()
-  }, [selectedOption])
+  }, [])
+
+  const getLocations = async () => {
+    try {
+      const response = await fetch(`${urlLocations}`)
+      if (!response.ok) {
+        throw new Error('Error al realizar la petición: ' + response.status)
+      }
+      const jsonData = await response.json()
+      console.log(jsonData, 'ESTO ES CITY')
+      setLocations(jsonData)
+    } catch (error) {
+      console.error('Error al realizar la petición: ', error)
+    }
+  }
+
+  useEffect(() => {
+    getLocations()
+  }, [])
 
   return (
     <div className='container'>
@@ -55,11 +73,24 @@ export default function FormSearch() {
                 Ubicación
               </h2>
             </div>
-            <input
-              type='text'
-              className='w-full rounded-lg border-2 bg-white p-3'
-              placeholder='Elija su lugar de inicio'
-            />
+            {/* locations */}
+            <select
+              name=''
+              id=''
+              // onChange= // Manejar el cambio de opción seleccionada
+              value={locations} // Establecer el valor seleccionado en el estado
+              className='w-full min-w-[210px] rounded-lg border-2 bg-white p-3 text-gray-400'
+            >
+              <option value='' hidden defaultValue>
+                'Elija su lugar de inicio'
+              </option>
+              {locations &&
+                locations.map((location, index) => (
+                  <option value={`/${location.city}`} key={index}>
+                    {location.city}
+                  </option>
+                ))}
+            </select>
           </div>
           <div className='flex w-full flex-col sm:flex-row sm:gap-4'>
             <div className='mb-6 flex-grow lg:mb-0'>
@@ -104,9 +135,12 @@ export default function FormSearch() {
               <option value='' hidden defaultValue>
                 Elija el tipo de barco
               </option>
-              {categories && categories.map((category, index) => (
-                <option value={`/${category.name}`} key={index}>{category.name}</option>
-              ))}
+              {categories &&
+                categories.map((category, index) => (
+                  <option value={`/${category.name}`} key={index}>
+                    {category.name}
+                  </option>
+                ))}
             </select>
           </div>
           <Link href={`/search/${selectedOption}`}>
