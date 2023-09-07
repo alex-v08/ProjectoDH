@@ -71,7 +71,7 @@ const HeartButton = ({ fillColor, behaivour, productId }) => {
         title: 'Inicia sesión',
         text: 'Inicia sesión para agregar productos a favoritos.',
         showConfirmButton: true,
-        confirmButtonColor: "#DD6B55"
+        confirmButtonColor: "#0EA5E9"
       })
       return
     }
