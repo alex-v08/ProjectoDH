@@ -3,20 +3,17 @@ package com.oceanwinds.category.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oceanwinds.product.entity.Product;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "CATEGORY")
-@Getter @Setter
+@Data
 @AllArgsConstructor @NoArgsConstructor
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "name", nullable = false, unique = true)
@@ -30,15 +27,7 @@ public class Category {
 
     @JsonIgnore
     @OneToMany(mappedBy = "category")
-    private List<Product> yachts;
+    private List<Product> product;
 
-    @Override
-    public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", image='" + image + '\'' +
-                '}';
-    }
+
 }

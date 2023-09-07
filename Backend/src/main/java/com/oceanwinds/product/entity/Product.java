@@ -1,11 +1,14 @@
 package com.oceanwinds.product.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oceanwinds.category.entity.Category;
+
 import com.oceanwinds.feature.entity.Feature;
+import com.oceanwinds.location.entity.Location;
+import com.oceanwinds.user.entity.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +16,9 @@ import java.util.Set;
 
 @Entity
 @Getter @Setter
-@Table(name = "YACHTS")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "Product")
 public class Product {
 
     @Id
@@ -35,11 +40,20 @@ public class Product {
     private Category category;
 
     @ManyToMany
-    @JoinTable(name = "yacht_feature", joinColumns = @JoinColumn(name = "yacht_id"),
+    @JoinTable(name = "product_feature", joinColumns = @JoinColumn(name = "product_id"),
     inverseJoinColumns = @JoinColumn(name = "feature_id"))
     private Set<Feature> feature = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
+
     private Boolean available;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "favoriteProducts")
+    private Set<User> favoriteUsers = new HashSet<>();
+
 
     public Product(Long id, String name, String sku, String description, String imageUrl, Double pricePerDay, Double pricePerWeek, Double pricePerHour, Category category, Boolean available) {
         this.id = id;
@@ -54,104 +68,8 @@ public class Product {
         this.available = available;
     }
 
-    public Product() {
-    }
 
-    @Override
-    public String toString() {
-        return "Yachts{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", sku='" + sku + '\'' +
-                ", description='" + description + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", pricePerDay=" + pricePerDay +
-                ", pricePerWeek=" + pricePerWeek +
-                ", pricePerHour=" + pricePerHour +
-                ", category=" + (category != null ? category.getName() : "null") +
-                ", available=" + available +
-                '}';
-    }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public Double getPricePerDay() {
-        return pricePerDay;
-    }
-
-    public void setPricePerDay(Double pricePerDay) {
-        this.pricePerDay = pricePerDay;
-    }
-
-    public Double getPricePerWeek() {
-        return pricePerWeek;
-    }
-
-    public void setPricePerWeek(Double pricePerWeek) {
-        this.pricePerWeek = pricePerWeek;
-    }
-
-    public Double getPricePerHour() {
-        return pricePerHour;
-    }
-
-    public void setPricePerHour(Double pricePerHour) {
-        this.pricePerHour = pricePerHour;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Boolean getAvailable() {
-        return available;
-    }
-
-    public void setAvailable(Boolean available) {
-        this.available = available;
-    }
 
 }
 

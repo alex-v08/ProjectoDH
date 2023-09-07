@@ -5,6 +5,7 @@ import Global.dto.MessageDto;
 import Global.exceptions.AttributeException;
 import com.oceanwinds.user.entity.User;
 import com.oceanwinds.user.entity.dto.UserDto;
+import com.oceanwinds.user.entity.dto.UserDtoFirebase;
 import com.oceanwinds.user.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/users")
@@ -52,6 +54,17 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageDto(HttpStatus.BAD_REQUEST, errorMessage));
         }
     }
+    @PostMapping("/createfb")
+    public ResponseEntity<MessageDto> savefb(@RequestBody UserDtoFirebase dto) {
+        try {
+            User user = userService.saveUserFirebase(dto);
+            String message = "Usuario creado con Nombre: " + user.getName();
+            return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
+        } catch (AttributeException e) {
+            String errorMessage = "Error al crear el usuario: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageDto(HttpStatus.BAD_REQUEST, errorMessage));
+        }
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<MessageDto> update(@PathVariable("id")Long id,@Valid @RequestBody UserDto dto) throws AttributeException {
@@ -67,7 +80,13 @@ public class UserController {
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
 
+  @GetMapping("/list/{uuid}")
+          public Set<User> listByUuid(String uuid){
+          return userService.getUsersByUuid(uuid);
 
+
+
+  }
 
 
 }

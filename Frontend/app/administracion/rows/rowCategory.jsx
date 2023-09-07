@@ -3,13 +3,13 @@ import { Modal } from '../util/modal'
 import { FormCat } from '../register-edit/formCategory'
 
 export function RowCategory(props) {
-  const { id, name, icon } = props
+  const { id, name, icon, isChangeData, onRefreshData} = props
   const [category, setCategory] = useState({})
   const [modalEditOpen, setModalEditOpen] = useState(false)
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [isChangeData])
 
   async function fetchData() {
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
@@ -47,8 +47,9 @@ export function RowCategory(props) {
             'Error al intentar eliminar el registro:. Response: ' +
               response.status
           )
-        } else {
-          window.location.reload()
+        }
+        else{
+          onRefreshData()
         }
       } catch (error) {
         console.error('Error al eliminar el registro:', error)
@@ -77,11 +78,11 @@ export function RowCategory(props) {
         </td>
         <th
           scope='row'
-          className='whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white'
+          className='whitespace-nowrap px-16 py-4 font-medium text-gray-900 dark:text-white'
         >
           {id}
         </th>
-        <td className='px-6 py-4'>{name}</td>
+        <td className='px-16 py-4'>{name}</td>
         <td className='px-6 py-4 text-right'>
           <div>
             <button
@@ -110,7 +111,7 @@ export function RowCategory(props) {
         </td>
       </tr>
       <Modal isOpen={modalEditOpen} onClose={handleCloseModalEdit}>
-        <FormCat formEditData={category} />
+        <FormCat formEditData={category} onClose={handleCloseModalEdit} onRefreshData={onRefreshData}/>
       </Modal>
     </>
   )

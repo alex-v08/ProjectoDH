@@ -2,15 +2,21 @@ package com.oceanwinds.user.service;
 
 import Global.exceptions.AttributeException;
 import Global.exceptions.ResourceNotFoundException;
+import com.oceanwinds.product.entity.Product;
 import com.oceanwinds.user.entity.User;
 import com.oceanwinds.user.entity.dto.UserDto;
+import com.oceanwinds.user.entity.dto.UserDtoFirebase;
 import com.oceanwinds.user.repository.UserRepository;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
+@Data
+
 public class UserService {
     @Autowired
     UserRepository usersRepository;
@@ -23,28 +29,48 @@ public class UserService {
         return usersRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
-    public User saveUser(UserDto dto) throws AttributeException {
-        validateUserAttributes(dto);
+    public User saveUserFirebase(UserDtoFirebase dto) throws AttributeException {
+
 
         if (usersRepository.existsByemail(dto.getEmail())) {
             throw new AttributeException("El correo electrónico ya está registrado.");
         }
 
-        if (usersRepository.existsByDni(dto.getDni())) {
-            throw new AttributeException("El DNI ya está registrado.");
+        if (usersRepository.existsByDni(dto.getUuid())) {
+            throw new AttributeException("El uid ya se encuentra registrado.");
         }
 
-        User user = new User(
-                dto.getName(),
-                dto.getLastName(),
-                dto.getEmail(),
-                dto.getDni(),
-                dto.getPassword(),
-                dto.getPhone(),
-                dto.getAddress(),
-                dto.getRole(),
-                dto.getUuid()
-        );
+        User user = new User();
+        user.setName(dto.getName());
+        user.setLastName(dto.getLastName());
+        user.setEmail(dto.getEmail());
+
+        user.setUuid(dto.getUuid());
+        user.setActive(dto.getActive());
+        return usersRepository.save(user);
+    }
+
+    public User saveUser(UserDto dto) throws AttributeException {
+
+
+        if (usersRepository.existsByemail(dto.getEmail())) {
+            throw new AttributeException("El correo electrónico ya está registrado.");
+        }
+
+        if (usersRepository.existsByDni(dto.getUuid())) {
+            throw new AttributeException("El uid ya se encuentra registrado.");
+        }
+
+        User user = new User();
+        user.setName(dto.getName());
+        user.setDni(dto.getDni());
+        user.setLastName(dto.getLastName());
+        user.setEmail(dto.getEmail());
+        user.setPhone(dto.getPhone());
+        user.setAddress(dto.getAddress());
+        user.setRole(dto.getRole());
+        user.setUuid(dto.getUuid());
+        user.setActive(dto.getActive());
 
         return usersRepository.save(user);
     }
@@ -52,23 +78,23 @@ public class UserService {
     public User updateUser(UserDto dto, Long id) throws AttributeException {
         User user = usersRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        if (!user.getEmail().equals(dto.getEmail()) && usersRepository.existsByemail(dto.getEmail())) {
+
+        if (usersRepository.existsByemail(dto.getEmail()) && !user.getEmail().equals(dto.getEmail())) {
             throw new AttributeException("El correo electrónico ya está registrado.");
         }
-
-        if (!user.getDni().equals(dto.getDni()) && usersRepository.existsByDni(dto.getDni())) {
-            throw new AttributeException("El DNI ya está registrado.");
+        if (usersRepository.existsByUuid(dto.getUuid()) && !user.getUuid().equals(dto.getUuid())) {
+            throw new AttributeException("El uid ya se encuentra registrado.");
         }
 
-        validateUserAttributes(dto);
         user.setName(dto.getName());
         user.setLastName(dto.getLastName());
+        user.setDni(dto.getDni());
         user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
         user.setPhone(dto.getPhone());
         user.setAddress(dto.getAddress());
         user.setRole(dto.getRole());
         user.setUuid(dto.getUuid());
+        user.setActive(dto.getActive());
 
         return usersRepository.save(user);
     }
@@ -107,4 +133,10 @@ public class UserService {
         return usersRepository.existsByUuid(uuid);
 
     }
+public Set<User> getUsersByUuid(String uuid){
+    Set<User> listUser = usersRepository.getUsersByUuid(uuid);
+        return listUser;
+
+}
+
 }
