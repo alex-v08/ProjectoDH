@@ -3,6 +3,7 @@ package com.oceanwinds.product.controller;
 import Global.dto.MessageDto;
 import Global.exceptions.AttributeException;
 import Global.util.PaginatedResponse;
+import com.oceanwinds.location.entity.Location;
 import com.oceanwinds.product.entity.Product;
 import com.oceanwinds.product.service.ProductService;
 import com.oceanwinds.product.entity.dto.ProductDto;
@@ -40,6 +41,9 @@ public class ProductController {
 
     @GetMapping("/all/")
     public ResponseEntity<List<Product>> getAllProductFilter(@RequestParam(required = false) String city, @RequestParam(required = false) List<Long> categoriesId, @RequestParam(required = false) List<Long> featuresId) {
+        if (city == null) {
+            city = "";
+        }
         if (categoriesId == null) {
             categoriesId = new ArrayList<>();
         }

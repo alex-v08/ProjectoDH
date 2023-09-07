@@ -3,8 +3,9 @@
 import Image from 'next/image'
 import HeroUser from '@/components/user/HeroUser'
 import { useAuth } from '@/context/authContext'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { BsCameraFill } from 'react-icons/bs'
+import Swal from 'sweetalert2'
 
 export default function User() {
   const [userForm, setUserForm] = useState({
@@ -60,26 +61,53 @@ export default function User() {
   const handleSubmit = async e => {
     e.preventDefault()
     setError('')
-    try {
-      const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-      console.log(userForm)
-      const response = await fetch(`${hostUrl}/users/${userInfo.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userForm) // Send the updated user data as JSON
-      })
+    Swal.fire({
+      title: '¿Está seguro que desea actualizar la información?',
+      text: 'Se actualizaran tus datos!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, actualizar!'
+    }).then(async result => {
+      if (result.isConfirmed) {
+        try {
+          const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+          console.log(userForm)
+          const response = await fetch(`${hostUrl}/users/${userInfo.id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userForm) // Send the updated user data as JSON
+          })
 
-      if (response.ok) {
-        console.log('User data updated successfully')
-        setSend(!send)
-      } else {
-        console.error('Error updating user data')
+          if (response.ok) {
+            console.log('User data updated successfully')
+            setSend(!send)
+            Swal.fire(
+              'Actualizado!',
+              'La actualización ha sido completada.',
+              'success'
+            )
+          } else {
+            console.error('Error updating user data')
+            Swal.fire(
+              'Error',
+              'Hubo un problema al actualizar los datos.',
+              'error'
+            )
+          }
+        } catch (error) {
+          console.error(error.message)
+          Swal.fire(
+            'Error',
+            'Hubo un error inesperado. Por favor, inténtalo de nuevo más tarde.',
+            'error'
+          )
+        }
       }
-    } catch (error) {
-      console.error(error.message)
-    }
+    })
   }
 
   const handleChange = ({ target: { value, name } }) =>
@@ -105,15 +133,16 @@ export default function User() {
                       />
                     ) : (
                       <div className='flex h-[128px] w-[128px] cursor-pointer items-center justify-center rounded-full border-2 border-sky-500 bg-gradient-to-r from-cyan-500 to-blue-500'>
-                        <div className='font-bold uppercase text-white'>
-                          {user.email[0]}
+                        <div className='text-4xl font-bold uppercase tracking-tighter text-white'>
+                          {userInfo.name.charAt(0) +
+                            userInfo.lastName.charAt(0)}
                         </div>
                       </div>
                     )}
                     <BsCameraFill className='absolute -right-2 bottom-0 h-[40px] w-[40px] cursor-pointer rounded-full bg-sky-500 p-2 text-2xl text-white' />
                   </div>
                   <div className='mt-4 text-2xl font-bold text-sky-950'>
-                    {user.displayName}
+                    {userInfo.name} {userInfo.lastName}
                   </div>
                   <div className='mt-2 rounded-lg border border-emerald-500 px-3 py-1 lowercase text-emerald-500'>
                     {userInfo.role}
@@ -125,19 +154,19 @@ export default function User() {
                     </div>
                     <div className='border-b pb-3'>
                       <span className='pl-2 font-semibold'>DNI:</span>{' '}
-                      {userInfo.dni}
+                      {userInfo.dni ? userInfo.dni : 'No registrado'}
                     </div>
                     <div className='border-b pb-3'>
                       <span className='pl-2 font-semibold'>Teléfono:</span>{' '}
-                      {userInfo.phone}
+                      {userInfo.phone ? userInfo.phone : 'No registrado'}
                     </div>
                     <div className='border-b pb-3'>
                       <span className='pl-2 font-semibold'>Direccion:</span>{' '}
-                      {userInfo.address}
+                      {userInfo.address ? userInfo.address : 'No registrado'}
                     </div>
                     <div className='border-b pb-3'>
                       <span className='pl-2 font-semibold'>Estado:</span>{' '}
-                      {userInfo.active ? 'activo' : ''}
+                      {userInfo.active ? 'activo' : 'sin activar'}
                     </div>
                   </div>
                 </>

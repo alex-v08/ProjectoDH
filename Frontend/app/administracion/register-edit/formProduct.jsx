@@ -123,8 +123,13 @@ export function FormProduct(props) {
 
     const msg =
       product == undefined
-        ? `Seguro que desea crear un registro para el producto: ${name} con el sku: ${sku}`
-        : `Seguro que desea modificar el registro para el producto: ${name} con el sku: ${sku}`
+        ? `¿Seguro que desea crear un registro para el producto: ${name} con el sku: ${sku}?`
+        : `¿Seguro que desea modificar el registro del producto: ${name} con el sku: ${sku}?`
+
+    const msgProduct =
+      product == undefined
+        ? `El producto '${name}' fue creado correctamente.`
+        : `El producto '${name}' fue modificado correctamente.`
 
     const opcion = await Swal.fire({
       title: msg,
@@ -170,7 +175,7 @@ export function FormProduct(props) {
           onRefreshData()
           Swal.fire({
             icon: 'success',
-            text: `El producto '${name}' a sido creado correctamente.`
+            text: `${msgProduct}`
           })
           onClose()
         }

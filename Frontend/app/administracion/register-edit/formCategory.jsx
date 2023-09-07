@@ -69,8 +69,13 @@ export function FormCat(props) {
 
     const msg =
       category == undefined
-        ? `¿Estás seguro de que quieres crear la categoria '${name}'?`
-        : `¿Estás seguro de que quieres modificar la categoria '${name}'?`
+        ? `¿Seguro que desea crear un registro para la categoria: ${name}?`
+        : `¿Seguro que desea modificar el registro de la categoria: ${name}?`
+
+    const msgCategory =
+      category == undefined
+        ? `La categoria '${name}' fue creada correctamente.`
+        : `La categoria '${name}' fue modificada correctamente.`
 
     const opcion = await Swal.fire({
       title: msg,
@@ -106,7 +111,7 @@ export function FormCat(props) {
           onClose()
           Swal.fire({
             icon: 'success',
-            text: `La categoria '${name}' a sido creada correctamente.`
+            text: `${msgCategory}`
           })
           onRefreshData()
         }

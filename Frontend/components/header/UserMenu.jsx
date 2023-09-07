@@ -34,7 +34,10 @@ export default function UserMenu() {
           />
         ) : (
           <div className='flex h-[44px] w-[44px] cursor-pointer items-center justify-center rounded-full border-2 border-sky-500 bg-gradient-to-r from-cyan-500 to-blue-500'>
-            <p className='font-bold uppercase text-white'>{user.email[0]}</p>
+            <p className='font-bold uppercase tracking-tighter text-white'>
+              {user.displayName[0]}
+              {user.displayName.split(' ')[1][0]}
+            </p>
           </div>
         )}
       </div>

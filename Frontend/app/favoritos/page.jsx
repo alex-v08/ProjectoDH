@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/context/authContext'
 import SectionTitle from '@/components/SectionTitle'
+import { BsFillTrashFill } from 'react-icons/bs'
 
 const CurrentFavs = () => {
   const [data, setData] = useState([])
@@ -100,23 +101,23 @@ const CurrentFavs = () => {
 
   return (
     <div className='bg-[#f2f5fa]'>
-      <div className='container mx-auto p-4 pt-8 min-h-screen'>
+      <div className='container mx-auto min-h-screen p-4 pt-8'>
         <SectionTitle antetitulo='elegidos' titulo='Tus favoritos' />
-        <div className='grid grid-cols-1 justify-items-center gap-x-6 gap-y-3 sm:grid-cols-2 lg:grid-cols-1'>
+        <div className='grid grid-cols-1 justify-items-center gap-x-6 gap-y-3 sm:grid-cols-2'>
           {data.map(item => (
             <a
               key={item.id}
               className='group relative flex w-full max-w-[450px] flex-col overflow-hidden rounded-lg border shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] lg:max-w-full lg:flex-row'
               href={`/detail/${item.product.id}`}
             >
-              <div className='relative h-36 min-h-[150px] w-full lg:max-w-[35%] xl:max-w-[35%] overflow-hidden lg:h-[200px]'>
+              <div className='relative h-36 min-h-[150px] w-full overflow-hidden lg:h-[200px] lg:max-w-[35%] xl:max-w-[35%]'>
                 <img
                   src={`${item.product.imageUrl}1.png`}
                   alt='imagen de la embarcacion'
                   className='h-full w-full object-cover'
                 />
               </div>
-              <div className='flex w-full flex-col justify-between h-full px-4 py-4 transition duration-300 ease-in-out group-hover:bg-white lg:px-8'>
+              <div className='flex h-full w-full flex-col justify-between px-4 py-4 transition duration-300 ease-in-out group-hover:bg-white lg:px-8'>
                 <div>
                   <h3 className='truncate pb-2 text-xl font-bold uppercase text-sky-900'>
                     {item.product.name}
@@ -126,20 +127,20 @@ const CurrentFavs = () => {
                   </p>
                 </div>
                 <div className='flex items-center justify-between'>
-                  <h3 className='text-l font-extrabold leading-none text-sky-500 flex flex-col md:flex-row'>
+                  <h3 className='text-l flex flex-col font-extrabold leading-none text-sky-500 md:flex-row'>
                     <span className='mr-2 text-xs font-semibold uppercase text-gray-500'>
                       Por noche
                     </span>
                     <span>$ {item.product.pricePerDay}</span>
                   </h3>
                   <a
-                    className=' cursor-pointer rounded px-2 py-1 text-sm text-sky-600 hover:text-blue-500'
+                    className=' cursor-pointer rounded px-2 py-1 text-sm text-rose-500 transition hover:text-rose-600'
                     onClick={e => {
                       e.preventDefault()
                       handleRemoveFav(item.product.id)
                     }}
                   >
-                    Eliminar de favoritos
+                    <BsFillTrashFill className='h-7 w-7' />
                   </a>
                 </div>
               </div>
