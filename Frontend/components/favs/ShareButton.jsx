@@ -31,7 +31,7 @@ export default function ShareButton() {
   }, [])
 
   return (
-    <div className='relative'>
+    <div className='relative flex'>
       <button onClick={toggleMediaShare} ref={buttonRef}>
         <svg
           width='20'
