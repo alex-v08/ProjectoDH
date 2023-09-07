@@ -70,7 +70,8 @@ const HeartButton = ({ fillColor, behaivour, productId }) => {
         icon: 'info',
         title: 'Inicia sesión',
         text: 'Inicia sesión para agregar productos a favoritos.',
-        showConfirmButton: true
+        showConfirmButton: true,
+        confirmButtonColor: "#DD6B55"
       })
       return
     }
@@ -127,7 +128,7 @@ const HeartButton = ({ fillColor, behaivour, productId }) => {
       className='cursor-pointer'
       key={productId}
     >
-      {favoriteProducts.includes(productId) ? (
+      {user && favoriteProducts.includes(productId) ? (
         <svg
           width='24'
           height='21'
