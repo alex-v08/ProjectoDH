@@ -33,7 +33,6 @@ export default function FormSearch() {
         throw new Error('Error al realizar la petición: ' + response.status)
       }
       const jsonData = await response.json()
-      console.log(jsonData, 'ESTO ES categories')
       setCategories(jsonData)
     } catch (error) {
       console.error('Error al realizar la petición: ', error)
@@ -51,7 +50,6 @@ export default function FormSearch() {
         throw new Error('Error al realizar la petición: ' + response.status)
       }
       const jsonData = await response.json()
-      console.log(jsonData, 'ESTO ES CITY')
       setLocations(jsonData)
     } catch (error) {
       console.error('Error al realizar la petición: ', error)

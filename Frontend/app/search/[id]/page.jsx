@@ -8,19 +8,17 @@ import Filters from '@/components/screens/search/Filters'
 
 export default function SearchID(props) {
   const { idCategory = [], params } = props
+
   const [productsFilters, setProductsFilters] = useState([])
+
   const [totalProducts, setTotalProducts] = useState([])
+
   const [loading, setLoading] = useState(true)
   // Estado para almacenar las opciones de categorias de embarcaciones seleccionadas
   const [selectedOption, setSelectedOption] = useState(idCategory)
 
   // Estado para almacenar las opciones de categorias de embarcaciones seleccionadas
   const [selectedFeatures, setSelectedFeatures] = useState([])
-
-  // console.log('prop ', idCategory)
-  // console.log('selectedOption desde [id]/page.jsx', selectedOption)
-  // console.log('params.id desde [id]/page.jsx', params.id)
-  // console.log('productsFilters desde [id]/page.jsx', productsFilters)
 
   const handleSelectChange = event => {
     const { value, checked } = event.target
