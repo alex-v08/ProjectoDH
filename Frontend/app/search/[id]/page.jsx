@@ -14,13 +14,14 @@ export default function SearchID(props) {
   const [totalProducts, setTotalProducts] = useState([])
 
   const [loading, setLoading] = useState(true)
+
   // Estado para almacenar las opciones de categorias de embarcaciones seleccionadas
   const [selectedOption, setSelectedOption] = useState(idCategory)
 
-  // Estado para almacenar las opciones de categorias de embarcaciones seleccionadas
-  const [selectedFeatures, setSelectedFeatures] = useState([])
+  // Estado para almacenar las opciones de características de embarcaciones seleccionadas
+  const [featuresOptions, setFeaturesOptions] = useState([])
 
-  const handleSelectChange = event => {
+  const handleSelectChangeCategory = event => {
     const { value, checked } = event.target
     // let link
 
@@ -30,6 +31,9 @@ export default function SearchID(props) {
     } else {
       // Eliminar el valor del array si el checkbox está desmarcado
       setSelectedOption(selectedOption.filter(item => item !== value))
+    }
+    if (!checked && selectedOption.length === 1) {
+      setProductsFilters(totalProducts)
     }
     // link = selectedOption
     // if (link.length !== 0) {
@@ -43,10 +47,10 @@ export default function SearchID(props) {
 
     if (checked) {
       // Agregar el valor al array si el checkbox está marcado
-      setSelectedFeatures([...selectedFeatures, value])
+      setFeaturesOptions([...featuresOptions, value])
     } else {
       // Eliminar el valor del array si el checkbox está desmarcado
-      setSelectedFeatures(selectedFeatures.filter(item => item !== value))
+      setFeaturesOptions(featuresOptions.filter(item => item !== value))
     }
     // link = selectedOption
     // if (link.length !== 0) {
@@ -57,23 +61,23 @@ export default function SearchID(props) {
   // useMemo(() => first, [second])
 
   // Para obtener todos los productos
-  // useEffect(() => {
-  //   const getProducts = async () => {
-  //     try {
-  //       const response = await fetch('/api/products')
-  //       if (!response.ok) {
-  //         throw new Error('Network response was not ok')
-  //       }
-  //       const products = await response.json()
-  //       setTotalProducts(products)
-  //       setLoading(false)
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error)
-  //       setLoading(false)
-  //     }
-  //   }
-  //   getProducts()
-  // }, [])
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const response = await fetch('/api/products')
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        const products = await response.json()
+        setTotalProducts(products)
+        setLoading(false)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+        setLoading(false)
+      }
+    }
+    getProducts()
+  }, [])
 
   // Para obtener el filtrado de la home
   useEffect(() => {
@@ -106,24 +110,29 @@ export default function SearchID(props) {
   useEffect(() => {
     const getSearch = async () => {
       const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-      const array = selectedOption
-      const cadena = array.join(', ')
+      let array = selectedOption
+      let cadena = array.join(', ')
       const resultado = eval(`[${cadena}]`)
 
+      // para las características
+      let arrayFeatures = featuresOptions
+      let stringFeatures = arrayFeatures && arrayFeatures.join(', ')
+      const resultFeatures = eval(`[${stringFeatures}]`)
+
+      console.log('cadena:', cadena, 'featuresOptions:', featuresOptions)
       try {
         const response = await fetch(
-          `${hostUrl}/api/productByCategoryId/?categoriesId=${resultado}`,
-          // `${hostUrl}/api/all/?categoriesId=${resultado}1&featuresId=3&featuresId=2${resultado}`,
+          // `${hostUrl}/api/productByCategoryId/?categoriesId=${resultado}`,
+          `${hostUrl}/api/all/?city=&categoriesId=${resultado}&featuresId=${resultFeatures}`,
           {
-            // {
             cache: 'no-store'
           }
         )
+
         if (!response.ok) {
           throw new Error('Network response was not ok')
         }
         const products = await response.json()
-        console.log('products desde [id]/page.jsx', products)
         setProductsFilters(products)
         setLoading(false)
       } catch (error) {
@@ -195,7 +204,7 @@ export default function SearchID(props) {
             {/* Filtros */}
             <div className='w-full lg:max-w-[292.14px] xl:max-w-[426.89px] 2xl:max-w-[438px]'>
               <Filters
-                handleSelectChange={handleSelectChange}
+                handleSelectChangeCategory={handleSelectChangeCategory}
                 handleSelectChangeFeatures={handleSelectChangeFeatures}
               />
             </div>

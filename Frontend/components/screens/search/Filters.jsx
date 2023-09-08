@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 // import { useRouter } from 'next/navigation'
 
 export default function Filters({
-  handleSelectChange,
+  handleSelectChangeCategory,
   handleSelectChangeFeatures
 }) {
   // const { idCategory = [] } = props
@@ -93,7 +93,7 @@ export default function Filters({
               categories.map((category, index) => (
                 <div className='group flex items-center' key={index}>
                   <input
-                    onChange={handleSelectChange}
+                    onChange={handleSelectChangeCategory}
                     value={category.id}
                     type='checkbox'
                     name={category.name}

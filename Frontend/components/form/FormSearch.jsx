@@ -72,7 +72,7 @@ export default function FormSearch() {
               </h2>
             </div>
             {/* locations */}
-            <select
+            {/* <select
               name=''
               id=''
               // onChange= // Manejar el cambio de opción seleccionada
@@ -88,7 +88,7 @@ export default function FormSearch() {
                     {location.city}
                   </option>
                 ))}
-            </select>
+            </select> */}
           </div>
           <div className='flex w-full flex-col sm:flex-row sm:gap-4'>
             <div className='mb-6 flex-grow lg:mb-0'>
