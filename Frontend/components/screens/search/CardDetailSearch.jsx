@@ -1,4 +1,5 @@
 import CurrencyFormatter from '@/components/util/CurrencyFormatter'
+import { staticBlurDataUrl } from '@/components/util/staticBlurDataUrl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { BsStarFill } from 'react-icons/bs'
@@ -10,7 +11,8 @@ export const CardDetailSearch = ({
   name,
   description,
   pricePerDay,
-  category
+  category,
+  placeHolder
 }) => {
   return (
     <>
@@ -24,9 +26,11 @@ export const CardDetailSearch = ({
             alt='Picture of the author'
             loading='eager'
             fill
+            blurDataURL={placeHolder || staticBlurDataUrl()}
+            placeholder='blur'
             sizes='(max-width: 768px) 100vw'
             style={{ objectFit: 'cover' }}
-            className='bg-gray-300 transition duration-150 ease-in-out group-hover:brightness-105'
+            className='transition duration-150 ease-in-out group-hover:brightness-105'
           />
         </div>
         <div className='flex w-full flex-col justify-center px-[15px] pt-6 transition duration-300 ease-in-out group-hover:bg-white sm:px-[30px] lg:px-[30px] lg:py-0'>

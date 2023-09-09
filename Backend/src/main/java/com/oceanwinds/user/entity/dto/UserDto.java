@@ -6,9 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @AllArgsConstructor
-@NoArgsConstructor
-@Getter@Setter
-@Data
+
+
+
 public class UserDto {
 
 
@@ -18,9 +18,6 @@ public class UserDto {
     private String email;
 
     private String dni;
-
-
-    private String password;
 
 
     private String phone;
@@ -43,6 +40,9 @@ public class UserDto {
         this.active = active;
     }
 
+    public UserDto() {
+    }
+
     public UserDto(String name, String lastName, String email, String uuid, Boolean active) {
         this.name = name;
         this.lastName = lastName;
@@ -51,4 +51,67 @@ public class UserDto {
         this.active = active;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public UserEnum getRole() {
+        return role;
+    }
+
+    public void setRole(UserEnum role) {
+        this.role = role;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 }

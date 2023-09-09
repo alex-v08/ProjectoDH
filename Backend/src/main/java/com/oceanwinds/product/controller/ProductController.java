@@ -3,6 +3,7 @@ package com.oceanwinds.product.controller;
 import Global.dto.MessageDto;
 import Global.exceptions.AttributeException;
 import Global.util.PaginatedResponse;
+import com.oceanwinds.location.entity.Location;
 import com.oceanwinds.product.entity.Product;
 import com.oceanwinds.product.service.ProductService;
 import com.oceanwinds.product.entity.dto.ProductDto;
@@ -39,19 +40,21 @@ public class ProductController {
     }
 
     @GetMapping("/all/")
-    public ResponseEntity<List<Product>> getAllProductFilterId(@RequestParam(required = false) List<Long> categoriesId, @RequestParam(required = false) List<Long> featuresId) {
+    public ResponseEntity<List<Product>> getAllProductFilter(@RequestParam(required = false) String city, @RequestParam(required = false) List<Long> categoriesId, @RequestParam(required = false) List<Long> featuresId) {
+        if (city == null) {
+            city = "";
+        }
         if (categoriesId == null) {
             categoriesId = new ArrayList<>();
         }
-
         if (featuresId == null) {
             featuresId = new ArrayList<>();
         }
-        List<Product> yachts = productService.getAllProductFilterId(categoriesId, featuresId);
-        if (yachts.isEmpty()) {
+        List<Product> products = productService.getAllProductFilter(city, categoriesId, featuresId);
+        if (products.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
-            return ResponseEntity.ok(yachts);
+            return ResponseEntity.ok(products);
         }
     }
 
@@ -118,19 +121,19 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById (@PathVariable Long id) {
-        Product yacht = productService.getProductById(id);
-        if (yacht == null) {
+        Product product = productService.getProductById(id);
+        if (product == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
 
-            return ResponseEntity.ok(yacht);
+            return ResponseEntity.ok(product);
         }
     }
 
     @PostMapping("/create")
     public ResponseEntity<MessageDto> createProduct(@RequestBody ProductDto dto) throws AttributeException {
         productService.createProduct(dto);
-        String message = "Yacht created successfully";
+        String message = "Product created successfully";
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
 
@@ -146,7 +149,7 @@ public class ProductController {
     public ResponseEntity<MessageDto> deleteProduct(@PathVariable Long id) {
 
         productService.deleteProduct(id);
-        return ResponseEntity.ok(new MessageDto(HttpStatus.OK, "Yacht deleted successfully"));
+        return ResponseEntity.ok(new MessageDto(HttpStatus.OK, "Product deleted successfully"));
     }
 
     @GetMapping("/urlImage/{id}")

@@ -7,6 +7,8 @@ import Global.util.PaginatedResponse;
 import com.oceanwinds.category.entity.Category;
 import com.oceanwinds.category.repository.CategoryRepository;
 import com.oceanwinds.feature.entity.Feature;
+import com.oceanwinds.location.entity.Location;
+import com.oceanwinds.location.repository.LocationRepository;
 import com.oceanwinds.product.entity.Product;
 import com.oceanwinds.product.entity.dto.ProductDto;
 import com.oceanwinds.feature.repository.FeatureRepository;
@@ -15,6 +17,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -31,16 +34,18 @@ public class ProductService {
     @Autowired
     FeatureRepository featureRepository;
 
+    @Autowired
+    LocationRepository locationRepository;
 
     public List<Product> getAllProduct() {
         return productRepository.findAll();
     }
 
     public Product getProductById(Long id) {
-        return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
+        return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 
-    public Product getYachtByName(String name) {
+    public Product getProductByName(String name) {
         return productRepository.findByName(name).get();
     }
 
@@ -54,8 +59,22 @@ public class ProductService {
         if (dto.getImageUrl() == null || dto.getImageUrl().isEmpty()) {
             throw new AttributeException("Image is required");
         }
-
         Product product = new Product();
+        Location location = null;
+        if (dto.getLocation() != null){
+            if (dto.getLocation().getCountry() != null && !dto.getLocation().getCountry().isEmpty() && dto.getLocation().getCity() != null && !dto.getLocation().getCity().isEmpty()){
+                location = locationRepository.findByCountryAndCity(dto.getLocation().getCountry(), dto.getLocation().getCity());
+                if (location != null){
+                    product.setLocation(location);
+                }
+                else {
+                    Location newLocation = new Location();
+                    newLocation.setCountry(dto.getLocation().getCountry());
+                    newLocation.setCity(dto.getLocation().getCity());
+                    location = locationRepository.findById(locationRepository.save(newLocation).getId()).get();
+                }
+            }
+        }
 
         if (dto.getCategoryId() != null) {
           Category category = categoryRepository.findById(dto.getCategoryId())
@@ -75,18 +94,19 @@ public class ProductService {
         product.setSku(dto.getSku());
         product.setDescription(dto.getDescription());
         product.setImageUrl(dto.getImageUrl());
-        product.setAvailable(dto.getAvailable());
         product.setPricePerDay(dto.getPricePerDay());
         product.setPricePerHour(dto.getPricePerHour());
         product.setPricePerWeek(dto.getPricePerWeek());
-
+        product.setLocation(location);
+        product.setAvailable(dto.getAvailable());
         return productRepository.save(product);
     }
 
 
     public Product updateProduct(Long id, ProductDto dto) throws AttributeException {
 
-        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        Location location = null;
         if (dto.getCategoryId() != null) {
             Category category = categoryRepository.findById(dto.getCategoryId())
                     .orElseThrow(() -> new EntityNotFoundException("Category not found"));
@@ -100,31 +120,43 @@ public class ProductService {
         } else {
             product.setFeature(null);
         }
+        if (dto.getLocation() != null){
+            if (dto.getLocation().getCountry() != null && !dto.getLocation().getCountry().isEmpty() && dto.getLocation().getCity() != null && !dto.getLocation().getCity().isEmpty()){
+                location = locationRepository.findByCountryAndCity(dto.getLocation().getCountry(), dto.getLocation().getCity());
+                if (location != null){
+                    product.setLocation(location);
+                }
+                else {
+                    Location newLocation = new Location();
+                    newLocation.setCountry(dto.getLocation().getCountry());
+                    newLocation.setCity(dto.getLocation().getCity());
+                    location = locationRepository.findById(locationRepository.save(newLocation).getId()).get();
+                }
+            }
+        }
 
         product.setName(dto.getName());
         product.setSku(dto.getSku());
         product.setDescription(dto.getDescription());
         product.setImageUrl(dto.getImageUrl());
-        product.setAvailable(dto.getAvailable());
         product.setPricePerDay(dto.getPricePerDay());
         product.setPricePerHour(dto.getPricePerHour());
         product.setPricePerWeek(dto.getPricePerWeek());
+        product.setLocation(location);
+        product.setAvailable(dto.getAvailable());
 
 
         return productRepository.save(product);
     }
 
     public void deleteProduct(Long id) {
-
-        Product yacht = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         productRepository.deleteById(id);
-
     }
 
     public boolean existsByAvailable(boolean available) throws AttributeException {
         if (!available) {
-            throw new AttributeException("Yacht is not Available for rent");
-
+            throw new AttributeException("Product is not Available for rent");
         }
         return productRepository.existsByAvailable(available);
 
@@ -158,89 +190,78 @@ public class ProductService {
         return products;
     }
 
-    public List<Product> getAllProductFilterId(List<Long> categoriesId, List<Long> featuresId) {
-        List<Category> categories;
-        Set<Feature> features;
+    public List<Product> getAllProductFilter(String city, List<Long> categoriesId, List<Long> featuresId) {
+        if (city == null || city.isEmpty() && (categoriesId == null || categoriesId.isEmpty()) && (featuresId == null || featuresId.isEmpty())) {
+            return new ArrayList<>();
+        }
+
+        Specification<Product> spec = Specification.where(null);
+
+        if (city != null && !city.isEmpty()) {
+            spec = spec.and((root, query, builder) ->
+                    builder.equal(root.get("location").get("city"), city)
+            );
+        }
 
         if (!categoriesId.isEmpty()) {
-            categories = categoryRepository.findAllById(categoriesId);
-        } else {
-            categories = new ArrayList<>();
+            spec = spec.and((root, query, builder) ->
+                    root.join("category").get("id").in(categoriesId)
+            );
         }
 
         if (!featuresId.isEmpty()) {
-            features = new HashSet<>(featureRepository.findAllById(featuresId));
-        } else {
-            features = new HashSet<>();
+            spec = spec.and((root, query, builder) ->
+                    root.join("feature").get("id").in(featuresId)
+            );
         }
 
-        List<Product> products;
-
-        if (categories.isEmpty() && features.isEmpty()){
-            // No hay categorías especificadas y tampoco características, traer todos los productos
-            products = productRepository.findAll();
-        } else if (categories.isEmpty()) {
-            // No hay categorías especificadas, buscar solo por características
-            products = productRepository.findByFeatureIn(features);
-            products.removeIf(product -> !product.getFeature().containsAll(features));
-        } else if (features.isEmpty()) {
-            // No hay características especificadas, buscar solo por categorías
-            products = productRepository.findByCategoryIn(categories);
-        } else {
-            // Buscar por ambas categorías y características
-            products = productRepository.findByCategoryInAndFeatureIn(categories, features);
-            products.removeIf(product -> !product.getFeature().containsAll(features));
-        }
-
-        return products;
+        return productRepository.findAll(spec);
     }
 
     public List<Product> getAvailableProduct() {
-
         return productRepository.findByAvailable(true);
     }
 
     public List<Map<String, Object>> findProductWithModifiedImages(Long id) {
         List<Map<String, Object>> modifiedImagesList = new ArrayList<>();
 
-        Product yacht = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Yacht not found"));
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         for (int i = 1; i <= 13; i++) {
             Map<String, Object> modifiedImage = new HashMap<>();
             modifiedImage.put("id", i);
-            modifiedImage.put("url", yacht.getImageUrl() + i + ".png");
+            modifiedImage.put("url", product.getImageUrl() + i + ".png");
             modifiedImagesList.add(modifiedImage);
         }
         return modifiedImagesList;
     }
 
-    public PaginatedResponse<Product> getAllYachts(int page, int perPage) {
+    public PaginatedResponse<Product> getAllProducts(int page, int perPage) {
 
-        Page<Product> yachtsPage = productRepository.findAll(PageRequest.of(page - 1, perPage));
+        Page<Product> productsPage = productRepository.findAll(PageRequest.of(page - 1, perPage));
 
         PaginatedResponse<Product> paginatedResponse = new PaginatedResponse<>();
-        paginatedResponse.setPage(yachtsPage.getNumber() + 1);
-        paginatedResponse.setPer_page(yachtsPage.getSize());
-        paginatedResponse.setTotal(yachtsPage.getTotalElements());
-        paginatedResponse.setTotal_pages(yachtsPage.getTotalPages());
-        paginatedResponse.setData(yachtsPage.getContent());
+        paginatedResponse.setPage(productsPage.getNumber() + 1);
+        paginatedResponse.setPer_page(productsPage.getSize());
+        paginatedResponse.setTotal(productsPage.getTotalElements());
+        paginatedResponse.setTotal_pages(productsPage.getTotalPages());
+        paginatedResponse.setData(productsPage.getContent());
 
         return paginatedResponse;
     }
 
     public PaginatedResponse<Product> getproductsByPage(int page, int perPage) {
-        PaginatedResponse<Product> allYachts = getAllYachts(page, perPage);
-        List<Product> yachts = allYachts.getData();
-        List<Product> availableYachts = new ArrayList<>();
+        PaginatedResponse<Product> allProducts = getAllProducts(page, perPage);
+        List<Product> products = allProducts.getData();
+        List<Product> availableProducts = new ArrayList<>();
 
-        for (Product yacht : yachts) {
-            if (yacht.getAvailable()) {
-                availableYachts.add(yacht);
+        for (Product product : products) {
+            if (product.getAvailable()) {
+                availableProducts.add(product);
             }
         }
-        allYachts.setData(availableYachts);
-        return allYachts;
-
+        allProducts.setData(availableProducts);
+        return allProducts;
     }
 }
 

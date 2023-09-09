@@ -8,6 +8,7 @@ import Alert from '@/components/alert'
 import { FcGoogle } from 'react-icons/fc'
 import { BsEyeSlashFill, BsEyeFill } from 'react-icons/bs'
 import Image from 'next/image'
+import imgLogin from '@/public/form/h4-background05-min.png'
 
 export default function Login() {
   const { login, loginWithGoogle, resetPassword, user } = useAuth()
@@ -16,7 +17,12 @@ export default function Login() {
 
   useEffect(() => {
     if (user) {
-      router.push('/')
+      // si hay historial vover a la pagina previa sino a inicio
+      if (window.history.length > 1) {
+        router.back({ scroll: false })
+      } else {
+        router.push('/')
+      }
     }
   })
 
@@ -73,12 +79,13 @@ export default function Login() {
   return (
     <div className='h-screen bg-[#f2f5fa]'>
       <div className='container flex  justify-center pt-5  sm:pt-10'>
-        <div className='hidden shadow-md sm:block'>
+        <div className='hidden w-full max-w-[420px] shadow-md sm:block'>
           <Image
-            src='/form/h2-luxury01.jpg'
-            width={420}
-            height={540}
+            src={imgLogin}
+            width={560}
+            height={700}
             alt='login image'
+            placeholder='blur'
             style={{ objectFit: 'cover' }}
             className='h-full max-h-[504] w-full max-w-[420px] rounded-s '
           />

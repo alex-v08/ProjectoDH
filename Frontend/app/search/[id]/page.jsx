@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react'
 import { CardDetailSearch } from '@/components/screens/search/CardDetailSearch'
 import Filters from '@/components/screens/search/Filters'
 import { getAllUseClient } from '@/components/util/callAPI'
+import { dynamicBlurDataUrl } from '@/components/util/dynamicBlurDataUrl'
 
 export default function SearchID(props) {
   const { idCategory = [], params } = props
@@ -110,6 +111,12 @@ export default function SearchID(props) {
     getSearch()
   }, [selectedOption, featuresOptions])
 
+  // export default async function SearchID({ params }) {
+  //   const results = await getHeader(params)
+  //   const placeHolders = await Promise.all(
+  //     results.map(product => dynamicBlurDataUrl(`${product.imageUrl}1.png`))
+  //   )
+
   return (
     <>
       <HeroSearch />
@@ -163,6 +170,7 @@ export default function SearchID(props) {
                           description={description}
                           pricePerDay={pricePerDay}
                           category={category}
+                          // placeHolder={placeHolders[index]}
                         />
                       ) : null
                   )}

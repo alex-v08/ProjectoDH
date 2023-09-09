@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import DatePicker from './DatePicker'
 import {
   BiCurrentLocation,
   BiAnchor,
@@ -67,9 +68,7 @@ export default function FormSearch() {
           <div className='mb-6 w-full lg:mb-0'>
             <div className='mb-2 flex items-center'>
               <BiCurrentLocation className='mr-3 h-6 w-6 text-sky-500' />
-              <h2 className='text-sm font-medium uppercase dark:text-black'>
-                Ubicación
-              </h2>
+              <h2 className='text-sm font-medium uppercase'>Ubicación</h2>
             </div>
             {/* locations */}
             {/* <select
@@ -89,37 +88,31 @@ export default function FormSearch() {
                   </option>
                 ))}
             </select> */}
+            <input
+              type='text'
+              className='w-full rounded-lg border-2 bg-white p-[13.5px]'
+              placeholder='Elija su lugar de inicio'
+            />
           </div>
           <div className='flex w-full flex-col sm:flex-row sm:gap-4'>
-            <div className='mb-6 flex-grow lg:mb-0'>
+            <div className='mb-6 w-full lg:mb-0'>
               <div className='mb-2 flex items-center'>
-                <BiCalendar className='mr-3 h-6 w-6 text-sky-500' />
-                <h2 className='text-sm font-medium uppercase dark:text-black'>
+                <BiCalendar className='mr-3 h-6 w-6 text-sky-500 lg:mr-2 xl:mr-3' />
+                <h2 className='truncate pr-5 text-sm font-medium uppercase lg:pr-2 xl:pr-6'>
                   Fecha de inicio
                 </h2>
-              </div>
-              <input
-                type='date'
-                className='w-full rounded-lg border-2 p-3 text-gray-400 dark:[color-scheme:light]'
-              />
-            </div>
-            <div className='mb-6 flex-grow lg:mb-0'>
-              <div className='mb-2 flex items-center'>
-                <BiCalendar className='mr-3 h-6 w-6 text-sky-500' />
-                <h2 className='text-sm font-medium uppercase dark:text-black'>
+                <BiCalendar className='mr-3 h-6 w-6 text-sky-500 lg:mr-2 xl:mr-3' />
+                <h2 className='truncate text-sm font-medium uppercase'>
                   Fecha de fin
                 </h2>
               </div>
-              <input
-                type='date'
-                className='w-full rounded-lg border-2 p-3 text-gray-400 dark:[color-scheme:light]'
-              />
+              <DatePicker />
             </div>
           </div>
           <div className='mb-6 w-full lg:mb-0'>
             <div className='mb-2 flex items-center'>
               <BiAnchor className='mr-3 h-6 w-6 text-sky-500' />
-              <h2 className='text-sm font-medium uppercase dark:text-black'>
+              <h2 className='truncate text-sm font-medium uppercase'>
                 Tipo de embarcación
               </h2>
             </div>
@@ -128,7 +121,7 @@ export default function FormSearch() {
               id=''
               onChange={handleSelectChange} // Manejar el cambio de opción seleccionada
               value={selectedOption} // Establecer el valor seleccionado en el estado
-              className='w-full min-w-[210px] rounded-lg border-2 bg-white p-3 text-gray-400'
+              className='w-full min-w-[210px] rounded-lg border-2 bg-white p-[13.95px] text-gray-400'
             >
               <option value='' hidden defaultValue>
                 Elija el tipo de barco

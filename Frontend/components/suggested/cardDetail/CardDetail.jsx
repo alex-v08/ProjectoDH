@@ -1,7 +1,9 @@
 import CurrencyFormatter from '@/components/util/CurrencyFormatter'
+import { staticBlurDataUrl } from '@/components/util/staticBlurDataUrl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { BsStarFill } from 'react-icons/bs'
+import HeartButton from '@/components/favs/HeartButton'
 
 export const CardDetail = ({
   imageUrl,
@@ -9,7 +11,8 @@ export const CardDetail = ({
   name,
   description,
   pricePerDay,
-  category
+  category,
+  placeHolder
 }) => {
   return (
     <Link
@@ -22,10 +25,16 @@ export const CardDetail = ({
           alt='Picture of the author'
           loading='eager'
           fill
+          blurDataURL={placeHolder || staticBlurDataUrl()}
+          placeholder='blur'
           sizes='(max-width: 768px) 100vw'
           style={{ objectFit: 'cover' }}
-          className='rounded-t-lg bg-gray-300 transition duration-150 ease-in-out group-hover:brightness-105'
+          className='rounded-t-lg transition duration-150 ease-in-out group-hover:brightness-105'
         />
+        <div className='w-full h-1/4 absolute bg-gradient-to-b from-black to-transparent opacity-30'></div>
+        <div className='absolute top-0 right-0 m-5'>
+          <HeartButton fillColor='white' behaivour='hidden group-hover:block' productId={id} />
+        </div>          
       </div>
       <div className='transition duration-300 ease-in-out group-hover:bg-white'>
         <div className='flex flex-col px-5 py-6 text-xs sm:px-7'>

@@ -1,23 +1,30 @@
 import { useState, useEffect } from 'react'
 import { Modal } from '../util/modal'
-import { Form } from '../register-edit/formProduct'
+import { FormProduct } from '../register-edit/formProduct'
 import Image from 'next/image'
-
-export function Row(props) {
-  const { id, name, urlImage, category, features } = props
-  const [yacht, setYatcht] = useState({})
+import Swal from 'sweetalert2'
+export function RowProduct(props) {
+  const {
+    id,
+    name,
+    urlImage,
+    category,
+    features,
+    isChangeData,
+    onRefreshData
+  } = props
+  const [product, setYatcht] = useState({})
   const [modalEditOpen, setModalEditOpen] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [isChangeData])
 
   async function fetchData() {
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const urlGetYacht = `${hostUrl}/api/${id}`
+    const urlGetProduct = `${hostUrl}/api/${id}`
     try {
-      const response = await fetch(urlGetYacht)
+      const response = await fetch(urlGetProduct)
       if (!response.ok) {
         throw new Error(
           'Error al intentar cargar los datos del registro: ' + response.status
@@ -35,8 +42,15 @@ export function Row(props) {
     e.stopPropagation()
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
     const urlDelete = `${hostUrl}/api/delete/${id}`
-    const opcion = confirm(`Desea eliminar el registro con el id: ${id}`)
-    if (opcion) {
+    const opcion = await Swal.fire({
+      title: `¿Estás seguro de que quieres eliminar el producto '${name}'?`,
+      text: `En caso de eliminar este producto de la base de datos, este ya no aparecera en la pagina y se perderan todos sus datos.`,
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      icon: 'warning'
+    })
+    if (opcion.isConfirmed) {
       try {
         const response = await fetch(urlDelete, {
           method: 'DELETE',
@@ -50,9 +64,17 @@ export function Row(props) {
               response.status
           )
         } else {
-          window.location.reload()
+          Swal.fire({
+            icon: 'success',
+            text: `El producto '${name}' a sido eliminado correctamente.`
+          })
+          onRefreshData()
         }
       } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          text: `El producto '${name}' no pudo ser eliminado correctamente. Por favor comuniquese con el proveedor del servicio.`
+        })
         console.error('Error al eliminar el registro:', error)
       }
     }
@@ -69,29 +91,29 @@ export function Row(props) {
   return (
     <>
       <tr
-        className='border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600'
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        className='border-b bg-white hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600'
         onClick={handleOpenModalEdit}
       >
-        <td className='px-8 py-4'>
+        <td className='px-16 py-4'>
           <div>
             <Image
               className='h-11 w-11 rounded-full border-2 border-sky-500'
               width='50'
               height='50'
               src={`${urlImage}1.png`}
-              alt='imagen de la embarcacion'
+              alt='imagen de la embarcación'
+              quality={100}
             />
           </div>
         </td>
         <th
           scope='row'
-          className='whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white'
+          className='whitespace-nowrap px-16 py-4 font-medium text-gray-900 dark:text-white'
         >
           {id}
         </th>
-        <td className='px-6 py-4'>{name}</td>
+        <td className='px-16 py-4'>{name}</td>
+        <td className='px-8 py-4'><button className="shadow-md w-28 py-1 no-underline rounded-full bg-sky-500 text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none text-center">{category != null ? category.name : 'Sin categorizar'}</button></td>
         <td className='px-6 py-4 text-right'>
           <div>
             <button
@@ -119,30 +141,12 @@ export function Row(props) {
           </div>
         </td>
       </tr>
-      <tr className='border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600'>
-        {isHovered && (
-          <>
-            <td colSpan='2' className='p-2'>
-              <div>
-                {category == null
-                  ? 'Sin categorizar'
-                  : `Categoría: ${category.name}`}
-              </div>
-            </td>
-            <td colSpan='2' className='p-2'>
-              <div>
-                {features.length === 0
-                  ? 'Sin características'
-                  : `Características: ${features.map(
-                      feature => ` ${feature.name}`
-                    )}`}
-              </div>
-            </td>
-          </>
-        )}
-      </tr>
       <Modal isOpen={modalEditOpen} onClose={handleCloseModalEdit}>
-        <Form formEditData={yacht} />
+        <FormProduct
+          formEditData={product}
+          onClose={handleCloseModalEdit}
+          onRefreshData={onRefreshData}
+        />
       </Modal>
     </>
   )

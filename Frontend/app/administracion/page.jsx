@@ -1,23 +1,18 @@
 'use client'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { useAuth } from '@/context/authContext'
-import { useState, useEffect } from 'react'
-
-import { Row } from './rows/rowProduct'
-import { RowCategory } from './rows/rowCategory'
-import { RowFeature } from './rows/rowFeature'
-import { RowUser } from './rows/rowUser'
-
-import { Form } from './register-edit/formProduct'
-import { FormCat } from './register-edit/formCategory'
-import { FormFeature } from './register-edit/formFeature'
-import { Modal } from './util/modal'
+import { useState, useEffect, useRef } from 'react'
 
 import Link from 'next/link'
 
 import { Spline_Sans } from 'next/font/google'
-import Table from './util/table'
+
 import Image from 'next/image'
+import PageProduct from './pages/pageProduct'
+import PageCategory from './pages/pageCategory'
+import PageFeature from './pages/pageFeature'
+import PageUser from './pages/pageUser'
+
 const spline = Spline_Sans({
   weight: '600',
   subsets: ['latin'],
@@ -88,9 +83,9 @@ export default function Menu() {
             {/* Sidebar */}
             <div
               className='left-0 flex flex-col border-none bg-sky-900 pt-5 text-white dark:bg-[#121212]'
-              style={{ minWidth: '200px' }}
+              style={{ minWidth: '250px' }}
             >
-              <div className='flex h-14 items-center justify-center border-none px-5'>
+              <div className='flex h-14 items-center border-none px-5'>
                 <Image
                   className={`mr-4 h-11 w-11 ${
                     !user
@@ -253,287 +248,11 @@ export default function Menu() {
               {productPageOpen && <PageProduct />}
               {categoryPageOpen && <PageCategory />}
               {featurePageOpen && <PageFeature />}
-              {userPageOpen && <PageUsers />}
+              {userPageOpen && <PageUser />}
             </div>
           </div>
         </div>
       </main>
     </ProtectedRoute>
-  )
-}
-
-function PageProduct() {
-  const [data, setData] = useState([])
-  const [modalOpen, setModalOpen] = useState(false)
-  const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-  const urlGetYacht = `${hostUrl}/api/all`
-  async function fetchData() {
-    try {
-      const response = await fetch(urlGetYacht)
-      if (!response.ok) {
-        throw new Error(
-          'Error al intentar cargar todos los registros: . Response: ' +
-            response.status
-        )
-      }
-      const jsonData = await response.json()
-      setData(jsonData)
-    } catch (error) {
-      console.error('Error cargando los registros: ', error)
-    }
-  }
-
-  useEffect(() => {
-    fetchData()
-  }, [])
-
-  const handleOpenModal = () => {
-    setModalOpen(true)
-  }
-
-  const handleCloseModal = () => {
-    setModalOpen(false)
-  }
-
-  return (
-    <div className='container'>
-      <div className='hidden min-h-screen lg:block'>
-        <div className='pt-7'>
-          <button
-            className='rounded border border-sky-500 bg-transparent px-4 py-2 font-semibold text-sky-700 transition ease-in-out hover:border-transparent hover:bg-sky-500 hover:text-white dark:text-white sm:block'
-            onClick={handleOpenModal}
-          >
-            Registrar Yate
-          </button>
-        </div>
-        <div className='relative mx-auto mt-12  w-full overflow-x-auto rounded-lg shadow-md'>
-          <Table>
-            {data.map(yacht => (
-              <Row
-                key={yacht.id}
-                id={yacht.id}
-                name={yacht.name}
-                urlImage={yacht.imageUrl}
-                category={yacht.category}
-                features={yacht.feature}
-              />
-            ))}
-          </Table>
-        </div>
-
-        <Modal isOpen={modalOpen} onClose={handleCloseModal}>
-          <Form />
-        </Modal>
-      </div>
-    </div>
-  )
-}
-
-function PageCategory() {
-  const [data, setData] = useState([])
-  const [modalCatOpen, setModalCatOpen] = useState(false)
-  const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-  const urlGetCategory = `${hostUrl}/api/category/all`
-  async function fetchData() {
-    try {
-      const response = await fetch(urlGetCategory)
-      if (!response.ok) {
-        throw new Error(
-          'Error al intentar cargar todos los registros: . Response: ' +
-            response.status
-        )
-      }
-      const jsonData = await response.json()
-      setData(jsonData)
-    } catch (error) {
-      console.error('Error cargando los registros: ', error)
-    }
-  }
-
-  useEffect(() => {
-    fetchData()
-  }, [])
-
-  const handleOpenModalCat = () => {
-    setModalCatOpen(true)
-  }
-
-  const handleCloseModalCat = () => {
-    setModalCatOpen(false)
-  }
-
-  return (
-    <div className='container min-h-screen w-full'>
-      <div className='hidden lg:block'>
-        <div className='pt-7'>
-          <button
-            className='rounded border border-sky-500 bg-transparent px-4 py-2 font-semibold text-sky-700 transition ease-in-out hover:border-transparent hover:bg-sky-500 hover:text-white dark:text-white sm:block'
-            onClick={handleOpenModalCat}
-          >
-            Registrar Categoría
-          </button>
-        </div>
-        <div className='relative mx-auto mt-12  w-full overflow-x-auto rounded-lg shadow-md'>
-          <Table>
-            {data.map(category => (
-              <RowCategory
-                key={category.id}
-                id={category.id}
-                name={category.name}
-                icon={category.image}
-              />
-            ))}
-          </Table>
-        </div>
-        <Modal isOpen={modalCatOpen} onClose={handleCloseModalCat}>
-          <FormCat />
-        </Modal>
-      </div>
-    </div>
-  )
-}
-
-function PageFeature() {
-  const [data, setData] = useState([])
-  const [modalFeatureOpen, setModalFeatureOpen] = useState(false)
-  const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-  const urlGetFeature = `${hostUrl}/api/feature/all`
-  async function fetchData() {
-    try {
-      const response = await fetch(urlGetFeature)
-      if (!response.ok) {
-        throw new Error(
-          'Error al intentar cargar todos los registros: . Response: ' +
-            response.status
-        )
-      }
-      const jsonData = await response.json()
-      setData(jsonData)
-    } catch (error) {
-      console.error('Error cargando los registros: ', error)
-    }
-  }
-
-  useEffect(() => {
-    fetchData()
-  }, [])
-
-  const handleOpenModalFeature = () => {
-    setModalFeatureOpen(true)
-  }
-
-  const handleCloseModalFeature = () => {
-    setModalFeatureOpen(false)
-  }
-
-  return (
-    <div className='container min-h-screen w-full'>
-      <div className='hidden lg:block'>
-        <div className='pt-7'>
-          <button
-            className='rounded border border-sky-500 bg-transparent px-4 py-2 font-semibold text-sky-700 transition ease-in-out hover:border-transparent hover:bg-sky-500 hover:text-white dark:text-white sm:block'
-            onClick={handleOpenModalFeature}
-          >
-            Registrar Características
-          </button>
-        </div>
-        <div className='relative mx-auto mt-12  w-full overflow-x-auto rounded-lg shadow-md'>
-          <Table className='mx-auto w-full text-left text-sm text-gray-500 dark:text-gray-400'>
-            {data.map(feature => (
-              <RowFeature
-                key={feature.id}
-                id={feature.id}
-                name={feature.name}
-                icon={feature.image}
-              />
-            ))}
-          </Table>
-        </div>
-        <Modal isOpen={modalFeatureOpen} onClose={handleCloseModalFeature}>
-          <FormFeature />
-        </Modal>
-      </div>
-    </div>
-  )
-}
-
-function PageUsers() {
-  const [data, setData] = useState([])
-  const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-  const urlGetUser = `${hostUrl}/users/all`
-  async function fetchData() {
-    try {
-      const response = await fetch(urlGetUser)
-      if (!response.ok) {
-        throw new Error(
-          'Error al intentar cargar todos los registros: . Response: ' +
-            response.status
-        )
-      }
-      const jsonData = await response.json()
-      setData(jsonData)
-    } catch (error) {
-      console.error('Error cargando los registros: ', error)
-    }
-  }
-
-  useEffect(() => {
-    fetchData()
-  })
-
-  return (
-    <div className='bg-grey-300 w-full flex-auto px-12 pb-12 pt-2'>
-      <div className='mt-8 overflow-x-auto rounded-lg shadow-md'>
-        <table className='mx-auto w-full text-left text-sm text-gray-500 dark:text-gray-400'>
-          <thead className='bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400'>
-            <tr>
-              <th scope='col' className='px-6 py-3'>
-                ID
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                Nombre
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                Apellido
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                Dni
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                Email
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                Tel
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                Domicilio
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                Rol
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                <span className='sr-only'>Designar como admin.</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map(user => (
-              <RowUser
-                key={user.id}
-                id={user.id}
-                name={user.name}
-                lastName={user.lastName}
-                dni={user.dni}
-                password={user.password}
-                email={user.email}
-                phone={user.phone}
-                adress={user.adress}
-                role={user.role}
-              />
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
   )
 }

@@ -4,8 +4,8 @@ package com.oceanwinds.product.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.oceanwinds.category.entity.Category;
 
-import com.oceanwinds.favorites.entity.Favorites;
 import com.oceanwinds.feature.entity.Feature;
+import com.oceanwinds.location.entity.Location;
 import com.oceanwinds.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -43,6 +43,10 @@ public class Product {
     @JoinTable(name = "product_feature", joinColumns = @JoinColumn(name = "product_id"),
     inverseJoinColumns = @JoinColumn(name = "feature_id"))
     private Set<Feature> feature = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 
     private Boolean available;
 
