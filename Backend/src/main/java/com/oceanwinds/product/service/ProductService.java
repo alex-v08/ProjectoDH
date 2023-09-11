@@ -46,10 +46,8 @@ public class ProductService {
         this.pictureDataRepository = pictureDataRepository;
     }
 
-    public Set<Product> getAllProducts() {
-        return productRepository.findAll().stream()
-                .filter(product -> !product.getDeleted())
-                .collect(Collectors.toSet());
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 
     public Product getProductById(Long id) {
@@ -285,7 +283,7 @@ public class ProductService {
         return productRepository.existsById(id);
     }
 
-    public Set<Product> getAllProduct() {
+    public Set<Product> getAllActiveProduct() {
         return productRepository.findAll().stream()
                 .filter(product -> !product.getDeleted())
                 .collect(Collectors.toSet());
