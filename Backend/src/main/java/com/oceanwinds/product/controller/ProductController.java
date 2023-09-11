@@ -118,15 +118,9 @@ public class ProductController {
 
     }
 
-    public ResponseEntity<MessageDto> getProductById(@PathVariable Long id) {
-        Optional<Product> productOptional = Optional.ofNullable(productService.getProductById(id));
-
-        if (productOptional.isPresent()) {
-            Product product = productOptional.get();
-            return ResponseEntity.ok(new MessageDto(HttpStatus.OK, "Product retrieved successfully.", product));
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageDto(HttpStatus.NOT_FOUND, "Product not found"));
-        }
+    @GetMapping("/{id}")
+    public Product getProductById(@PathVariable Long productId){
+        return productService.getProductById(productId);
     }
 
     @PostMapping("/create")
@@ -158,6 +152,7 @@ public class ProductController {
     public Set<Map<String, Object>> getProducttModifiedImages(@PathVariable Long id) {
         return productService.findProductWithModifiedImages(id);
     }
+
 
 
 
