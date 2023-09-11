@@ -19,7 +19,7 @@ public class LocationService {
 
     public List<Location> getAllLocation() {
         List<Location> locations = locationRepository.findAll();
-        locations.removeIf(location -> location.getEliminated());
+        locations.removeIf(location -> location.getDeleted());
         return locations;
     }
 
@@ -42,7 +42,7 @@ public class LocationService {
 
     public void deleteLocation(Long id) {
         Location location = locationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Location not found"));
-        location.setEliminated(true);
+        location.setDeleted(true);
         locationRepository.save(location);
     }
 
