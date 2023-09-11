@@ -89,12 +89,14 @@ public class BookingService {
     @Transactional
     public Set<Booking> getReservesByUserId(Long userId) {
         // Recupera todas las entidades Reservee asociadas a un usuario específico
-        return null;
+       Set<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getUser().getId().equals(userId)).collect(Collectors.toSet());
+       return  bookings;
     }
     @Transactional
     public Set<Booking> getReservesByProductId(Long productId) {
         // Recupera todas las entidades Reservee asociadas a un producto específico
-        return null;
+        Set<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getProduct().getId().equals(productId)).collect(Collectors.toSet());
+        return  bookings;
     }
 
     @Transactional
