@@ -36,15 +36,8 @@ public class ProductController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<MessageDto> getAllProduct() {
-        Set <Product> product = productService.getAllProduct();
-        if (product.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageDto(HttpStatus.NOT_FOUND, "No products found."));
-        } else {
-
-            ResponseEntity<MessageDto> ok = ResponseEntity.ok(new MessageDto(HttpStatus.OK, "Products retrieved successfully.", product));
-            return ok;
-        }
+    public List<Product> getAllProduct() {
+        return productService.getAllProducts();
     }
 
 
