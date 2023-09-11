@@ -1,7 +1,7 @@
 'use client'
 
 import SectionTitle from '@/components/SectionTitle'
-import FormSearch from '@/components/form/FormSearch'
+import FormSearchNew from '@/components/form/FormSearchNew'
 import Descubre from '@/components/screens/home/Descubre'
 import Embarcaciones from '@/components/screens/home/Embarcaciones'
 import Hero from '@/components/screens/home/Hero'
@@ -15,6 +15,15 @@ export default function Home({ searchParams }) {
   const [totalProducts, setTotalProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [placeHolders, setPlaceHolders] = useState([])
+
+  // Estado para almacenar la ciudad seleccionada
+  const [selectedCity, setSelectedCity] = useState('')
+
+  // Función para manejar el cambio de ciudad seleccionada
+  const handleSelectChangeCity = event => {
+    setSelectedCity(event.target.value)
+    // router.replace(`/search/${event.target.value}`)
+  }
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -92,7 +101,10 @@ export default function Home({ searchParams }) {
   return (
     <section>
       <Hero />
-      <FormSearch />
+      <FormSearchNew
+        handleSelectChangeCity={handleSelectChangeCity}
+        selectedCity={selectedCity}
+      />
       <Descubre />
       {loading ? (
         <>

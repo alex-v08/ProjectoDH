@@ -1,5 +1,4 @@
 'use client'
-import FormSearch from '@/components/form/FormSearch'
 import HeroSearch from '@/components/screens/search/HeroSearch'
 import { AiOutlineSortAscending } from 'react-icons/ai'
 import React, { useState, useEffect } from 'react'
@@ -7,10 +6,13 @@ import { CardDetailSearch } from '@/components/screens/search/CardDetailSearch'
 import Filters from '@/components/screens/search/Filters'
 import { getAllUseClient } from '@/components/util/callAPI'
 import { dynamicBlurDataUrl } from '@/components/util/dynamicBlurDataUrl'
+import { useRouter } from 'next/navigation'
+import FormSearchNew from '@/components/form/FormSearchNew'
 
-export default function SearchID(props) {
-  const { idCategory = [], params } = props
+export default function SearchID({ params }) {
+  // const { idCategory = [], params } = props
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+  const router = useRouter()
 
   // Estados para almacenar los items del listado
   const [totalProducts, setTotalProducts] = useState([])
@@ -18,15 +20,30 @@ export default function SearchID(props) {
 
   const [loading, setLoading] = useState(true)
 
+  // Estado para almacenar la ciudad seleccionada
+  const [selectedCity, setSelectedCity] = useState(params?.id)
+
   // Estado para almacenar las opciones de categorias de embarcaciones seleccionadas
-  const [selectedOption, setSelectedOption] = useState(idCategory)
+  const [selectedOption, setSelectedOption] = useState([])
 
   // Estado para almacenar las opciones de características de embarcaciones seleccionadas
   const [featuresOptions, setFeaturesOptions] = useState([])
 
+  // Estado para almacenar el slug de características
+  const [slugFeatudes, setSlugFeatudes] = useState(false)
+
+  // Estado para almacenar el slug de categorias
+  const [slugCategory, setSlugCategory] = useState(false)
+
+  // Función para manejar el cambio de ciudad seleccionada
+  const handleSelectChangeCity = event => {
+    setSelectedCity(event.target.value)
+    router.replace(`/search/${event.target.value}`)
+  }
+
   // controla los check de las categorias
   const handleSelectChangeCategory = event => {
-    const { value, checked } = event.target
+    const { value, checked, name } = event.target
     // let link
 
     if (checked) {
@@ -72,7 +89,7 @@ export default function SearchID(props) {
 
   // Para obtener el filtrado de la home
   useEffect(() => {
-    const urlGetProductsFilterHome = `${hostUrl}/api/productByCategoryName/?categoryName=${params.id}`
+    const urlGetProductsFilterHome = `${hostUrl}/api/all/?city=${params.id}&categoriesId=&featuresId=`
     getAllUseClient(urlGetProductsFilterHome, setProductsFilters, setLoading)
   }, [])
 
@@ -91,7 +108,7 @@ export default function SearchID(props) {
 
       try {
         const response = await fetch(
-          `${hostUrl}/api/all/?city=&categoriesId=${resultado}&featuresId=${resultFeatures}`,
+          `${hostUrl}/api/all/?city=${params.id}&categoriesId=${resultado}&featuresId=${resultFeatures}`,
           {
             cache: 'no-store'
           }
@@ -109,7 +126,7 @@ export default function SearchID(props) {
       }
     }
     getSearch()
-  }, [selectedOption, featuresOptions])
+  }, [selectedOption, featuresOptions, selectedCity])
 
   // export default async function SearchID({ params }) {
   //   const results = await getHeader(params)
@@ -120,7 +137,10 @@ export default function SearchID(props) {
   return (
     <>
       <HeroSearch />
-      <FormSearch />
+      <FormSearchNew
+        handleSelectChangeCity={handleSelectChangeCity}
+        selectedCity={selectedCity}
+      />
       <div className='bg-[#f2f5fa]'>
         <div className='container pb-20 pt-[32rem] sm:pt-[26rem] lg:pt-32'>
           {/* Container */}
@@ -181,6 +201,7 @@ export default function SearchID(props) {
               <Filters
                 handleSelectChangeCategory={handleSelectChangeCategory}
                 handleSelectChangeFeatures={handleSelectChangeFeatures}
+                productsFilters={productsFilters}
               />
             </div>
           </div>

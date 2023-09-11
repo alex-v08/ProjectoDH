@@ -6,7 +6,8 @@ import { useState, useEffect } from 'react'
 
 export default function Filters({
   handleSelectChangeCategory,
-  handleSelectChangeFeatures
+  handleSelectChangeFeatures,
+  productsFilters
 }) {
   // Para almacenar la data de inptus
   const [allCategories, setAllCategories] = useState([])
@@ -20,14 +21,19 @@ export default function Filters({
   const urlCategories = `${urlBase}/api/category/all`
   const urlFeatures = '/api/products/features'
 
+  const getCategoryIds = items => {
+    return items.map(item => item.category.id)
+  }
+
+  let categoryIds = getCategoryIds(productsFilters)
+
   useEffect(() => {
     getAllUseClient(urlFeatures, setAllFeatures, setLoadingFeatures)
   }, [])
 
   useEffect(() => {
     getAllUseClient(urlCategories, setAllCategories, setLoadingCategories)
-    // getCategories()
-  }, [])
+  }, [productsFilters])
 
   return (
     <>
@@ -51,6 +57,7 @@ export default function Filters({
                     type='checkbox'
                     name={category.name}
                     id={category.id}
+                    // checked={categoryIds.includes(category.id) ? true : false}
                     className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
                   />
                   <label
