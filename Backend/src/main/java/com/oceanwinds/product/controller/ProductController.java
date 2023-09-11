@@ -41,19 +41,15 @@ public class ProductController {
     }
 
 
-    @GetMapping("/all/")
-    public ResponseEntity<MessageDto> getAllProductFilter(
+    @GetMapping("/allFiltered/")
+    public ResponseEntity<List<Product>> getAllProductFilter(
             @RequestParam(defaultValue = "") String city,
             @RequestParam(defaultValue = "") Set<Long> categoriesId,
             @RequestParam(defaultValue = "") Set<Long> featuresId) {
 
-        Set<Product> products = (Set<Product>) productService.getAllProductFilter(city, categoriesId, featuresId);
+        List<Product> products = (List<Product>) productService.getAllProductFilter(city, categoriesId, featuresId);
 
-        if (products.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageDto(HttpStatus.NOT_FOUND, "No products found."));
-        } else {
-            return ResponseEntity.ok(new MessageDto(HttpStatus.OK, "Products retrieved successfully.", products));
-        }
+        return ResponseEntity.ok(products);
     }
 
 
