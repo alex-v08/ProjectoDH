@@ -29,5 +29,7 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Product> product;
 
+    private Boolean eliminated = false;
+
 
 }

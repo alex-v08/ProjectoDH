@@ -19,6 +19,9 @@ import java.util.Set;
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 
     boolean existsByAvailable(boolean available);
+    boolean existsById(Long id);
+
+
 
     Optional<Product> findByName(String name);
 
@@ -37,14 +40,10 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     List<Product> findByLocationAndCategoryInAndFeatureIn(Location location, List<Category> categories, Set<Feature> features);
 
     // List<Product> findByPriceBetween(double minPrice, double maxPrice);
-
-    List<Product> findByAvailable(boolean b);
+    Set<Product> findByAvailable(boolean b);
 
     List<Product> findByAvailableAndCategory(boolean b, String category);
 
-    @Query(value = "SELECT IMAGE_URL FROM PRODUCT WHERE ID = ?1 ", nativeQuery = true)
-    List<String> findproductWithModifiedImages(Long id);
-
-      Page<Product>  findAll (Pageable pegeable);
+    Page<Product>  findAll (Pageable pegeable);
 
 }

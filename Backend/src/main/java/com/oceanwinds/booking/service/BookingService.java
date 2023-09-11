@@ -19,10 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BookingService {
@@ -78,9 +76,9 @@ public class BookingService {
         }
     }
 
-    public List<Booking> getAllReserves() {
+    public Set<Booking> getAllReserves() {
         // Recupera todas las entidades Reservee
-        return bookingRepository.findAll();
+        return (Set<Booking>) bookingRepository.findAll();
     }
 
     public Booking getReserveById(Long id) {
@@ -89,12 +87,12 @@ public class BookingService {
         return reserve.orElse(null);
     }
     @Transactional
-    public List<Booking> getReservesByUserId(Long userId) {
+    public Set<Booking> getReservesByUserId(Long userId) {
         // Recupera todas las entidades Reservee asociadas a un usuario específico
         return null;
     }
     @Transactional
-    public List<Booking> getReservesByProductId(Long productId) {
+    public Set<Booking> getReservesByProductId(Long productId) {
         // Recupera todas las entidades Reservee asociadas a un producto específico
         return null;
     }
@@ -148,9 +146,10 @@ public class BookingService {
     }
 
     @Transactional
-    public List<RatingDto> getAllRatings(Long id) {
-        List<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getProduct().getId().equals(id)).toList();
-        List<RatingDto> ratings = new ArrayList<>();
+    public Set<RatingDto> getAllRatings(Long id) {
+        Set<Booking> bookings = bookingRepository.findAllByProduct_Id(id);
+
+        Set<RatingDto> ratings = new HashSet<>();
 
         for(Booking reserve: bookings){
             RatingDto ratingDto = new RatingDto();
@@ -166,8 +165,8 @@ public class BookingService {
     }
 
     public MediaRatingDto getMediaRating(Long id) {
-        List<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getProduct().getId().equals(id)).toList();
-        bookings = bookings.stream().filter(booking -> booking.getComplete().equals(true)).toList();
+        Set<Booking> bookings = bookingRepository.findAllByProduct_Id(id);
+        bookings = bookings.stream().filter(booking -> booking.getComplete().equals(true)).collect(Collectors.toSet());
         MediaRatingDto mediaRatingDto = new MediaRatingDto();
 
         Double media;

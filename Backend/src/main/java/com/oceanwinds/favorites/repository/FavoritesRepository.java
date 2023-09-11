@@ -21,10 +21,11 @@ public interface FavoritesRepository extends JpaRepository<Favorites, Long> {
 
         Set<Favorites> findByProductId(Long productId);
 
-        List<Favorites> findAll();
 
-        @Modifying
-        @Query (value = "DELETE FROM favorites WHERE user_id = :userId AND product_id = :productId", nativeQuery = true)
+        default Set<Favorites> find_All() {
+                return null;
+        }
+
         void deleteByUserIdAndProductId(Long userId, Long productId);
 
         Set<Favorites> findByUserId(Long userId);

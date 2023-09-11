@@ -1,14 +1,13 @@
-package com.oceanwinds.product.entity.vm;
+package com.oceanwinds.pictures.entity.vm;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class ImageAsset {
+public class PictureAsset {
     private byte[] content;
     private String contentType;
 
-    public ImageAsset(byte[] bytes, String contentType) {
+    public PictureAsset(byte[] bytes, String contentType) {
         this.content = bytes;
         this.contentType = contentType;
     }
