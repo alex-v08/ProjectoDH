@@ -10,8 +10,9 @@ import com.oceanwinds.booking.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+
+
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -47,15 +48,15 @@ public class BookingController {
     }
 
     @GetMapping
-    public List<Booking> getAllBookings() {
+    public Set<Booking> getAllBookings() {
         return bookingService.getAllReserves();
     }
 
     @GetMapping("/actives")
-    public List<Booking> getAllActiveBookings(){
-        List<Booking> activeBookings = bookingService.getAllReserves().stream().filter(booking -> booking.getActive().equals(true)).collect(Collectors.toList());
-
-        return activeBookings;
+    public Set<Booking> getAllActiveBookings() {
+        return bookingService.getAllReserves().stream()
+                .filter(Booking::getActive)
+                .collect(Collectors.toSet());
     }
 
     @GetMapping("/{id}")
@@ -64,17 +65,19 @@ public class BookingController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<Booking> getBookingsByUserId(@PathVariable Long userId) {
+    public Set<Booking> getBookingsByUserId(@PathVariable Long userId) {
         return bookingService.getReservesByUserId(userId);
     }
 
     @GetMapping("/product/{productId}")
-    public List<Booking> getBookingsByProductId(@PathVariable Long productId) {
+    public Set<Booking> getBookingsByProductId(@PathVariable Long productId) {
         return bookingService.getReservesByProductId(productId);
     }
 
     @GetMapping("/ratings/{id}")
-    public List<RatingDto> getAllRatings(@PathVariable Long id){
+    public Set<RatingDto> getAllRatings(@PathVariable Long id){
+
+
         return bookingService.getAllRatings(id);
     }
 

@@ -1,4 +1,4 @@
-/*
+
 package com.oceanwinds.config;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -28,4 +28,3 @@ public class AwsConfig {
         return AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCredentials)).withRegion(Regions.US_EAST_2).build();
     }
 }
-*/

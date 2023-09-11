@@ -7,10 +7,18 @@ public class MessageDto {
     private HttpStatus status;
     private String message;
 
+    private Object data;
+
 
     public MessageDto(HttpStatus status, String message) {
         this.status = status;
         this.message = message;
+    }
+
+    public MessageDto(HttpStatus status, String message, Object data) {
+        this.status = status;
+        this.message = message;
+        this.data = data;
     }
 
     public MessageDto(String message) {
