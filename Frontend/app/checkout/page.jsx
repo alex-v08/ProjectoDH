@@ -7,16 +7,89 @@ import Image from 'next/image'
 import DatePicker from '@/components/detail/DatePicker'
 import { useSearchParams } from 'next/navigation'
 import dayjs from 'dayjs'
+import { useEffect, useState } from 'react'
+import { useAuth } from '@/context/authContext'
+
+const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+const itemsUrl = `${hostUrl}/api/`
+const imageUrl = `${hostUrl}/api/urlImage/`
+
+async function getItem(id) {
+  const response = await fetch(itemsUrl + id, {
+    cache: 'no-store'
+  })
+  const data = await response.json()
+  return data
+}
 
 export default function Checkout() {
   const searchParam = useSearchParams()
-  console.log(searchParam.get('startDate'))
-  console.log(
-    dayjs(searchParam.get('endDate')).diff(
-      dayjs(searchParam.get('startDate')),
-      'day'
-    )
-  )
+  const id = searchParam.get('productId')
+  const startDate = searchParam.get('startDate')
+  const endDate = searchParam.get('endDate')
+  const days = dayjs(endDate).diff(dayjs(startDate), 'day')
+  const [productInfo, setProductInfo] = useState(null)
+  const { user, loading } = useAuth()
+  const [userInfo, setUserInfo] = useState(null)
+  const [userForm, setUserForm] = useState({
+    address: '',
+    dni: '',
+    email: '',
+    lastName: '',
+    name: '',
+    phone: '',
+    active: ''
+  })
+
+  useEffect(() => {
+    if (id) {
+      getItem(id)
+        .then(data => {
+          setProductInfo(data)
+          console.log(data)
+        })
+        .catch(error => {
+          console.error('Error al obtener los datos:', error)
+        })
+    }
+  }, [id])
+
+  useEffect(() => {
+    // Realiza una solicitud HTTP para obtener los datos del usuario y su rol.
+    const fetchUserInfo = async () => {
+      try {
+        const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+        const response = await fetch(
+          `${hostUrl}/users/list/{uuid}?uuid=${user.uid}`
+        )
+        if (response.ok) {
+          const userData = await response.json()
+          const userFormData = {
+            address: userData[0].address || '', // Actualiza los campos según la estructura de userData
+            dni: userData[0].dni || '',
+            email: userData[0].email || '',
+            lastName: userData[0].lastName || '',
+            name: userData[0].name || '',
+            phone: userData[0].phone || '',
+            active: userData[0].active || '',
+            role: userData[0].role || '',
+            uuid: userData[0].uuid || ''
+          }
+          console.log(userFormData)
+          setUserForm(userFormData)
+          setUserInfo(userData[0])
+        } else {
+        }
+      } catch (error) {
+        console.error(error.message)
+      }
+    }
+
+    if (user) {
+      fetchUserInfo()
+    }
+  }, [user])
+
   return (
     <div className='bg-[#f2f5fa] p-4 pt-0 sm:p-10 sm:pt-0'>
       <div className='container py-3 sm:pb-5 sm:pt-10'>
@@ -37,12 +110,59 @@ export default function Checkout() {
             {/* Descripcion */}
             <div className='mt-8 border-b pb-8'>
               <h2 className='pb-4 text-2xl font-bold text-sky-950'>
-                Descripción
+                Detalle de la reserva
               </h2>
-              <p className='text-base text-gray-500'>descripcion</p>
+              <div className='flex gap-5'>
+                {productInfo ? (
+                  <Image
+                    src={productInfo.imageUrl + '1.png'}
+                    width={200}
+                    height={200}
+                    className='rounded-lg'
+                  />
+                ) : (
+                  <div className='h-[149.21px] w-[200px] animate-pulse rounded-lg bg-gray-300'></div>
+                )}
+                <div>
+                  <div className=''>
+                    <Link
+                      href={`/detail/${productInfo?.id}`}
+                      className='text-xl font-semibold text-sky-950 hover:text-sky-500'
+                    >
+                      {productInfo?.name}
+                    </Link>
+                    <div>
+                      <span>Fecha de ingreso: </span>
+                      <span>{startDate}</span>
+                    </div>
+                    <div>
+                      <span>Fecha de salida: </span>
+                      <span>{endDate}</span>
+                    </div>
+                    <div>
+                      <span>Cantidad de días: </span>
+                      <span>{days}</span>
+                    </div>
+                    <div>
+                      <span>Personas: </span>
+                    </div>
+                  </div>
+                </div>
+                {/* Calcular subtotal y total en base al precio y la cantidad de dias */}
+                <div>
+                  <div>
+                    <span>Subtotal: </span>
+                    <span>{productInfo.pricePerDay}</span>
+                  </div>
+                  <div>
+                    <span>Total: </span>
+                    <span>{productInfo.pricePerDay * days}</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          {/* Reserva */}
+          {/* Info de contacto */}
           <div className='sticky top-[94px] w-full rounded-lg border border-gray-100 bg-white shadow-lg shadow-gray-200 lg:max-w-[438px]'>
             <div className='px-5 pb-10 pt-5 text-gray-500 sm:px-12'>
               <div className='mb-8 flex items-center border-b pb-2'>

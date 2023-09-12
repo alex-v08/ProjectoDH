@@ -51,8 +51,8 @@ export default function MenuReserva({ price, id }) {
               query: {
                 startDate: selectedDate ? selectedDate.startDate : '',
                 endDate: selectedDate ? selectedDate.endDate : '',
-                id: id ? id : ''
-              } // Agrega la fecha seleccionada a la ruta
+                productId: id ? id : ''
+              } // Agrega la fecha seleccionada a la ruta y el id
             }}
             type='button'
             onClick={handleReserva}
