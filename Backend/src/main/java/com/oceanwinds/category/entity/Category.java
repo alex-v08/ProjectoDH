@@ -19,6 +19,7 @@ public class Category {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+
     @Column
     private String description;
 

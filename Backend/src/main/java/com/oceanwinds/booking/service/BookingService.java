@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -76,9 +77,9 @@ public class BookingService {
         }
     }
 
-    public Set<Booking> getAllReserves() {
+    public List<Booking> getAllReserves() {
         // Recupera todas las entidades Reservee
-        return (Set<Booking>) bookingRepository.findAll();
+        return (List<Booking>) bookingRepository.findAll();
     }
 
     public Booking getReserveById(Long id) {
@@ -87,15 +88,15 @@ public class BookingService {
         return reserve.orElse(null);
     }
     @Transactional
-    public Set<Booking> getReservesByUserId(Long userId) {
+    public List<Booking> getReservesByUserId(Long userId) {
         // Recupera todas las entidades Reservee asociadas a un usuario específico
-       Set<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getUser().getId().equals(userId)).collect(Collectors.toSet());
+        List<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getUser().getId().equals(userId)).toList();
        return  bookings;
     }
     @Transactional
-    public Set<Booking> getReservesByProductId(Long productId) {
+    public List<Booking> getReservesByProductId(Long productId) {
         // Recupera todas las entidades Reservee asociadas a un producto específico
-        Set<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getProduct().getId().equals(productId)).collect(Collectors.toSet());
+        List<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getProduct().getId().equals(productId)).toList();
         return  bookings;
     }
 
@@ -148,12 +149,12 @@ public class BookingService {
     }
 
     @Transactional
-    public Set<RatingDto> getAllRatings(Long id) {
-        Set<Booking> bookings = bookingRepository.findAllByProduct_Id(id);
+    public List<RatingDto> getAllRatings(Long id) {
+        List<Booking> bookings = bookingRepository.findAllByProduct_Id(id);
+        List<Booking>  filteredBookings = bookings.stream().filter(booking -> booking.getComplete().equals(true)).toList();
+        List<RatingDto> ratings = new ArrayList<>();
 
-        Set<RatingDto> ratings = new HashSet<>();
-
-        for(Booking reserve: bookings){
+        for(Booking reserve: filteredBookings){
             RatingDto ratingDto = new RatingDto();
 
             ratingDto.setDate(reserve.getMessage().getDateMessage());
@@ -167,8 +168,8 @@ public class BookingService {
     }
 
     public MediaRatingDto getMediaRating(Long id) {
-        Set<Booking> bookings = bookingRepository.findAllByProduct_Id(id);
-        bookings = bookings.stream().filter(booking -> booking.getComplete().equals(true)).collect(Collectors.toSet());
+        List<Booking> bookings = bookingRepository.findAllByProduct_Id(id);
+        bookings = bookings.stream().filter(booking -> booking.getComplete().equals(true)).toList();
         MediaRatingDto mediaRatingDto = new MediaRatingDto();
 
         Double media;
@@ -187,5 +188,26 @@ public class BookingService {
         mediaRatingDto.setMedia(decimalFormat.format(media));
 
         return mediaRatingDto;
+    }
+
+    public BookingMessage editBookingMessage(Long messageId, String message) {
+        BookingMessage bookingMessage = bookingMessageRepository.findById(messageId).get();
+        if (bookingMessage.getMessage().isEmpty()){
+            throw new RuntimeException("Message with id " + messageId + "not found");
+        }else{
+            bookingMessage.setMessage(message);
+            bookingMessage.setDateMessage(LocalDate.now());
+            return bookingMessageRepository.save(bookingMessage);
+        }
+    }
+
+    public BookingRating editBookingRating(Long ratingId, int rating) {
+        BookingRating bookingRating = bookingRatingRepository.findById(ratingId).orElse(null);
+        if (bookingRating == null){
+            throw new RuntimeException("Rating with id " + ratingId + "not found");
+        }else{
+            bookingRating.setRating(rating);
+            return bookingRatingRepository.save(bookingRating);
+        }
     }
 }

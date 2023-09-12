@@ -17,14 +17,11 @@ import java.util.Set;
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
 
-        Set<Product> findByProductId(Long productId);
+    List<Product> findByProductId(Long productId);
 
-        Set<User> findByUserId(Long userId);
+    List<User> findByUserId(Long userId);
+    List<Booking> findAll();
 
-
-
-        List<Booking> findAll();
-
-    Set<Booking> findAllByProduct_Id(Long id);
+    List<Booking> findAllByProduct_Id(Long id);
 }
 

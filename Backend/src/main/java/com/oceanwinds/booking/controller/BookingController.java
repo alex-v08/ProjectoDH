@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
-
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -48,15 +48,14 @@ public class BookingController {
     }
 
     @GetMapping
-    public Set<Booking> getAllBookings() {
+    public List<Booking> getAllBookings() {
         return bookingService.getAllReserves();
     }
 
     @GetMapping("/actives")
-    public Set<Booking> getAllActiveBookings() {
+    public List<Booking> getAllActiveBookings() {
         return bookingService.getAllReserves().stream()
-                .filter(Booking::getActive)
-                .collect(Collectors.toSet());
+                .filter(Booking::getActive).toList();
     }
 
     @GetMapping("/{id}")
@@ -65,17 +64,17 @@ public class BookingController {
     }
 
     @GetMapping("/user/{userId}")
-    public Set<Booking> getBookingsByUserId(@PathVariable Long userId) {
+    public List<Booking> getBookingsByUserId(@PathVariable Long userId) {
         return bookingService.getReservesByUserId(userId);
     }
 
     @GetMapping("/product/{productId}")
-    public Set<Booking> getBookingsByProductId(@PathVariable Long productId) {
+    public List<Booking> getBookingsByProductId(@PathVariable Long productId) {
         return bookingService.getReservesByProductId(productId);
     }
 
     @GetMapping("/ratings/{id}")
-    public Set<RatingDto> getAllRatings(@PathVariable Long id){
+    public List<RatingDto> getAllRatings(@PathVariable Long id){
 
 
         return bookingService.getAllRatings(id);
@@ -100,5 +99,15 @@ public class BookingController {
             throw new IllegalArgumentException("Score out of 1-5 range");
         }
 
+    }
+
+    @PatchMapping("/rating/message/{messageId}")
+    public BookingMessage editBookingMessage(@PathVariable Long messageId,String message){
+        return bookingService.editBookingMessage(messageId,message);
+    }
+
+    @PatchMapping("/rating/rating/{ratingId}")
+    public BookingRating editBookingRating(@PathVariable Long ratingId,int rating){
+        return bookingService.editBookingRating(ratingId,rating);
     }
 }

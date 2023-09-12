@@ -149,6 +149,7 @@ public class ProductService {
         newLocation.setCountry(locationDto.getCountry());
         newLocation.setCity(locationDto.getCity());
         return locationRepository.save(newLocation);
+
     }
 
     private void setCategoryAndFeatures(ProductDto dto, Product product) {
