@@ -3,27 +3,33 @@
 import CajaComentarios from './CajaComentarios'
 import Image from 'next/image'
 import { BsStarFill, BsStar } from 'react-icons/bs'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-export default function Comentarios() {
-  const [comentarios, setComentarios] = useState([
-    {
-      usuario: 'Abel D. Retido',
-      fecha: '05/09/2023',
-      rating: 5,
-      photoUrl: '/avatar.png',
-      contenido:
-        'El producto era lo que esperaba y superó ampliamente mis espectativas.'
-    },
-    {
-      usuario: 'Adrian Droide',
-      fecha: '07/09/2023',
-      rating: 4,
-      photoUrl: '/avatar.png',
-      contenido: 'Quedé muy satisfecho con la atención del vendedor.'
+export default function Comentarios( {productId} ) {
+  const [comentarios, setComentarios] = useState([])
+  const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+  const urlGetComments = `${hostUrl}/api/bookings/ratings/${productId}`
+
+  async function fetchComments(productId) {
+    try {
+      const response = await fetch(urlGetComments)
+      if (!response.ok) {
+        throw new Error(
+          'Error al intentar cargar los comentarios: . Response: ' +
+            response.status
+        )
+      }
+      const jsonData = await response.json()
+      setComentarios(jsonData)
+    } catch (error) {
+      console.error('Error cargando los comentarios: ', error)
     }
-  ])
+  }
 
+  useEffect(() => {
+    fetchComments(productId);
+  }, []);
+  
   // Función para agregar un nuevo comentario
   const agregarComentario = nuevoComentario => {
     setComentarios([...comentarios, nuevoComentario])
@@ -72,12 +78,12 @@ export default function Comentarios() {
                 ))}
             </div>
             <div className='font-semibold'>
-              {comentario.usuario}{' '}
+              {comentario.name}{' '}
               <span className='text-sm font-normal text-gray-500'>
-                - {comentario.fecha}
+                - {comentario.date}
               </span>
             </div>
-            <div>{comentario.contenido}</div>
+            <div>{comentario.message}</div>
           </div>
         </div>
       ))}
