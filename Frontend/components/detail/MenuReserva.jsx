@@ -4,7 +4,7 @@ import CurrencyFormatter from '@/components/util/CurrencyFormatter'
 import Link from 'next/link'
 import { useState } from 'react'
 
-export default function MenuReserva({ price }) {
+export default function MenuReserva({ price, id }) {
   const [selectedDate, setSelectedDate] = useState(null) // Agrega un estado para la fecha seleccionada
 
   const handleReserva = e => {
@@ -46,7 +46,14 @@ export default function MenuReserva({ price }) {
         </div>
         <div className=''>
           <Link
-            href='/checkout'
+            href={{
+              pathname: '/checkout',
+              query: {
+                startDate: selectedDate ? selectedDate.startDate : '',
+                endDate: selectedDate ? selectedDate.endDate : '',
+                id: id ? id : ''
+              } // Agrega la fecha seleccionada a la ruta
+            }}
             type='button'
             onClick={handleReserva}
             className='mb-5 w-full rounded-md bg-sky-500 py-3.5 text-center text-sm font-semibold text-white transition ease-in-out hover:bg-sky-900'

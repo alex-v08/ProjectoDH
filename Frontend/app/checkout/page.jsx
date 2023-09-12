@@ -1,10 +1,22 @@
+'use client'
+
 import Link from 'next/link'
 import { HiLocationMarker } from 'react-icons/hi'
 import { BsStarFill, BsStar } from 'react-icons/bs'
 import Image from 'next/image'
 import DatePicker from '@/components/detail/DatePicker'
+import { useSearchParams } from 'next/navigation'
+import dayjs from 'dayjs'
 
 export default function Checkout() {
+  const searchParam = useSearchParams()
+  console.log(searchParam.get('startDate'))
+  console.log(
+    dayjs(searchParam.get('endDate')).diff(
+      dayjs(searchParam.get('startDate')),
+      'day'
+    )
+  )
   return (
     <div className='bg-[#f2f5fa] p-4 pt-0 sm:p-10 sm:pt-0'>
       <div className='container py-3 sm:pb-5 sm:pt-10'>
