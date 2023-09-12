@@ -155,6 +155,7 @@ public class BookingService {
     public List<RatingDto> getAllRatings(Long id) {
         List<Booking> bookings = bookingRepository.findAllByProduct_Id(id);
         List<Booking>  filteredBookings = bookings.stream().filter(booking -> booking.getComplete().equals(true)).toList();
+        filteredBookings = filteredBookings.stream().filter(booking -> booking.getRating() != null).toList();
         List<RatingDto> ratings = new ArrayList<>();
 
         for(Booking reserve: filteredBookings){
@@ -173,6 +174,7 @@ public class BookingService {
     public MediaRatingDto getMediaRating(Long id) {
         List<Booking> bookings = bookingRepository.findAllByProduct_Id(id);
         bookings = bookings.stream().filter(booking -> booking.getComplete().equals(true)).toList();
+        bookings = bookings.stream().filter(booking -> booking.getRating() != null).toList();
         MediaRatingDto mediaRatingDto = new MediaRatingDto();
 
         Double media;

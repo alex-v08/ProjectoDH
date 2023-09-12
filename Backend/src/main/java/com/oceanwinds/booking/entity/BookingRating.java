@@ -13,7 +13,7 @@ public class BookingRating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int rating; // Puntuación de la reserva (1-5 estrellas)
+    private Integer rating; // Puntuación de la reserva (1-5 estrellas)
     private String uuid;
 
 
