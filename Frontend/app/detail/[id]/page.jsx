@@ -242,7 +242,7 @@ export default async function Detalle({ params }) {
                 <div className='content'>
                   <p className='pl-9 text-gray-500 sm:pl-12'>
                     Flexible: Reembolso total hasta 1 día antes de la llegada,
-                    excluyendo gastos de servicio y comisión de Ocean Winds.
+                    excluyendo gastos de servicio y comisión de Ocean Wings.
                   </p>
                 </div>
               </div>
