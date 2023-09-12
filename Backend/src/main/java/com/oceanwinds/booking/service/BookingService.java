@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -60,6 +61,8 @@ public class BookingService {
         booking.setProduct(product);
 
         booking.setActive(true);
+
+        booking.setDateCreated(LocalDateTime.now());
         return bookingRepository.save(booking);
     }
 
