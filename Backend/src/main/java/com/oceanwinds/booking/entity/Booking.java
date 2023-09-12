@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,6 +36,8 @@ public class Booking {
 
     private LocalDate dateInit;
     private LocalDate dateEnd;
+
+    private LocalDateTime dateCreated;
 
     @OneToOne
     @JoinColumn(name = "message_id", referencedColumnName = "id")
