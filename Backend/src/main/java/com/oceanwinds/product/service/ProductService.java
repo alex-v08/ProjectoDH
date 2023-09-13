@@ -3,6 +3,7 @@ package com.oceanwinds.product.service;
 import Global.exceptions.AttributeException;
 import Global.exceptions.ResourceNotFoundException;
 import Global.util.PaginatedResponse;
+import com.oceanwinds.booking.repository.BookingRepository;
 import com.oceanwinds.category.entity.Category;
 import com.oceanwinds.category.repository.CategoryRepository;
 import com.oceanwinds.feature.entity.Feature;
@@ -16,6 +17,7 @@ import com.oceanwinds.product.entity.dto.ProductDto;
 import com.oceanwinds.feature.repository.FeatureRepository;
 import com.oceanwinds.product.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,15 +38,17 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final FeatureRepository featureRepository;
     private final LocationRepository locationRepository;
+    private final BookingRepository bookingRepository;
     private final PictureDataRepository pictureDataRepository;
 
     @Autowired
-    public ProductService(PictureDataRepository pictureDataRepository,ProductRepository productRepository, CategoryRepository categoryRepository, FeatureRepository featureRepository, LocationRepository locationRepository) {
+    public ProductService(PictureDataRepository pictureDataRepository, ProductRepository productRepository, CategoryRepository categoryRepository, FeatureRepository featureRepository, LocationRepository locationRepository, BookingRepository bookingRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.featureRepository = featureRepository;
         this.locationRepository = locationRepository;
         this.pictureDataRepository = pictureDataRepository;
+        this.bookingRepository = bookingRepository;
     }
 
     public List<Product> getAllProducts() {
@@ -214,8 +219,23 @@ public class ProductService {
         return products;
     }
 
-    public List<Product> getAllProductFilter(String city, Set<Long> categoriesId, Set<Long> featuresId) {
-        Specification<Product> spec = Specification.where(null);
+    public List<Product> getAllProductFilter(String city, Set<Long> categoriesId, Set<Long> featuresId, Double minPrice, Double maxPrice, LocalDate startDate, LocalDate endDate) {
+        List<Product> initialProductsList;
+
+        if ((city == null || city.isEmpty()) && (categoriesId == null || categoriesId.isEmpty()) && (featuresId == null || featuresId.isEmpty()) && (minPrice == null) && (maxPrice == null) && (startDate == null) && (endDate == null)) {
+            return new ArrayList<>();
+        }
+
+        if ((startDate != null) && (endDate != null)){
+            initialProductsList = bookingRepository.findProductsNotReservedInDateRange(startDate, endDate);
+        } else {
+            initialProductsList = null;
+        }
+
+
+        Specification<Product> spec = Specification.where((root, query, builder) ->
+                root.in(initialProductsList)
+        );
 
         if (StringUtils.isNotBlank(city)) {
             spec = spec.and((root, query, builder) ->
@@ -234,6 +254,20 @@ public class ProductService {
                     root.join("feature").get("id").in(featuresId)
             );
         }
+
+        if (minPrice != null || maxPrice != null) {
+            spec = spec.and((root, query, builder) -> {
+                Predicate predicate = builder.conjunction();
+                if (minPrice != null) {
+                    predicate = builder.and(predicate, builder.greaterThanOrEqualTo(root.get("pricePerDay"), minPrice));
+                }
+                if (maxPrice != null) {
+                    predicate = builder.and(predicate, builder.lessThanOrEqualTo(root.get("pricePerDay"), maxPrice));
+                }
+                return predicate;
+            });
+        }
+
 
         return productRepository.findAll(spec);
     }
