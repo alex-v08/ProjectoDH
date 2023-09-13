@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -60,6 +61,8 @@ public class BookingService {
         booking.setProduct(product);
 
         booking.setActive(true);
+
+        booking.setDateCreated(LocalDateTime.now());
         return bookingRepository.save(booking);
     }
 
@@ -98,6 +101,24 @@ public class BookingService {
         // Recupera todas las entidades Reservee asociadas a un producto específico
         List<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getProduct().getId().equals(productId)).toList();
         return  bookings;
+    }
+    @Transactional
+        public List<Map<String, Object>> getReservesDateByProductId(Long productId) {
+            List<Map<String, Object>> result = new ArrayList<>();
+
+
+            List<Booking> bookings = bookingRepository.findAll().stream()
+                    .filter(booking -> booking.getProduct().getId().equals(productId))
+                    .collect(Collectors.toList());
+
+            for (Booking booking : bookings) {
+                Map<String, Object> bookingInfo = new HashMap<>();
+                bookingInfo.put("starDate", booking.getDateInit());
+                bookingInfo.put("endDate", booking.getDateEnd());
+                result.add(bookingInfo);
+            }
+
+            return result;
     }
 
     @Transactional
@@ -152,6 +173,7 @@ public class BookingService {
     public List<RatingDto> getAllRatings(Long id) {
         List<Booking> bookings = bookingRepository.findAllByProduct_Id(id);
         List<Booking>  filteredBookings = bookings.stream().filter(booking -> booking.getComplete().equals(true)).toList();
+        filteredBookings = filteredBookings.stream().filter(booking -> booking.getRating() != null).toList();
         List<RatingDto> ratings = new ArrayList<>();
 
         for(Booking reserve: filteredBookings){
@@ -170,6 +192,7 @@ public class BookingService {
     public MediaRatingDto getMediaRating(Long id) {
         List<Booking> bookings = bookingRepository.findAllByProduct_Id(id);
         bookings = bookings.stream().filter(booking -> booking.getComplete().equals(true)).toList();
+        bookings = bookings.stream().filter(booking -> booking.getRating() != null).toList();
         MediaRatingDto mediaRatingDto = new MediaRatingDto();
 
         Double media;
