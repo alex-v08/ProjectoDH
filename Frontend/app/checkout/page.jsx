@@ -7,6 +7,7 @@ import Image from 'next/image'
 import DatePicker from '@/components/detail/DatePicker'
 import { useSearchParams } from 'next/navigation'
 import dayjs from 'dayjs'
+import 'dayjs/locale/es'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/context/authContext'
 
@@ -27,6 +28,12 @@ export default function Checkout() {
   const id = searchParam.get('productId')
   const startDate = searchParam.get('startDate')
   const endDate = searchParam.get('endDate')
+  const startDateFormated = dayjs(startDate).format('DD-MMMM-YYYY', {
+    locale: 'es'
+  })
+  const endDateFormated = dayjs(endDate).format('DD-MMMM-YYYY', {
+    locale: 'es'
+  })
   const days = dayjs(endDate).diff(dayjs(startDate), 'day')
   const [productInfo, setProductInfo] = useState(null)
   const { user, loading } = useAuth()
@@ -90,6 +97,61 @@ export default function Checkout() {
     }
   }, [user])
 
+  const handleSubmit = async e => {
+    e.preventDefault()
+    // setError('')
+    // Swal.fire({
+    //   title: '¿Está seguro que desea actualizar la información?',
+    //   text: 'Se actualizaran tus datos!',
+    //   icon: 'warning',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#3085d6',
+    //   cancelButtonColor: '#d33',
+    //   confirmButtonText: 'Si, actualizar!'
+    // }).then(async result => {
+    //   if (result.isConfirmed) {
+    //     try {
+    //       const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+    //       console.log(userForm)
+    //       const response = await fetch(`${hostUrl}/users/${userInfo.id}`, {
+    //         method: 'PUT',
+    //         headers: {
+    //           'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify(userForm) // Send the updated user data as JSON
+    //       })
+
+    //       if (response.ok) {
+    //         console.log('User data updated successfully')
+    //         setSend(!send)
+    //         Swal.fire(
+    //           'Actualizado!',
+    //           'La actualización ha sido completada.',
+    //           'success'
+    //         )
+    //       } else {
+    //         console.error('Error updating user data')
+    //         Swal.fire(
+    //           'Error',
+    //           'Hubo un problema al actualizar los datos.',
+    //           'error'
+    //         )
+    //       }
+    //     } catch (error) {
+    //       console.error(error.message)
+    //       Swal.fire(
+    //         'Error',
+    //         'Hubo un error inesperado. Por favor, inténtalo de nuevo más tarde.',
+    //         'error'
+    //       )
+    //     }
+    //   }
+    // })
+  }
+
+  const handleChange = ({ target: { value, name } }) =>
+    setUserForm({ ...userForm, [name]: value })
+
   return (
     <div className='bg-[#f2f5fa] p-4 pt-0 sm:p-10 sm:pt-0'>
       <div className='container py-3 sm:pb-5 sm:pt-10'>
@@ -112,51 +174,62 @@ export default function Checkout() {
               <h2 className='pb-4 text-2xl font-bold text-sky-950'>
                 Detalle de la reserva
               </h2>
-              <div className='flex gap-5'>
-                {productInfo ? (
-                  <Image
-                    src={productInfo.imageUrl + '1.png'}
-                    width={200}
-                    height={200}
-                    className='rounded-lg'
-                  />
-                ) : (
-                  <div className='h-[149.21px] w-[200px] animate-pulse rounded-lg bg-gray-300'></div>
-                )}
-                <div>
-                  <div className=''>
+              <div className='flex items-start gap-5'>
+                <div className='relative h-[149.21px] min-w-[200px]'>
+                  {productInfo ? (
+                    <Image
+                      src={productInfo.imageUrl + '1.png'}
+                      fill
+                      style={{ objectFit: 'cover' }}
+                      className='h-[149.21px] w-[200px] rounded-lg bg-gray-300'
+                    />
+                  ) : (
+                    <div className='h-[149.21px] w-[200px] animate-pulse rounded-lg bg-gray-300'></div>
+                  )}
+                </div>
+                <div className='w-full'>
+                  <div>
+                    <div className='mb-1 flex items-center text-gray-400'>
+                      <HiLocationMarker className='mr-1 h-4 w-4' />
+                      <span className='text-sm font-semibold uppercase'>
+                        SANTA ROSA, LA PAMPA, ARGENTINA
+                      </span>
+                    </div>
                     <Link
                       href={`/detail/${productInfo?.id}`}
-                      className='text-xl font-semibold text-sky-950 hover:text-sky-500'
+                      target='_blank'
+                      className='text-xl font-semibold text-sky-950 transition ease-in-out hover:text-sky-500'
                     >
                       {productInfo?.name}
                     </Link>
-                    <div>
+                    <div className='mt-2 text-sm font-medium'>
                       <span>Fecha de ingreso: </span>
-                      <span>{startDate}</span>
+                      <span className='text-slate-500'>
+                        {startDateFormated}
+                      </span>
                     </div>
-                    <div>
+                    <div className='mt-1 text-sm font-medium'>
                       <span>Fecha de salida: </span>
-                      <span>{endDate}</span>
+                      <span className='text-slate-500'>{endDateFormated}</span>
                     </div>
-                    <div>
+                    <div className='mt-1 text-sm font-medium'>
                       <span>Cantidad de días: </span>
-                      <span>{days}</span>
+                      <span className='text-slate-500'>{days}</span>
                     </div>
-                    <div>
+                    <div className='mt-1 text-sm font-medium'>
                       <span>Personas: </span>
                     </div>
                   </div>
                 </div>
                 {/* Calcular subtotal y total en base al precio y la cantidad de dias */}
-                <div>
+                <div className='w-full max-w-[120px] text-right'>
                   <div>
-                    <span>Subtotal: </span>
-                    <span>{productInfo.pricePerDay}</span>
+                    <span className='font-semibold'>Subtotal: </span>
+                    <span>{productInfo?.pricePerDay}</span>
                   </div>
                   <div>
-                    <span>Total: </span>
-                    <span>{productInfo.pricePerDay * days}</span>
+                    <span className='font-semibold'>Total: </span>
+                    <span>{productInfo?.pricePerDay * days}</span>
                   </div>
                 </div>
               </div>
@@ -166,42 +239,134 @@ export default function Checkout() {
           <div className='sticky top-[94px] w-full rounded-lg border border-gray-100 bg-white shadow-lg shadow-gray-200 lg:max-w-[438px]'>
             <div className='px-5 pb-10 pt-5 text-gray-500 sm:px-12'>
               <div className='mb-8 flex items-center border-b pb-2'>
-                <span className='pr-2 font-semibold text-sky-950'>
+                <span className='pr-2 text-xl font-semibold text-sky-950'>
                   Información de contacto
                 </span>
-                {/* <span className='text-lg font-bold tracking-tight text-sky-500'>
-                  <CurrencyFormatter value={results.pricePerDay} />
-                </span> */}
               </div>
               <div>
-                <div className='flex items-center pb-2 text-sky-950'>
-                  <span className='floaty-icon-calendar pr-3 text-xl'></span>
-                  <h2 className='text-sm font-semibold uppercase'>Fecha</h2>
-                </div>
-                <DatePicker />
-                <div className='mt-5 flex items-center pb-2 text-sky-950'>
-                  <span className='floaty-icon-guestes pr-3 text-xl'></span>
-                  <h2 className='text-sm font-semibold uppercase'>Pasajeros</h2>
-                </div>
-                <input
-                  type='number'
-                  placeholder='Cantidad de personas'
-                  className='mb-10 w-full rounded-lg border-2 p-3 text-gray-400 dark:[color-scheme:light]'
-                />
+                <form onSubmit={handleSubmit}>
+                  <div className='grid grid-cols-1 gap-5'>
+                    <div>
+                      <label
+                        htmlFor='name'
+                        className='block pb-2 text-sm font-semibold uppercase text-sky-950'
+                      >
+                        Nombre
+                      </label>
+                      <input
+                        type='text'
+                        name='name'
+                        id='name'
+                        onChange={handleChange}
+                        className='w-full rounded-lg border-2 p-3 text-gray-400'
+                        placeholder='Nombre'
+                        value={userForm.name}
+                        disabled
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor='lastName'
+                        className='block pb-2 text-sm font-semibold uppercase text-sky-950'
+                      >
+                        Apellido
+                      </label>
+                      <input
+                        type='text'
+                        name='lastName'
+                        id='lastName'
+                        onChange={handleChange}
+                        className='w-full rounded-lg border-2 p-3 text-gray-400'
+                        placeholder='Apellido'
+                        value={userForm.lastName}
+                        disabled
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor='dni'
+                        className='block pb-2 text-sm font-semibold uppercase text-sky-950'
+                      >
+                        Correo electrónico
+                      </label>
+                      <input
+                        type='email'
+                        name='email'
+                        id='email'
+                        onChange={handleChange}
+                        className='w-full rounded-lg border-2 p-3 text-gray-400'
+                        placeholder='ejemplo@email.com'
+                        value={userForm.email}
+                        disabled
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor='dni'
+                        className='block pb-2 text-sm font-semibold uppercase text-sky-950'
+                      >
+                        DNI
+                      </label>
+                      <input
+                        type='number'
+                        name='dni'
+                        id='dni'
+                        onChange={handleChange}
+                        className='w-full rounded-lg border-2 p-3 text-gray-400'
+                        placeholder='DNI'
+                        value={userForm.dni}
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor='phone'
+                        className='block pb-2 text-sm font-semibold uppercase text-sky-950'
+                      >
+                        Teléfono
+                      </label>
+                      <input
+                        type='phone'
+                        name='phone'
+                        id='phone'
+                        onChange={handleChange}
+                        className='w-full rounded-lg border-2 p-3 text-gray-400'
+                        placeholder='Teléfono'
+                        value={userForm.phone}
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor='address'
+                        className='block pb-2 text-sm font-semibold uppercase text-sky-950'
+                      >
+                        Dirección
+                      </label>
+                      <input
+                        type='address'
+                        name='address'
+                        id='address'
+                        onChange={handleChange}
+                        className='w-full rounded-lg border-2 p-3 text-gray-400'
+                        placeholder='Dirección'
+                        value={userForm.address}
+                      />
+                    </div>
+                  </div>
+
+                  <div className='flex flex-col items-center justify-center pt-7 sm:flex-row sm:justify-between sm:gap-0'>
+                    <button
+                      className='mb-5 w-full rounded-md bg-sky-500 py-3.5 text-center text-sm font-semibold text-white transition ease-in-out hover:bg-sky-900'
+                      type='submit'
+                    >
+                      Finalizar mi reserva
+                    </button>
+                  </div>
+                  <p className='px-0 text-center text-sm xl:px-5'>
+                    Ponte en contacto con el propietario para planificar tu
+                    viaje o consultar cualquier duda.
+                  </p>
+                </form>
               </div>
-              <div className=''>
-                <Link
-                  href='/checkout'
-                  type='button'
-                  className='mb-5 w-full rounded-md bg-sky-500 py-3.5 text-center text-sm font-semibold text-white transition ease-in-out hover:bg-sky-900'
-                >
-                  Completar mi reserva
-                </Link>
-              </div>
-              <p className='px-0 text-center text-sm xl:px-5'>
-                Ponte en contacto con el propietario para planificar tu viaje o
-                consultar cualquier duda.
-              </p>
             </div>
           </div>
         </div>
