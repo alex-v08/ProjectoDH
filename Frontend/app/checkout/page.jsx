@@ -137,20 +137,17 @@ export default function Checkout() {
         try {
           const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 
-          const response = await fetch(
-            `${hostUrl}/api/bookings/${productInfo.id}`,
-            {
-              method: 'PUT',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(reservForm) // Send data as JSON string
-            }
-          )
+          const response = await fetch(`${hostUrl}/api/bookings`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reservForm) // Send data as JSON string
+          })
 
           if (response.ok) {
             console.log('Reserva confirmada')
-            setSend(!send)
+            // setSend(!send)
             Swal.fire(
               'Confirmada!',
               'La reserva ha sido completada.',
