@@ -1,10 +1,12 @@
 'use client'
 import DatePicker from '@/components/detail/DatePicker'
 import CurrencyFormatter from '@/components/util/CurrencyFormatter'
+import { useAuth } from '@/context/authContext'
 import Link from 'next/link'
 import { useState } from 'react'
 
 export default function MenuReserva({ price, id }) {
+  const { user } = useAuth()
   const [selectedDate, setSelectedDate] = useState(null) // Agrega un estado para la fecha seleccionada
 
   const handleReserva = e => {
@@ -45,21 +47,29 @@ export default function MenuReserva({ price, id }) {
           />
         </div>
         <div className=''>
-          <Link
-            href={{
-              pathname: '/checkout',
-              query: {
-                startDate: selectedDate ? selectedDate.startDate : '',
-                endDate: selectedDate ? selectedDate.endDate : '',
-                productId: id ? id : ''
-              } // Agrega la fecha seleccionada a la ruta y el id
-            }}
-            type='button'
-            onClick={handleReserva}
-            className='mb-5 w-full rounded-md bg-sky-500 py-3.5 text-center text-sm font-semibold text-white transition ease-in-out hover:bg-sky-900'
-          >
-            Reservar ahora
-          </Link>
+          {user ? (
+            <Link
+              href={{
+                pathname: '/checkout',
+                query: {
+                  startDate: selectedDate ? selectedDate.startDate : '',
+                  endDate: selectedDate ? selectedDate.endDate : '',
+                  productId: id ? id : ''
+                } // Agrega la fecha seleccionada a la ruta y el id
+              }}
+              onClick={handleReserva}
+            >
+              <button className='mb-5 w-full rounded-md bg-sky-500 py-3.5 text-center font-semibold uppercase text-white transition ease-in-out hover:bg-sky-900'>
+                Reservar ahora
+              </button>
+            </Link>
+          ) : (
+            <Link href='/login'>
+              <button className='mb-5 w-full rounded-md bg-sky-500 py-3.5 text-center font-semibold uppercase text-white transition ease-in-out hover:bg-sky-900'>
+                Iniciar sesión para reservar
+              </button>
+            </Link>
+          )}
         </div>
         <p className='px-0 text-center text-sm xl:px-5'>
           Ponte en contacto con el propietario para planificar tu viaje o
