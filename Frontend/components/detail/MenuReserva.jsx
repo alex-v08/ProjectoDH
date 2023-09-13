@@ -35,7 +35,7 @@ export default function MenuReserva({ price, id }) {
             <span className='floaty-icon-calendar pr-3 text-xl'></span>
             <h2 className='text-sm font-semibold uppercase'>Fecha</h2>
           </div>
-          <DatePicker setSelectedDate={setSelectedDate} />
+          <DatePicker setSelectedDate={setSelectedDate} id={id} />
           <div className='mt-5 flex items-center pb-2 text-sky-950'>
             <span className='floaty-icon-guestes pr-3 text-xl'></span>
             <h2 className='text-sm font-semibold uppercase'>Pasajeros</h2>
