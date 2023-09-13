@@ -252,7 +252,7 @@ export default async function Detalle({ params }) {
             <Comentarios />
           </div>
           {/* Reserva */}
-          <MenuReserva price={results.pricePerDay} />
+          <MenuReserva price={results.pricePerDay} id={results.id} />
         </div>
       </div>
     </div>
