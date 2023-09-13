@@ -9,8 +9,7 @@ export default function Comentarios( {productId} ) {
   const [comentarios, setComentarios] = useState([])
   const [mostrarComentarios, setMostrarComentarios] = useState(5); // Mostrar los primeros 5 comentarios
   const [cargarMasComentarios, setCargarMasComentarios] = useState(5); // Cargar 5 más a la vez
-  const [isLoading, setIsLoading] 
-  = useState(true); 
+  const [isLoading, setIsLoading] = useState(true); 
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
   const urlGetComments = `${hostUrl}/api/bookings/ratings/${productId}`
 
