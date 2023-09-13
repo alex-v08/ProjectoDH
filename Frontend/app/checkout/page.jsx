@@ -10,6 +10,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/context/authContext'
+import CurrencyFormatter from '@/components/util/CurrencyFormatter'
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 const itemsUrl = `${hostUrl}/api/`
@@ -174,7 +175,7 @@ export default function Checkout() {
               <h2 className='pb-4 text-2xl font-bold text-sky-950'>
                 Detalle de la reserva
               </h2>
-              <div className='flex items-start gap-5'>
+              <div className='flex flex-wrap items-start gap-5'>
                 <div className='relative h-[149.21px] min-w-[200px]'>
                   {productInfo ? (
                     <Image
@@ -187,56 +188,65 @@ export default function Checkout() {
                     <div className='h-[149.21px] w-[200px] animate-pulse rounded-lg bg-gray-300'></div>
                   )}
                 </div>
-                <div className='w-full'>
+                <div className='grow'>
                   <div>
                     <div className='mb-1 flex items-center text-gray-400'>
                       <HiLocationMarker className='mr-1 h-4 w-4' />
-                      <span className='text-sm font-semibold uppercase'>
+                      <span className='line-clamp-1 text-sm font-semibold uppercase'>
                         SANTA ROSA, LA PAMPA, ARGENTINA
                       </span>
                     </div>
                     <Link
                       href={`/detail/${productInfo?.id}`}
                       target='_blank'
-                      className='text-xl font-semibold text-sky-950 transition ease-in-out hover:text-sky-500'
+                      className='line-clamp-1 text-xl font-semibold text-sky-950 transition ease-in-out hover:text-sky-500'
                     >
                       {productInfo?.name}
                     </Link>
-                    <div className='mt-2 text-sm font-medium'>
-                      <span>Fecha de ingreso: </span>
+                    <div className='mt-2 flex flex-wrap gap-1 text-sm font-medium'>
+                      <span>Fecha de ingreso:</span>
                       <span className='text-slate-500'>
                         {startDateFormated}
                       </span>
                     </div>
-                    <div className='mt-1 text-sm font-medium'>
-                      <span>Fecha de salida: </span>
+                    <div className='mt-1 flex flex-wrap gap-1 text-sm font-medium'>
+                      <span>Fecha de salida:</span>
                       <span className='text-slate-500'>{endDateFormated}</span>
                     </div>
                     <div className='mt-1 text-sm font-medium'>
                       <span>Cantidad de días: </span>
                       <span className='text-slate-500'>{days}</span>
                     </div>
-                    <div className='mt-1 text-sm font-medium'>
-                      <span>Personas: </span>
-                    </div>
-                  </div>
-                </div>
-                {/* Calcular subtotal y total en base al precio y la cantidad de dias */}
-                <div className='w-full max-w-[120px] text-right'>
-                  <div>
-                    <span className='font-semibold'>Subtotal: </span>
-                    <span>{productInfo?.pricePerDay}</span>
-                  </div>
-                  <div>
-                    <span className='font-semibold'>Total: </span>
-                    <span>{productInfo?.pricePerDay * days}</span>
                   </div>
                 </div>
               </div>
             </div>
+            {/* Calcular subtotal y total en base al precio y la cantidad de dias */}
+            <div className='w-full border-b py-5 pr-4 text-right'>
+              <div>
+                <span className='font-semibold'>Subtotal: </span>
+                <span>
+                  {productInfo ? (
+                    <CurrencyFormatter value={productInfo.pricePerDay} />
+                  ) : (
+                    '$'
+                  )}
+                </span>
+              </div>
+              <div>
+                <span className='font-semibold'>Total: </span>
+                <span>
+                  {productInfo ? (
+                    <CurrencyFormatter value={productInfo.pricePerDay * days} />
+                  ) : (
+                    '$'
+                  )}
+                </span>
+              </div>
+            </div>
           </div>
           {/* Info de contacto */}
-          <div className='sticky top-[94px] w-full rounded-lg border border-gray-100 bg-white shadow-lg shadow-gray-200 lg:max-w-[438px]'>
+          <div className='sticky top-[94px] w-full rounded-lg border border-gray-100 bg-white shadow-lg shadow-gray-200 lg:max-w-[760px]'>
             <div className='px-5 pb-10 pt-5 text-gray-500 sm:px-12'>
               <div className='mb-8 flex items-center border-b pb-2'>
                 <span className='pr-2 text-xl font-semibold text-sky-950'>
@@ -245,7 +255,7 @@ export default function Checkout() {
               </div>
               <div>
                 <form onSubmit={handleSubmit}>
-                  <div className='grid grid-cols-1 gap-5'>
+                  <div className='grid grid-cols-1 gap-5 lg:grid-cols-2'>
                     <div>
                       <label
                         htmlFor='name'
@@ -258,7 +268,7 @@ export default function Checkout() {
                         name='name'
                         id='name'
                         onChange={handleChange}
-                        className='w-full rounded-lg border-2 p-3 text-gray-400'
+                        className='w-full rounded-lg border-2 p-3 text-gray-700 disabled:bg-green-100'
                         placeholder='Nombre'
                         value={userForm.name}
                         disabled
@@ -276,7 +286,7 @@ export default function Checkout() {
                         name='lastName'
                         id='lastName'
                         onChange={handleChange}
-                        className='w-full rounded-lg border-2 p-3 text-gray-400'
+                        className='w-full rounded-lg border-2 p-3 text-gray-700 disabled:bg-green-100'
                         placeholder='Apellido'
                         value={userForm.lastName}
                         disabled
@@ -294,7 +304,7 @@ export default function Checkout() {
                         name='email'
                         id='email'
                         onChange={handleChange}
-                        className='w-full rounded-lg border-2 p-3 text-gray-400'
+                        className='w-full rounded-lg border-2 p-3 text-gray-700 disabled:bg-green-100'
                         placeholder='ejemplo@email.com'
                         value={userForm.email}
                         disabled
