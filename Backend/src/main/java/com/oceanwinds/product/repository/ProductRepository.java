@@ -37,9 +37,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     List<Product> findByCategoryInAndFeatureIn(List<Category> categories, Set<Feature> features);
 
-    List<Product> findByLocationAndCategoryInAndFeatureIn(Location location, List<Category> categories, Set<Feature> features);
+    List<Product> findByLocationAndCategoryInAndFeatureInAndPricePerDayBetween(Location location, List<Category> categories, Set<Feature> features, Double priceMin, Double priceMax);
 
-    // List<Product> findByPriceBetween(double minPrice, double maxPrice);
     Set<Product> findByAvailable(boolean b);
 
     List<Product> findByAvailableAndCategory(boolean b, String category);
