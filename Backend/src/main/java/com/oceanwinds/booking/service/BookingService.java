@@ -102,6 +102,24 @@ public class BookingService {
         List<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getProduct().getId().equals(productId)).toList();
         return  bookings;
     }
+    @Transactional
+        public List<Map<String, Object>> getReservesDateByProductId(Long productId) {
+            List<Map<String, Object>> result = new ArrayList<>();
+
+
+            List<Booking> bookings = bookingRepository.findAll().stream()
+                    .filter(booking -> booking.getProduct().getId().equals(productId))
+                    .collect(Collectors.toList());
+
+            for (Booking booking : bookings) {
+                Map<String, Object> bookingInfo = new HashMap<>();
+                bookingInfo.put("starDate", booking.getDateInit());
+                bookingInfo.put("endDate", booking.getDateEnd());
+                result.add(bookingInfo);
+            }
+
+            return result;
+    }
 
     @Transactional
     public void addMessageToBooking(Long bookingId, BookingMessage message) {
