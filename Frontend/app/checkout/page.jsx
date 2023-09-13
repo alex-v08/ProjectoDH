@@ -393,7 +393,7 @@ export default function Checkout() {
 
                   <div className='flex flex-col items-center justify-center pt-7 sm:flex-row sm:justify-between sm:gap-0'>
                     <button
-                      className='mb-5 w-full rounded-md bg-sky-500 py-3.5 text-center text-sm font-semibold text-white transition ease-in-out hover:bg-sky-900'
+                      className='mb-5 w-full rounded-md bg-sky-500 py-3.5 text-center font-semibold uppercase text-white transition ease-in-out hover:bg-sky-900'
                       type='submit'
                     >
                       Finalizar mi reserva
