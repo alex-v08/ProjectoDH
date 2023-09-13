@@ -11,6 +11,7 @@ import 'dayjs/locale/es'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/context/authContext'
 import CurrencyFormatter from '@/components/util/CurrencyFormatter'
+import Swal from 'sweetalert2'
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 const itemsUrl = `${hostUrl}/api/`
@@ -40,6 +41,7 @@ export default function Checkout() {
   const { user, loading } = useAuth()
   const [userInfo, setUserInfo] = useState(null)
   const [userForm, setUserForm] = useState({
+    id: '',
     address: '',
     dni: '',
     email: '',
@@ -47,6 +49,12 @@ export default function Checkout() {
     name: '',
     phone: '',
     active: ''
+  })
+  const [reservForm, setReservForm] = useState({
+    user_id: '',
+    product_id: '',
+    dateInit: '',
+    dateEnd: ''
   })
 
   useEffect(() => {
@@ -73,6 +81,7 @@ export default function Checkout() {
         if (response.ok) {
           const userData = await response.json()
           const userFormData = {
+            id: userData[0].id || '',
             address: userData[0].address || '', // Actualiza los campos según la estructura de userData
             dni: userData[0].dni || '',
             email: userData[0].email || '',
@@ -98,56 +107,74 @@ export default function Checkout() {
     }
   }, [user])
 
+  useEffect(() => {
+    // Configurar reservForm aquí después de obtener userFormData y productInfo
+    if (userInfo && productInfo) {
+      const updatedReservForm = {
+        user_id: userInfo.id || '',
+        product_id: productInfo.id || '',
+        dateInit: startDate || '',
+        dateEnd: endDate || ''
+      }
+      setReservForm(updatedReservForm)
+    }
+  }, [userInfo, productInfo, startDate, endDate])
+
   const handleSubmit = async e => {
     e.preventDefault()
     // setError('')
-    // Swal.fire({
-    //   title: '¿Está seguro que desea actualizar la información?',
-    //   text: 'Se actualizaran tus datos!',
-    //   icon: 'warning',
-    //   showCancelButton: true,
-    //   confirmButtonColor: '#3085d6',
-    //   cancelButtonColor: '#d33',
-    //   confirmButtonText: 'Si, actualizar!'
-    // }).then(async result => {
-    //   if (result.isConfirmed) {
-    //     try {
-    //       const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    //       console.log(userForm)
-    //       const response = await fetch(`${hostUrl}/users/${userInfo.id}`, {
-    //         method: 'PUT',
-    //         headers: {
-    //           'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify(userForm) // Send the updated user data as JSON
-    //       })
+    console.log(reservForm)
+    Swal.fire({
+      title: '¿Está seguro que desea confirmar la reserva?',
+      text: 'Confirmar reserva!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, confirmar!'
+    }).then(async result => {
+      if (result.isConfirmed) {
+        try {
+          const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 
-    //       if (response.ok) {
-    //         console.log('User data updated successfully')
-    //         setSend(!send)
-    //         Swal.fire(
-    //           'Actualizado!',
-    //           'La actualización ha sido completada.',
-    //           'success'
-    //         )
-    //       } else {
-    //         console.error('Error updating user data')
-    //         Swal.fire(
-    //           'Error',
-    //           'Hubo un problema al actualizar los datos.',
-    //           'error'
-    //         )
-    //       }
-    //     } catch (error) {
-    //       console.error(error.message)
-    //       Swal.fire(
-    //         'Error',
-    //         'Hubo un error inesperado. Por favor, inténtalo de nuevo más tarde.',
-    //         'error'
-    //       )
-    //     }
-    //   }
-    // })
+          const response = await fetch(
+            `${hostUrl}/api/bookings/${productInfo.id}`,
+            {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(reservForm) // Send data as JSON string
+            }
+          )
+
+          if (response.ok) {
+            console.log('Reserva confirmada')
+            setSend(!send)
+            Swal.fire(
+              'Confirmada!',
+              'La reserva ha sido completada.',
+              'success'
+            )
+            //REDIRECCIONAR A LA PAGINA DE RESERVAS
+          } else {
+            console.error('Error al confirmar la reserva.')
+            Swal.fire(
+              'Error',
+              'Hubo un problema al confirmar la reserva.',
+              'error'
+            )
+          }
+        } catch (error) {
+          console.error(error.message)
+          Swal.fire(
+            'Error',
+            'Hubo un error inesperado. Por favor, inténtalo de nuevo más tarde.',
+            'error'
+          )
+        }
+      }
+    })
   }
 
   const handleChange = ({ target: { value, name } }) =>
@@ -182,6 +209,7 @@ export default function Checkout() {
                       src={productInfo.imageUrl + '1.png'}
                       fill
                       style={{ objectFit: 'cover' }}
+                      alt='Imagen del producto'
                       className='h-[149.21px] w-[200px] rounded-lg bg-gray-300'
                     />
                   ) : (
@@ -203,17 +231,17 @@ export default function Checkout() {
                     >
                       {productInfo?.name}
                     </Link>
-                    <div className='mt-2 flex flex-wrap gap-1 text-sm font-medium'>
+                    <div className='mt-2 flex flex-wrap gap-1 font-medium'>
                       <span>Fecha de ingreso:</span>
                       <span className='text-slate-500'>
                         {startDateFormated}
                       </span>
                     </div>
-                    <div className='mt-1 flex flex-wrap gap-1 text-sm font-medium'>
+                    <div className='mt-1 flex flex-wrap gap-1 font-medium'>
                       <span>Fecha de salida:</span>
                       <span className='text-slate-500'>{endDateFormated}</span>
                     </div>
-                    <div className='mt-1 text-sm font-medium'>
+                    <div className='mt-1 font-medium'>
                       <span>Cantidad de días: </span>
                       <span className='text-slate-500'>{days}</span>
                     </div>
@@ -222,7 +250,7 @@ export default function Checkout() {
               </div>
             </div>
             {/* Calcular subtotal y total en base al precio y la cantidad de dias */}
-            <div className='w-full border-b py-5 pr-4 text-right'>
+            <div className='w-full border-b py-5 pr-4 text-right text-xl'>
               <div>
                 <span className='font-semibold'>Subtotal: </span>
                 <span>
