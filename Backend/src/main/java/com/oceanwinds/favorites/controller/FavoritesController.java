@@ -25,6 +25,9 @@ public class FavoritesController {
         favoritesService.addFavorite(userId, productId);
     }
 
+    @PatchMapping
+
+
     @DeleteMapping("/delete")
     public void deleteByUserIdAndProductId(@RequestParam Long userId, @RequestParam Long productId) {
         favoritesService.deleteByUserIdAndProductId(userId, productId);
@@ -41,7 +44,7 @@ public class FavoritesController {
     }
 
     @GetMapping("/findAll")
-    public List<Favorites> findAll() {
+    public Set<Favorites> findAll() {
         return favoritesService.findAll();
     }
 }

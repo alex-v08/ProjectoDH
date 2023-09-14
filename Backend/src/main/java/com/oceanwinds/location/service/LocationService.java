@@ -18,7 +18,9 @@ public class LocationService {
     LocationRepository locationRepository;
 
     public List<Location> getAllLocation() {
-        return locationRepository.findAll();
+        List<Location> locations = locationRepository.findAll();
+        locations.removeIf(location -> location.getDeleted());
+        return locations;
     }
 
     public Location createLocation(LocationDto dto) throws AttributeException {
@@ -40,7 +42,8 @@ public class LocationService {
 
     public void deleteLocation(Long id) {
         Location location = locationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Location not found"));
-        locationRepository.deleteById(id);
+        location.setDeleted(true);
+        locationRepository.save(location);
     }
 
     public Optional<Location> getLocationById(Long id){return locationRepository.findById(id);}

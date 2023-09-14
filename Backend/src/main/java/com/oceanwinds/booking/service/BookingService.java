@@ -19,10 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BookingService {
@@ -61,6 +61,8 @@ public class BookingService {
         booking.setProduct(product);
 
         booking.setActive(true);
+
+        booking.setDateCreated(LocalDateTime.now());
         return bookingRepository.save(booking);
     }
 
@@ -80,7 +82,7 @@ public class BookingService {
 
     public List<Booking> getAllReserves() {
         // Recupera todas las entidades Reservee
-        return bookingRepository.findAll();
+        return (List<Booking>) bookingRepository.findAll();
     }
 
     public Booking getReserveById(Long id) {
@@ -91,12 +93,32 @@ public class BookingService {
     @Transactional
     public List<Booking> getReservesByUserId(Long userId) {
         // Recupera todas las entidades Reservee asociadas a un usuario específico
-        return null;
+        List<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getUser().getId().equals(userId)).toList();
+       return  bookings;
     }
     @Transactional
     public List<Booking> getReservesByProductId(Long productId) {
         // Recupera todas las entidades Reservee asociadas a un producto específico
-        return null;
+        List<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getProduct().getId().equals(productId)).toList();
+        return  bookings;
+    }
+    @Transactional
+        public List<Map<String, Object>> getReservesDateByProductId(Long productId) {
+            List<Map<String, Object>> result = new ArrayList<>();
+
+
+            List<Booking> bookings = bookingRepository.findAll().stream()
+                    .filter(booking -> booking.getProduct().getId().equals(productId))
+                    .collect(Collectors.toList());
+
+            for (Booking booking : bookings) {
+                Map<String, Object> bookingInfo = new HashMap<>();
+                bookingInfo.put("starDate", booking.getDateInit());
+                bookingInfo.put("endDate", booking.getDateEnd());
+                result.add(bookingInfo);
+            }
+
+            return result;
     }
 
     @Transactional
@@ -149,10 +171,12 @@ public class BookingService {
 
     @Transactional
     public List<RatingDto> getAllRatings(Long id) {
-        List<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getProduct().getId().equals(id)).toList();
+        List<Booking> bookings = bookingRepository.findAllByProduct_Id(id);
+        List<Booking>  filteredBookings = bookings.stream().filter(booking -> booking.getComplete().equals(true)).toList();
+        filteredBookings = filteredBookings.stream().filter(booking -> booking.getRating() != null).toList();
         List<RatingDto> ratings = new ArrayList<>();
 
-        for(Booking reserve: bookings){
+        for(Booking reserve: filteredBookings){
             RatingDto ratingDto = new RatingDto();
 
             ratingDto.setDate(reserve.getMessage().getDateMessage());
@@ -166,8 +190,9 @@ public class BookingService {
     }
 
     public MediaRatingDto getMediaRating(Long id) {
-        List<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getProduct().getId().equals(id)).toList();
+        List<Booking> bookings = bookingRepository.findAllByProduct_Id(id);
         bookings = bookings.stream().filter(booking -> booking.getComplete().equals(true)).toList();
+        bookings = bookings.stream().filter(booking -> booking.getRating() != null).toList();
         MediaRatingDto mediaRatingDto = new MediaRatingDto();
 
         Double media;
@@ -186,5 +211,26 @@ public class BookingService {
         mediaRatingDto.setMedia(decimalFormat.format(media));
 
         return mediaRatingDto;
+    }
+
+    public BookingMessage editBookingMessage(Long messageId, String message) {
+        BookingMessage bookingMessage = bookingMessageRepository.findById(messageId).get();
+        if (bookingMessage.getMessage().isEmpty()){
+            throw new RuntimeException("Message with id " + messageId + "not found");
+        }else{
+            bookingMessage.setMessage(message);
+            bookingMessage.setDateMessage(LocalDate.now());
+            return bookingMessageRepository.save(bookingMessage);
+        }
+    }
+
+    public BookingRating editBookingRating(Long ratingId, int rating) {
+        BookingRating bookingRating = bookingRatingRepository.findById(ratingId).orElse(null);
+        if (bookingRating == null){
+            throw new RuntimeException("Rating with id " + ratingId + "not found");
+        }else{
+            bookingRating.setRating(rating);
+            return bookingRatingRepository.save(bookingRating);
+        }
     }
 }

@@ -24,7 +24,11 @@ public class CategoryService {
     }
 
     public List<Category> getAllCategory() {
-        return categoryRepository.findAll();
+
+        List<Category> categories = categoryRepository.findAll();
+        categories.removeIf(category -> category.getDeleted());
+
+        return categories;
     }
 
     public Optional<Category> getCategoryById(Long id){return categoryRepository.findById(id);}
@@ -44,7 +48,8 @@ public class CategoryService {
         for (Product product : category.getProduct()) {
             product.setCategory(null);
         }
-        categoryRepository.deleteById(id);
+        category.setDeleted(true);
+        categoryRepository.save(category);
     }
 
     public Category createCategory(CategoryDto dto) throws AttributeException {

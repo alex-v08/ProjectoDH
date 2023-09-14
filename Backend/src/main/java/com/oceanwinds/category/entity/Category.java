@@ -19,6 +19,7 @@ public class Category {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+
     @Column
     private String description;
 
@@ -28,6 +29,8 @@ public class Category {
     @JsonIgnore
     @OneToMany(mappedBy = "category")
     private List<Product> product;
+
+    private Boolean deleted = false;
 
 
 }

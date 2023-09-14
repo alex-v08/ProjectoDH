@@ -6,6 +6,7 @@ import com.oceanwinds.category.entity.Category;
 
 import com.oceanwinds.feature.entity.Feature;
 import com.oceanwinds.location.entity.Location;
+import com.oceanwinds.pictures.entity.PictureData;
 import com.oceanwinds.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -48,7 +49,14 @@ public class Product {
     @JoinColumn(name = "location_id")
     private Location location;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private Set<PictureData> pictureDataSet;
+
     private Boolean available;
+
+    private Boolean deleted = false;
+
+
 
     @JsonIgnore
     @ManyToMany(mappedBy = "favoriteProducts")

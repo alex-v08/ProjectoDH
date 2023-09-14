@@ -37,7 +37,9 @@ public class FavoritesService {
         return favoritesRepository.findByUserId(userId);
     }
 
-    public List<Favorites> findAll() {
-        return favoritesRepository.findAll();
+
+
+    public Set<Favorites> findAll() {
+        return favoritesRepository.find_All();
     }
 }

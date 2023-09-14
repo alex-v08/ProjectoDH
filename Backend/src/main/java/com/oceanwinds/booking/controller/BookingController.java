@@ -8,10 +8,13 @@ import com.oceanwinds.booking.entity.dto.MediaRatingDto;
 import com.oceanwinds.booking.entity.dto.RatingDto;
 import com.oceanwinds.booking.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -52,10 +55,9 @@ public class BookingController {
     }
 
     @GetMapping("/actives")
-    public List<Booking> getAllActiveBookings(){
-        List<Booking> activeBookings = bookingService.getAllReserves().stream().filter(booking -> booking.getActive().equals(true)).collect(Collectors.toList());
-
-        return activeBookings;
+    public List<Booking> getAllActiveBookings() {
+        return bookingService.getAllReserves().stream()
+                .filter(Booking::getActive).toList();
     }
 
     @GetMapping("/{id}")
@@ -75,6 +77,8 @@ public class BookingController {
 
     @GetMapping("/ratings/{id}")
     public List<RatingDto> getAllRatings(@PathVariable Long id){
+
+
         return bookingService.getAllRatings(id);
     }
 
@@ -97,5 +101,20 @@ public class BookingController {
             throw new IllegalArgumentException("Score out of 1-5 range");
         }
 
+    }
+
+    @PatchMapping("/rating/message/{messageId}")
+    public BookingMessage editBookingMessage(@PathVariable Long messageId,String message){
+        return bookingService.editBookingMessage(messageId,message);
+    }
+
+    @PatchMapping("/rating/rating/{ratingId}")
+    public BookingRating editBookingRating(@PathVariable Long ratingId,int rating){
+        return bookingService.editBookingRating(ratingId,rating);
+    }
+    @GetMapping("/product/date/{productId}")
+    public ResponseEntity<List<Map<String, Object>>> getReservesByProductId(@PathVariable Long productId) {
+        List<Map<String, Object>> reserves = bookingService.getReservesDateByProductId(productId);
+        return ResponseEntity.ok(reserves);
     }
 }
