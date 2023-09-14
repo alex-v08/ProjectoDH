@@ -24,7 +24,7 @@ const autography = localFont({
 })
 
 export const metadata = {
-  title: 'OceanWinds',
+  title: 'OceanWings',
   description: 'Proyecto integrador - Digital House - Grupo 5 - Camada 1'
 }
 
