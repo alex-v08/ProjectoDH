@@ -20,7 +20,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE})
+@CrossOrigin(origins = "*")
 
 public class UserController {
 
