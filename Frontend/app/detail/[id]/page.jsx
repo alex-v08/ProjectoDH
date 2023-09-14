@@ -10,6 +10,7 @@ import { dynamicBlurDataUrl } from '@/components/util/dynamicBlurDataUrl'
 import Comentarios from '@/components/detail/Comentarios'
 import MediaShare from '@/components/mediaShare/MediaShare'
 import MenuReserva from '@/components/detail/MenuReserva'
+import Feature from '@/components/detail/Feature'
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 const itemsUrl = `${hostUrl}/api/`
@@ -114,66 +115,9 @@ export default async function Detalle({ params }) {
                 Características
               </h2>
               <div className='grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3'>
-                <div className='flex items-center'>
-                  <i className='floaty-icon-air-conditioning mr-4 text-2xl'></i>
-                  <span>Aire acondicionado</span>
-                </div>
-                <div className='flex items-center'>
-                  <i className='floaty-icon-bbq mr-4 text-2xl'></i>
-                  <span>Parrilla</span>
-                </div>
-                <div className='flex items-center'>
-                  <i className='floaty-icon-tv mr-4 text-2xl'></i>
-                  <span>Televisión</span>
-                </div>
-                <div className='flex items-center'>
-                  <i className='floaty-icon-kitchen-utensils mr-4 text-2xl'></i>
-                  <span>Cubiertos</span>
-                </div>
-                <div className='flex items-center'>
-                  <i className='floaty-icon-towels mr-4 text-2xl'></i>
-                  <span>Toallas</span>
-                </div>
-                <div className='flex items-center'>
-                  <i className='floaty-icon-audio-system mr-4 text-2xl'></i>
-                  <span>Sistema de audio</span>
-                </div>
-                <div className='flex items-center'>
-                  <i className='floaty-icon-coffee-machine mr-4 text-2xl'></i>
-                  <span>Cafetera</span>
-                </div>
-                <div className='flex items-center'>
-                  <i className='floaty-icon-fridge mr-4 text-2xl'></i>
-                  <span>Heladera</span>
-                </div>
-                <div className='flex items-center'>
-                  <i className='floaty-icon-outsite-shower mr-4 text-2xl'></i>
-                  <span>Ducha exterior</span>
-                </div>
-                <div className='flex items-center'>
-                  <i className='floaty-icon-generator mr-4 text-2xl'></i>
-                  <span>Generador</span>
-                </div>
-                <div className='flex items-center'>
-                  <i className='floaty-icon-autopilot mr-4 text-2xl'></i>
-                  <span>Piloto automático</span>
-                </div>
-                <div className='flex items-center'>
-                  <i className='floaty-icon-cooker mr-4 text-2xl'></i>
-                  <span>Horno</span>
-                </div>
-                <div className='flex items-center'>
-                  <i className='floaty-icon-heating mr-4 text-2xl'></i>
-                  <span>Calefacción</span>
-                </div>
-                <div className='flex items-center'>
-                  <i className='floaty-icon-radar mr-4 text-2xl'></i>
-                  <span>Radar</span>
-                </div>
-                <div className='flex items-center'>
-                  <i className='floaty-icon-inside-speakers mr-4 text-2xl'></i>
-                  <span>Altavoces interiores</span>
-                </div>
+                {results.feature.map((feature) => (
+                  <Feature key={feature.id} feature={feature} />
+                ))}
               </div>
             </div>
 
