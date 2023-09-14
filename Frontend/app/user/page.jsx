@@ -15,7 +15,7 @@ export default function User() {
     lastName: '',
     name: '',
     phone: '',
-    active: ''
+    enabled: ''
   })
   const [error, setError] = useState('')
   const { user, loading } = useAuth()
@@ -39,7 +39,7 @@ export default function User() {
             lastName: userData[0].lastName || '',
             name: userData[0].name || '',
             phone: userData[0].phone || '',
-            active: userData[0].active || '',
+            enabled: userData[0].enabled || '',
             role: userData[0].role || '',
             uuid: userData[0].uuid || ''
           }
@@ -75,7 +75,7 @@ export default function User() {
           const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
           console.log(userForm)
           const response = await fetch(`${hostUrl}/users/${userInfo.id}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
               'Content-Type': 'application/json'
             },
@@ -166,7 +166,7 @@ export default function User() {
                     </div>
                     <div className='border-b pb-3'>
                       <span className='pl-2 font-semibold'>Estado:</span>{' '}
-                      {userInfo.active ? 'activo' : 'sin activar'}
+                      {userInfo.enabled ? 'activo' : 'sin activar'}
                     </div>
                   </div>
                 </>
