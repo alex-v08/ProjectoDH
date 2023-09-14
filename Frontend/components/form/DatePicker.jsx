@@ -1,19 +1,8 @@
 'use client'
 
-import { useState } from 'react'
 import Datepicker from 'react-tailwindcss-datepicker'
 
-export default function DatePicker() {
-  const [value, setValue] = useState({
-    startDate: null,
-    endDate: null
-  })
-
-  const handleValueChange = newValue => {
-    // console.log('newValue:', newValue)
-    setValue(newValue)
-  }
-
+export default function DatePicker({ handleTimeChange, selectedTime }) {
   return (
     <>
       <Datepicker
@@ -43,8 +32,8 @@ export default function DatePicker() {
             apply: 'Aceptar'
           }
         }}
-        value={value}
-        onChange={handleValueChange}
+        value={selectedTime}
+        onChange={handleTimeChange}
         displayFormat={'DD/MM/YYYY'}
         inputClassName='w-full p-[13px] border rounded-lg'
         toggleClassName='absolute bg-sky-500 rounded-r-lg text-white right-0 h-full p-[13px] text-gray-400 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed'

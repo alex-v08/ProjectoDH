@@ -16,15 +16,6 @@ export default function Home({ searchParams }) {
   const [loading, setLoading] = useState(true)
   const [placeHolders, setPlaceHolders] = useState([])
 
-  // Estado para almacenar la ciudad seleccionada
-  const [selectedCity, setSelectedCity] = useState('')
-
-  // Función para manejar el cambio de ciudad seleccionada
-  const handleSelectChangeCity = event => {
-    setSelectedCity(event.target.value)
-    // router.replace(`/search/${event.target.value}`)
-  }
-
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -101,10 +92,7 @@ export default function Home({ searchParams }) {
   return (
     <section>
       <Hero />
-      <FormSearchNew
-        handleSelectChangeCity={handleSelectChangeCity}
-        selectedCity={selectedCity}
-      />
+      <FormSearchNew />
       <Descubre />
       {loading ? (
         <>
