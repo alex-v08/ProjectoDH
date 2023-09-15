@@ -197,24 +197,24 @@ public class ProductService {
 
     public List<Product> getProductByCategoryId(List<Long> categoriesId) {
         List<Category> categories = categoryRepository.findAllById(categoriesId);
-        return productRepository.findByCategoryIn(categories);
+        return productRepository.findByCategoryIn(categories).stream().filter(product -> !product.getDeleted()).toList();
     }
 
     public List<Product> getProductsByCategoryName(List<String> categoriesName) {
         List<Category> categories = categoryRepository.findAllByNameIn(categoriesName);
-        return productRepository.findByCategoryIn(categories);
+        return productRepository.findByCategoryIn(categories).stream().filter(product -> !product.getDeleted()).toList();
     }
 
     public List<Product> getProductByFeaturesId(Set<Long> featuresId) {
         Set<Feature> features = new HashSet<>(featureRepository.findAllById(featuresId));
-        List<Product> products = productRepository.findByFeatureIn(features);
+        List<Product> products = productRepository.findByFeatureIn(features).stream().filter(product -> !product.getDeleted()).toList();
         products.removeIf(product -> !product.getFeature().containsAll(features));
         return products;
     }
 
     public Set<Product> getProductByFeaturesName(Set<String> featuresName) {
         Set<Feature> features = new HashSet<>(featureRepository.findAllByNameIn(featuresName));
-        Set<Product> products = new HashSet<>(productRepository.findByFeatureIn(features));
+        Set<Product> products = new HashSet<>(productRepository.findByFeatureIn(features).stream().filter(product -> !product.getDeleted()).toList());
         products.removeIf(product -> !product.getFeature().containsAll(features));
         return products;
     }
@@ -269,7 +269,7 @@ public class ProductService {
         }
 
 
-        return productRepository.findAll(spec);
+        return productRepository.findAll(spec).stream().filter(product -> !product.getDeleted()).toList();
     }
 
     public Set<Product> getAvailableProducts() {
