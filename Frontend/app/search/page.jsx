@@ -27,6 +27,8 @@ export default function SearchID() {
 
   const [loading, setLoading] = useState(true)
 
+  // Estados para almacenar precios
+  const [priceRange, setPriceRange] = useState(5000)
   // Estado para almacenar la ciudad seleccionada
   // const [selectedCity, setSelectedCity] = useState(params?.id)
 
@@ -66,6 +68,13 @@ export default function SearchID() {
     // }
   }
 
+  // controla el rango de precios
+  console.log('priceRange', priceRange)
+
+  const handleSliderChange = event => {
+    setPriceRange(event.target.value)
+  }
+
   // controla los check de las características
   const handleSelectChangeFeatures = event => {
     const { value, checked } = event.target
@@ -87,7 +96,6 @@ export default function SearchID() {
 
   // Para obtener el filtrado de la home
   const urlGetProductsFilterHome = `${hostUrl}/api/allFiltered/?city=${selectedCity}&dateInit=${dateInit}&dateEnd=${dateEnd}`
-  console.log('CIUDAD SELECCIONADA', selectedCity, urlGetProductsFilterHome)
   useEffect(() => {
     getAllUseClient(urlGetProductsFilterHome, setProductsFilters, setLoading)
   }, [])
@@ -107,7 +115,8 @@ export default function SearchID() {
 
       try {
         const response = await fetch(
-          `${hostUrl}/api/allFiltered/?city=${selectedCity}&categoriesId=${resultado}&dateInit=${dateInit}&dateEnd=${dateEnd}&featuresId=${resultFeatures}`,
+          `${hostUrl}/api/allFiltered/?city=${selectedCity}&categoriesId=${resultado}&featuresId=${resultFeatures}&minPrice=0&maxPrice=${priceRange}&dateInit=${dateInit}&dateEnd=${dateEnd}`,
+          // `${hostUrl}/api/allFiltered/?city=${selectedCity}&categoriesId=${resultado}&dateInit=${dateInit}&dateEnd=${dateEnd}&featuresId=${resultFeatures}`,
           {
             cache: 'no-store'
           }
@@ -125,7 +134,7 @@ export default function SearchID() {
       }
     }
     getSearch()
-  }, [selectedOption, featuresOptions, selectedCity])
+  }, [selectedOption, featuresOptions, selectedCity, priceRange])
 
   // export default async function SearchID({ params }) {
   //   const results = await getHeader(params)
@@ -198,6 +207,8 @@ export default function SearchID() {
                 handleSelectChangeCategory={handleSelectChangeCategory}
                 handleSelectChangeFeatures={handleSelectChangeFeatures}
                 productsFilters={productsFilters}
+                handleSliderChange={handleSliderChange}
+                priceRange={priceRange}
               />
             </div>
           </div>

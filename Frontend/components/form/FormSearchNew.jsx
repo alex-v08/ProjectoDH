@@ -90,11 +90,7 @@ export default function FormSearchNew({ dateInit, dateEnd }) {
               <div className='mb-2 flex items-center'>
                 <BiCalendar className='mr-3 h-6 w-6 text-sky-500 lg:mr-2 xl:mr-3' />
                 <h2 className='truncate pr-5 text-sm font-medium uppercase lg:pr-2 xl:pr-6'>
-                  Fecha de inicio
-                </h2>
-                <BiCalendar className='mr-3 h-6 w-6 text-sky-500 lg:mr-2 xl:mr-3' />
-                <h2 className='truncate text-sm font-medium uppercase'>
-                  Fecha de fin
+                  Fecha
                 </h2>
               </div>
               <DatePicker
@@ -106,7 +102,10 @@ export default function FormSearchNew({ dateInit, dateEnd }) {
           <Link
             href={`/search?city=${selectedCity}&dateInit=${selectedTime.startDate}&dateEnd=${selectedTime.endDate}`}
           >
-            <button className='trasition h-12 w-full rounded border border-sky-500 bg-sky-500 px-4 py-2 font-semibold text-white transition ease-in-out hover:bg-sky-900 lg:mt-8 lg:min-w-[125px] lg:max-w-[176px]'>
+            <button
+              className='trasition h-12 w-full rounded border border-sky-500 bg-sky-500 px-4 py-2 font-semibold text-white transition ease-in-out hover:bg-sky-900 lg:mt-8 lg:min-w-[125px] lg:max-w-[176px]'
+              onClick={console.log('falta codigo')}
+            >
               Buscar <BiSearch className='ml-2 inline-block h-6 w-6' />
             </button>
           </Link>

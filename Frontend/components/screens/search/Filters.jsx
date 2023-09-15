@@ -7,7 +7,9 @@ import { useState, useEffect } from 'react'
 export default function Filters({
   handleSelectChangeCategory,
   handleSelectChangeFeatures,
-  productsFilters
+  productsFilters,
+  handleSliderChange,
+  priceRange
 }) {
   // Para almacenar la data de inptus
   const [allCategories, setAllCategories] = useState([])
@@ -82,7 +84,10 @@ export default function Filters({
         </div>
         <div className='px-14 pb-10 lg:px-9 xl:px-14'>
           <div className='flex flex-col gap-4 text-lg font-medium text-gray-500'>
-            <PriceRangeSlider />
+            <PriceRangeSlider
+              priceRange={priceRange}
+              handleSliderChange={handleSliderChange}
+            />
           </div>
         </div>
       </div>
