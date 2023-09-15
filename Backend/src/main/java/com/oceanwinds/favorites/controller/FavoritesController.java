@@ -25,7 +25,6 @@ public class FavoritesController {
         favoritesService.addFavorite(userId, productId);
     }
 
-    @PatchMapping
 
 
     @DeleteMapping("/delete")
