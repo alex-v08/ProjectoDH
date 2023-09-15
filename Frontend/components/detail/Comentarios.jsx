@@ -40,9 +40,9 @@ export default function Comentarios( {productId} ) {
   };
   
   // Función para agregar un nuevo comentario
-  const agregarComentario = nuevoComentario => {
-    setComentarios([...comentarios, nuevoComentario])
-  }
+  // const agregarComentario = nuevoComentario => {
+  //   setComentarios([...comentarios, nuevoComentario])
+  // }
 
   return (
     <div className='mt-8 border-b pb-8'>
@@ -116,12 +116,12 @@ export default function Comentarios( {productId} ) {
           <p className="text-gray-500 mt-2">Este producto aún no ha recibido comentarios. ¡Sé el primero en compartir tu experiencia!</p>
           )
       )}
-      <div className='pt-6'>
+      {/* <div className='pt-6'>
         <h2 className='pb-2 text-xl font-bold text-sky-950'>
           Agregar un comentario
         </h2>
         <CajaComentarios agregarComentario={agregarComentario} />
-      </div>
+      </div> */}
     </div>
   )
 }
