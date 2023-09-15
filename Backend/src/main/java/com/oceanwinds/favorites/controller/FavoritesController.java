@@ -25,6 +25,7 @@ public class FavoritesController {
         favoritesService.addFavorite(userId, productId);
     }
 
+
     @DeleteMapping("/delete")
     public void deleteByUserIdAndProductId(@RequestParam Long userId, @RequestParam Long productId) {
         favoritesService.deleteByUserIdAndProductId(userId, productId);
