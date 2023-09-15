@@ -23,24 +23,29 @@ async function getItem(id) {
   return data
 }
 
-async function getGallery(id) {
-  const response = await fetch(imageUrl + id, {
-    cache: 'no-store'
-  })
-  const data = await response.json()
-  return data
-}
+// async function getGallery(id) {
+//   const response = await fetch(imageUrl + id, {
+//     cache: 'no-store'
+//   })
+//   const data = await response.json()
+//   return data
+// }
 
 export default async function Detalle({ params }) {
   const index = parseInt(params.id)
   const results = await getItem(index)
   // console.log('RESULTS', results)
-  const imagesGallery = await getGallery(index)
-  // Create placeholders for images
-  const imgUrls = imagesGallery.map(image => image.url)
-  const placeHolders = await Promise.all(
-    imgUrls.map(url => dynamicBlurDataUrl(url))
-  )
+  const imgUrls = results.pictureDataSet.map(async image => ({
+    ...image,
+    placeHolder: await dynamicBlurDataUrl(image.imageUrl)
+  }))
+
+  const images = await Promise.all(imgUrls)
+
+  // Ordenar las imágenes por el campo 'imageUrl' en orden ascendente
+  images.sort((a, b) => a.imageUrl.localeCompare(b.imageUrl))
+
+  // console.log(images)
 
   return (
     <div className='bg-[#f2f5fa] p-4 pt-0 sm:p-10 sm:pt-0'>
@@ -76,7 +81,7 @@ export default async function Detalle({ params }) {
           <HeartButton fillColor='#0EA5E9' productId={index} />
         </div>
 
-        <Galeria imagesGallery={imagesGallery} placeHolders={placeHolders} />
+        <Galeria images={images} />
 
         {/* Container */}
         <div className='flex flex-col items-start gap-8 pt-6 lg:flex-row'>
