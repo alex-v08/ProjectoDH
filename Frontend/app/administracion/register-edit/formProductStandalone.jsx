@@ -159,6 +159,7 @@ const Dropzone = ({ className }, props) => {
         method: 'POST',
         body: formData
       }).then(res => res.json())
+      data.imageOrder = i
       dataSet.push(data)
     }
 

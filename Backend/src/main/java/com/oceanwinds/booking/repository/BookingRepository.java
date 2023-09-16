@@ -31,5 +31,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Product> findProductsNotReservedInDateRange(@Param("startDate") LocalDate startDate,
                                                      @Param("endDate") LocalDate endDate);
 
+    List<Booking> findByDateEndBetweenAndCompleteFalse(LocalDate currentDate, LocalDate twoDaysFromNow);
+
 }
 
