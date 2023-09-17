@@ -236,7 +236,7 @@ public class BookingService {
             return bookingRatingRepository.save(bookingRating);
         }
     }
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void sendEmailsForUpcomingBookings() {
         LocalDate currentDate = LocalDate.now();
         LocalDate twoDaysFromNow = currentDate.plusDays(2);
