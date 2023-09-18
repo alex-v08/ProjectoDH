@@ -7,7 +7,7 @@ import Image from 'next/image'
 import DatePicker from '@/components/detail/DatePicker'
 import { useSearchParams } from 'next/navigation'
 import dayjs from 'dayjs'
-import 'dayjs/locale/es'
+import 'dayjs/locale/es-mx'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/context/authContext'
 import CurrencyFormatter from '@/components/util/CurrencyFormatter'
@@ -24,16 +24,18 @@ async function getItem(id) {
   return data
 }
 
+dayjs.locale('es-mx')
+
 export default function Checkout() {
   const searchParam = useSearchParams()
   const id = searchParam.get('productId')
   const startDate = searchParam.get('startDate')
   const endDate = searchParam.get('endDate')
   const startDateFormated = dayjs(startDate).format('DD-MMMM-YYYY', {
-    locale: 'es'
+    locale: 'es-mx'
   })
   const endDateFormated = dayjs(endDate).format('DD-MMMM-YYYY', {
-    locale: 'es'
+    locale: 'es-mx'
   })
   const days = dayjs(endDate).diff(dayjs(startDate), 'day')
   const [productInfo, setProductInfo] = useState(null)
@@ -369,6 +371,7 @@ export default function Checkout() {
     a {
       color: #17bebb;
       text-decoration: none;
+      font-weight: 700;
     }
 
     table {}
@@ -525,7 +528,7 @@ export default function Checkout() {
         <tr>
           <table class="bg_white" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr style="border-bottom: 1px solid rgba(0,0,0,.05);">
-              <th width="80%" style="text-align:left; padding: 0 2.5em; color: #000; padding-bottom: 20px">Item</th>
+              <th width="80%" style="text-align:left; padding: 0 2.5em; color: #000; padding-bottom: 20px">Producto</th>
               <th width="20%" style="text-align:right; padding: 0 2.5em; color: #000; padding-bottom: 20px">Precio</th>
             </tr>
             <tr style="border-bottom: 1px solid rgba(0,0,0,.05);">
@@ -533,20 +536,20 @@ export default function Checkout() {
                 <div class="product-entry">
                   <img src='${
                     productInfo.imageUrl
-                  }1.png' alt="" style="width: 100px; max-width: 600px; height: auto; margin-bottom: 20px; display: block;">
+                  }1.png' alt="" style="width: 100px; max-width: 600px; height: auto; margin-bottom: 20px; display: block; border-radius: 10px;">
                   <div class="text">
                     <h3><a href='http://oceanwingsdh.ddns.net/detail/${id}'>${
                   productInfo?.name
                 }</a></h3>
                     <div>
-                      <span class="text-bold">Fecha de ingreso:</span>
+                      <span class="text-bold">Fecha de ingreso:</span><br>
                       <span>
-                        ${startDate}
+                        ${startDateFormated}
                       </span>
                     </div>
                     <div>
-                      <span class="text-bold">Fecha de salida:</span>
-                      <span>${endDate}</span>
+                      <span class="text-bold">Fecha de salida:</span><br>
+                      <span>${endDateFormated}</span>
                     </div>
                     <div>
                       <span class="text-bold">Cantidad de días: </span>
