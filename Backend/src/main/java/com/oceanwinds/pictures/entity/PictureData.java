@@ -23,6 +23,8 @@ public class PictureData {
 
     private String imageUrl;
 
+    private String imageOrder;
+
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name = "picture_id",nullable = false)
     @JsonIgnore
