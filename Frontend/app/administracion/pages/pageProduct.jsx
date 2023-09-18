@@ -7,6 +7,7 @@ import { FormProduct } from '../register-edit/formProduct'
 import { RowProduct } from '../rows/rowProduct'
 import Swal from 'sweetalert2'
 import { Spline_Sans } from 'next/font/google'
+import Dropzone from '../formProduct/[id]/page'
 const spline = Spline_Sans({
   weight: '600',
   subsets: ['latin'],
@@ -95,7 +96,7 @@ export default function PageProduct() {
         </div>
 
         <Modal isOpen={modalOpen} onClose={handleCloseModal}>
-          <FormProduct isChangeData={changeData} onClose={handleCloseModal} onRefreshData={refreshData} />
+          <Dropzone isChangeData={changeData} onClose={handleCloseModal} onRefreshData={refreshData} />
         </Modal>
       </div>
     </div>
