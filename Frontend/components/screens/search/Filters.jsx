@@ -15,26 +15,15 @@ export default function Filters({
   const [allCategories, setAllCategories] = useState([])
   const [allFeatures, setAllFeatures] = useState([])
 
-  // Para controlar el estado de las llamadas
-  const [loadingCategories, setLoadingCategories] = useState(false)
-  const [loadingFeatures, setLoadingFeatures] = useState(false)
-
-  const urlBase = process.env.NEXT_PUBLIC_HOST_URL
-  const urlCategories = `${urlBase}/api/category/all`
+  const urlCategories = '/api/products/categories'
   const urlFeatures = '/api/products/features'
 
-  const getCategoryIds = items => {
-    return items.map(item => item.category.id)
-  }
-
-  let categoryIds = getCategoryIds(productsFilters)
-
   useEffect(() => {
-    getAllUseClient(urlFeatures, setAllFeatures, setLoadingFeatures)
+    getAllUseClient(urlFeatures, setAllFeatures)
   }, [])
 
   useEffect(() => {
-    getAllUseClient(urlCategories, setAllCategories, setLoadingCategories)
+    getAllUseClient(urlCategories, setAllCategories)
   }, [productsFilters])
 
   return (

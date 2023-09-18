@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server'
 
-async function fetchFeatures() {
+async function fetchCategories() {
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 
-  const response = await fetch(`${hostUrl}/api/feature/all`, {
+  const response = await fetch(`${hostUrl}/api/category/all`, {
     cache: 'no-store'
   })
   const data = await response.json()
@@ -12,6 +12,6 @@ async function fetchFeatures() {
 }
 
 export async function GET() {
-  const results = await fetchFeatures()
+  const results = await fetchCategories()
   return NextResponse.json(results)
 }

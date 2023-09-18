@@ -1,6 +1,6 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import HeroSearch from '@/components/screens/search/HeroSearch'
 import Filters from '@/components/screens/search/Filters'
 import FormSearchNew from '@/components/form/FormSearchNew'
@@ -8,20 +8,20 @@ import { CardDetailSearch } from '@/components/screens/search/CardDetailSearch'
 import { getAllUseClient } from '@/components/util/callAPI'
 // import { AiOutlineSortAscending } from 'react-icons/ai'
 
-export default function SearchID() {
+export default function Search() {
   // Params
   const searchParams = useSearchParams()
-  let selectedCity = searchParams.get('city')
-  let dateInit = searchParams.get('dateInit')
-  let dateEnd = searchParams.get('dateEnd')
+  const selectedCity = searchParams.get('city')
+  const dateInit = searchParams.get('dateInit')
+  const dateEnd = searchParams.get('dateEnd')
+
+  const router = useRouter()
 
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
   const urlGetProductsFilterHome = `${hostUrl}/api/allFiltered/?city=${selectedCity}&dateInit=${dateInit}&dateEnd=${dateEnd}`
 
   // Pinta el resultado de la busqueda
   const [productsFilters, setProductsFilters] = useState([])
-
-  const [loading, setLoading] = useState(true)
 
   // Almacena el precio maximo
   const [priceRange, setPriceRange] = useState(5000)
@@ -30,13 +30,11 @@ export default function SearchID() {
   const [selectedCategory, setSelectedCategory] = useState([])
 
   // Almacena las opciones de características de embarcaciones seleccionadas
-  const [featuresOptions, setFeaturesOptions] = useState([])
+  const [selectedFeatures, setSelectedFeatures] = useState([])
 
   // Controla los check de las categorias
   const handleSelectChangeCategory = event => {
     const { value, checked } = event.target
-    // let link
-
     if (checked) {
       // Agregar el valor al array si el checkbox está marcado
       setSelectedCategory([...selectedCategory, value])
@@ -49,6 +47,12 @@ export default function SearchID() {
   // Controla el precio maximo
   const handleSliderChange = event => {
     setPriceRange(event.target.value)
+    const arrayCategories = convertArrayOfStringsToNumbers(selectedCategory)
+    const arrayFeatures = convertArrayOfStringsToNumbers(selectedFeatures)
+    router.push(
+      `/search?city=${selectedCity}&categoriesId=${arrayCategories}&featuresId=${arrayFeatures}&minPrice=0&maxPrice=${event.target.value}&dateInit=${dateInit}&dateEnd=${dateEnd}`,
+      { scroll: false }
+    )
   }
 
   // Controla los check de las características
@@ -57,38 +61,45 @@ export default function SearchID() {
 
     if (checked) {
       // Agregar el valor al array si el checkbox está marcado
-      setFeaturesOptions([...featuresOptions, value])
-      console.log('VER featuresOptions checked', featuresOptions)
+      setSelectedFeatures([...selectedFeatures, value])
     } else {
       // Eliminar el valor del array si el checkbox está desmarcado
-      setFeaturesOptions(featuresOptions.filter(item => item !== value))
+      setSelectedFeatures(selectedFeatures.filter(item => item !== value))
     }
   }
 
   // Pinta el filtrado que viene de la home
   useEffect(() => {
-    getAllUseClient(urlGetProductsFilterHome, setProductsFilters, setLoading)
+    getAllUseClient(urlGetProductsFilterHome, setProductsFilters)
   }, [])
+
+  // convierte un array de strings otro de numeros
+  const convertArrayOfStringsToNumbers = arrayState => {
+    const oneArray = arrayState
+    const oneString = oneArray.join(', ')
+    const result = eval(`[${oneString}]`)
+    return result
+  }
 
   // Pinta el filtrado del todos los input
   useEffect(() => {
     const getSearch = async () => {
       // para generar el slug para las categorias
-      let array = selectedCategory
-      let cadena = array.join(', ')
-      const resultado = eval(`[${cadena}]`)
+      const arrayCategories = convertArrayOfStringsToNumbers(selectedCategory)
 
       // para generar el slug para las características
-      let arrayFeatures = featuresOptions
-      let stringFeatures = arrayFeatures && arrayFeatures.join(', ')
-      const resultFeatures = eval(`[${stringFeatures}]`)
+      const arrayFeatures = convertArrayOfStringsToNumbers(selectedFeatures)
 
       try {
         const response = await fetch(
-          `${hostUrl}/api/allFiltered/?city=${selectedCity}&categoriesId=${resultado}&featuresId=${resultFeatures}&minPrice=0&maxPrice=${priceRange}&dateInit=${dateInit}&dateEnd=${dateEnd}`,
+          `${hostUrl}/api/allFiltered/?city=${selectedCity}&categoriesId=${arrayCategories}&featuresId=${arrayFeatures}&minPrice=0&maxPrice=${priceRange}&dateInit=${dateInit}&dateEnd=${dateEnd}`,
           {
             cache: 'no-store'
           }
+        )
+        router.push(
+          `/search?city=${selectedCity}&categoriesId=${arrayCategories}&featuresId=${arrayFeatures}&minPrice=0&maxPrice=${priceRange}&dateInit=${dateInit}&dateEnd=${dateEnd}`,
+          { scroll: false }
         )
 
         if (!response.ok) {
@@ -96,16 +107,14 @@ export default function SearchID() {
         }
         const products = await response.json()
         setProductsFilters(products)
-        setLoading(false)
       } catch (error) {
         console.error('Error fetching data:', error)
-        setLoading(false)
       }
     }
     getSearch()
   }, [
     selectedCategory,
-    featuresOptions,
+    selectedFeatures,
     selectedCity,
     priceRange,
     dateInit,
@@ -115,7 +124,13 @@ export default function SearchID() {
   return (
     <>
       <HeroSearch />
-      <FormSearchNew dateInit={dateInit} dateEnd={dateEnd} />
+      <FormSearchNew
+        dateInit={dateInit}
+        dateEnd={dateEnd}
+        convertArrayOfStringsToNumbers={convertArrayOfStringsToNumbers}
+        selectedCategory={selectedCategory}
+        selectedFeatures={selectedFeatures}
+      />
       <div className='bg-[#f2f5fa]'>
         <div className='container pb-20 pt-[32rem] sm:pt-[26rem] lg:pt-32'>
           {/* Container */}

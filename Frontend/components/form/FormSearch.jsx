@@ -4,57 +4,35 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import DatePicker from './DatePicker'
 import { BiCurrentLocation, BiCalendar, BiSearch } from 'react-icons/bi'
-import { useSearchParams, useRouter } from 'next/navigation'
-//import { doSearch, getCategories } from '../util/callAPI'
+import { getAllUseClient } from '../util/callAPI'
 
-export default function FormSearch({ dateInit, dateEnd }) {
-  const searchParams = useSearchParams()
+export default function FormSearch() {
+  // Almacena la ciudad selecionada
+  const [selectedCity, setSelectedCity] = useState('Elija su lugar de inicio')
 
-  let paramsCity = searchParams.get('city')
+  // Almacena los dias seleccionados
+  const [selectedTime, setSelectedTime] = useState({})
 
-  let time = {
-    startDate: searchParams.get('dateInit'),
-    endDate: searchParams.get('dateEnd')
-  }
+  // Almacena el Array de ciudades para el select
+  const [locations, setLocations] = useState([])
 
-  const [selectedCity, setSelectedCity] = useState(
-    paramsCity || 'Elija su lugar de inicio'
-  )
+  const urlLocations = '/api/products/locations'
 
-  const [selectedTime, setSelectedTime] = useState(time)
-
-  // Función para manejar el cambio de ciudad seleccionada
+  // Controla el cambio de ciudad seleccionada
   const handleSelectChangeCity = event => {
     setSelectedCity(event.target.value)
   }
 
-  // Controla el cambio de fecha
+  // Controla el cambio de fecha seleccionada
   const handleTimeChange = newValue => {
     if (newValue.startDate !== null || newValue.endDate !== null) {
       setSelectedTime(newValue)
     }
   }
-  // Estado para almacenar el Array de lugares
-  const [locations, setLocations] = useState([])
 
-  const urlBase = process.env.NEXT_PUBLIC_HOST_URL
-  const urlLocations = `${urlBase}/api/location/all`
-
-  const getLocations = async () => {
-    try {
-      const response = await fetch(`${urlLocations}`)
-      if (!response.ok) {
-        throw new Error('Error al realizar la petición: ' + response.status)
-      }
-      const jsonData = await response.json()
-      setLocations(jsonData)
-    } catch (error) {
-      console.error('Error al realizar la petición: ', error)
-    }
-  }
-
+  // Pinta el listado de ciudades para el select
   useEffect(() => {
-    getLocations()
+    getAllUseClient(urlLocations, setLocations)
   }, [])
 
   return (

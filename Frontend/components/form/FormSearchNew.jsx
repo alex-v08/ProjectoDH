@@ -4,8 +4,13 @@ import { useState, useEffect } from 'react'
 import DatePicker from './DatePicker'
 import { BiCurrentLocation, BiCalendar } from 'react-icons/bi'
 import { useSearchParams, useRouter } from 'next/navigation'
+import { getAllUseClient } from '../util/callAPI'
 
-export default function FormSearchNew() {
+export default function FormSearchNew({
+  convertArrayOfStringsToNumbers,
+  selectedCategory,
+  selectedFeatures
+}) {
   // Params
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -15,8 +20,10 @@ export default function FormSearchNew() {
     endDate: searchParams.get('dateEnd')
   }
 
-  const urlBase = process.env.NEXT_PUBLIC_HOST_URL
-  const urlLocations = `${urlBase}/api/location/all`
+  const urlLocations = '/api/products/locations'
+
+  const arrayFeatures = convertArrayOfStringsToNumbers(selectedFeatures)
+  const arrayCategories = convertArrayOfStringsToNumbers(selectedCategory)
 
   // Almacena la ciudad selecionada
   const [selectedCity, setSelectedCity] = useState(
@@ -26,11 +33,14 @@ export default function FormSearchNew() {
   // Almacena los dias seleccionados
   const [selectedTime, setSelectedTime] = useState(time)
 
+  // Almacena el Array de ciudades para el select
+  const [locations, setLocations] = useState([])
+
   // Controla el cambio de ciudad
   const handleSelectChangeCity = event => {
     setSelectedCity(event.target.value)
     router.push(
-      `/search?city=${event.target.value}&dateInit=${selectedTime.startDate}&dateEnd=${selectedTime.endDate}`,
+      `/search?city=${event.target.value}&categoriesId=${arrayCategories}&featuresId=${arrayFeatures}&minPrice=0&maxPrice=5000&dateInit=${time.startDate}&dateEnd=${time.endDate}`,
       { scroll: false }
     )
   }
@@ -40,31 +50,15 @@ export default function FormSearchNew() {
     if (newValue.startDate !== null || newValue.endDate !== null) {
       setSelectedTime(newValue)
       router.push(
-        `/search?city=${selectedCity}&dateInit=${newValue.startDate}&dateEnd=${newValue.endDate}`,
+        `/search?city=${paramsCity}&categoriesId=${arrayCategories}&featuresId=${arrayFeatures}&minPrice=0&maxPrice=5000&dateInit=${newValue.startDate}&dateEnd=${newValue.endDate}`,
         { scroll: false }
       )
-    }
-  }
-  // Almacena el Array de lugares para la peticion
-  const [locations, setLocations] = useState([])
-
-  // Obtiene el listado de ciudades para el select
-  const getLocations = async () => {
-    try {
-      const response = await fetch(`${urlLocations}`)
-      if (!response.ok) {
-        throw new Error('Error al realizar la petición: ' + response.status)
-      }
-      const jsonData = await response.json()
-      setLocations(jsonData)
-    } catch (error) {
-      console.error('Error al realizar la petición: ', error)
     }
   }
 
   // Pinta el listado de ciudades para el select
   useEffect(() => {
-    getLocations()
+    getAllUseClient(urlLocations, setLocations)
   }, [])
 
   return (
