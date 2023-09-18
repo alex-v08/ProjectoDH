@@ -1,7 +1,6 @@
 import Galeria from '@/components/suggested/galeriaImagenes/Galeria'
 import Link from 'next/link'
 import { HiLocationMarker } from 'react-icons/hi'
-import { BsStarFill } from 'react-icons/bs'
 import { ButtonBack } from '@/components/suggested/buttonBack/ButtonBack'
 import ShareButton from '@/components/favs/ShareButton'
 import HeartButton from '@/components/favs/HeartButton'
@@ -10,6 +9,7 @@ import { dynamicBlurDataUrl } from '@/components/util/dynamicBlurDataUrl'
 import Comentarios from '@/components/detail/Comentarios'
 import MediaShare from '@/components/mediaShare/MediaShare'
 import MenuReserva from '@/components/detail/MenuReserva'
+import RatingMedia from '@/components/detail/RatingMedia'
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 const itemsUrl = `${hostUrl}/api/`
@@ -101,8 +101,8 @@ export default async function Detalle({ params }) {
               <span className='pr-3'>
                 8 Huéspedes 9 Habitaciones 2 Baños 5 Cabinas
               </span>
-              <BsStarFill className='mr-2 inline-block h-[14px] w-[14px] text-sky-500' />
-              <span className='font-bold'>4.6/5</span>
+              {/* Rating */}
+              <RatingMedia productId={index} style='font-bold'/>
             </div>
 
             {/* Descripcion */}
@@ -247,14 +247,14 @@ export default async function Detalle({ params }) {
                 <div className='content'>
                   <p className='pl-9 text-gray-500 sm:pl-12'>
                     Flexible: Reembolso total hasta 1 día antes de la llegada,
-                    excluyendo gastos de servicio y comisión de Ocean Winds.
+                    excluyendo gastos de servicio y comisión de Ocean Wings.
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Comentarios */}
-            <Comentarios />
+            <Comentarios productId={results.id}/>
           </div>
           {/* Reserva */}
           <MenuReserva price={results.pricePerDay} id={results.id} />

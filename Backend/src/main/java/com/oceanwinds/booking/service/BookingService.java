@@ -186,6 +186,7 @@ public class BookingService {
             ratingDto.setName(reserve.getUser().getName() + " " + reserve.getUser().getLastName());
             ratingDto.setRating(reserve.getRating().getRating());
             ratingDto.setMessage(reserve.getMessage().getMessage());
+            ratingDto.setPhotoUrl(reserve.getMessage().getPhotoURL());
 
             ratings.add(ratingDto);
         }
