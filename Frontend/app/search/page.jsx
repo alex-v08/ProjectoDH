@@ -3,11 +3,10 @@ import React, { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import HeroSearch from '@/components/screens/search/HeroSearch'
 import Filters from '@/components/screens/search/Filters'
-import FormSearchSearch from '@/components/form/FormSearchSearch'
+import FormSearchNew from '@/components/form/FormSearchNew'
 import { CardDetailSearch } from '@/components/screens/search/CardDetailSearch'
 import { getAllUseClient } from '@/components/util/callAPI'
-import { AiOutlineSortAscending } from 'react-icons/ai'
-// import { dynamicBlurDataUrl } from '@/components/util/dynamicBlurDataUrl'
+// import { AiOutlineSortAscending } from 'react-icons/ai'
 
 export default function SearchID() {
   // Params
@@ -19,21 +18,21 @@ export default function SearchID() {
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
   const urlGetProductsFilterHome = `${hostUrl}/api/allFiltered/?city=${selectedCity}&dateInit=${dateInit}&dateEnd=${dateEnd}`
 
-  // Estado para pintar el resultado de la busqueda
+  // Pinta el resultado de la busqueda
   const [productsFilters, setProductsFilters] = useState([])
 
   const [loading, setLoading] = useState(true)
 
-  // Estados para almacenar precios
+  // Almacena el precio maximo
   const [priceRange, setPriceRange] = useState(5000)
 
-  // Estado para almacenar las opciones de categorias de embarcaciones seleccionadas
+  // Almacena las opciones de categorias de embarcaciones seleccionadas
   const [selectedCategory, setSelectedCategory] = useState([])
 
-  // Estado para almacenar las opciones de características de embarcaciones seleccionadas
+  // Almacena las opciones de características de embarcaciones seleccionadas
   const [featuresOptions, setFeaturesOptions] = useState([])
 
-  // controla los check de las categorias
+  // Controla los check de las categorias
   const handleSelectChangeCategory = event => {
     const { value, checked } = event.target
     // let link
@@ -47,12 +46,12 @@ export default function SearchID() {
     }
   }
 
-  // controla el rango de precios
+  // Controla el precio maximo
   const handleSliderChange = event => {
     setPriceRange(event.target.value)
   }
 
-  // controla los check de las características
+  // Controla los check de las características
   const handleSelectChangeFeatures = event => {
     const { value, checked } = event.target
 
@@ -66,12 +65,12 @@ export default function SearchID() {
     }
   }
 
-  // Para obtener el filtrado de la home
+  // Pinta el filtrado que viene de la home
   useEffect(() => {
     getAllUseClient(urlGetProductsFilterHome, setProductsFilters, setLoading)
   }, [])
 
-  // Para obtener el filtrado del componete Filters
+  // Pinta el filtrado del todos los input
   useEffect(() => {
     const getSearch = async () => {
       // para generar el slug para las categorias
@@ -104,18 +103,19 @@ export default function SearchID() {
       }
     }
     getSearch()
-  }, [selectedCategory, featuresOptions, selectedCity, priceRange, dateEnd])
-
-  // export default async function SearchID({ params }) {
-  //   const results = await getHeader(params)
-  //   const placeHolders = await Promise.all(
-  //     results.map(product => dynamicBlurDataUrl(`${product.imageUrl}1.png`))
-  //   )
+  }, [
+    selectedCategory,
+    featuresOptions,
+    selectedCity,
+    priceRange,
+    dateInit,
+    dateEnd
+  ])
 
   return (
     <>
       <HeroSearch />
-      <FormSearchSearch dateInit={dateInit} dateEnd={dateEnd} />
+      <FormSearchNew dateInit={dateInit} dateEnd={dateEnd} />
       <div className='bg-[#f2f5fa]'>
         <div className='container pb-20 pt-[32rem] sm:pt-[26rem] lg:pt-32'>
           {/* Container */}
@@ -129,7 +129,7 @@ export default function SearchID() {
                   </div>
                   <div>Resultados</div>
                 </h1>
-                <div className='flex items-center'>
+                {/* <div className='flex items-center'>
                   <div className='hidden text-sm tracking-tight sm:inline-block'>
                     Ordenar por
                   </div>
@@ -143,7 +143,7 @@ export default function SearchID() {
                     <option value=''>Precio</option>
                     <option value=''>Rating</option>
                   </select>
-                </div>
+                </div> */}
               </div>
               <div className='grid grid-cols-1 justify-items-center gap-x-6 gap-y-10 pt-10 sm:grid-cols-2 lg:grid-cols-1'>
                 {productsFilters &&

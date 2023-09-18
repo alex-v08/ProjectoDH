@@ -6,16 +6,6 @@ export default function DatePicker({ handleTimeChange, selectedTime }) {
   return (
     <>
       <Datepicker
-        // disabledDates={[
-        //   {
-        //     startDate: '2023-09-05',
-        //     endDate: '2023-09-08'
-        //   },
-        //   {
-        //     startDate: '2023-09-15',
-        //     endDate: '2023-09-20'
-        //   }
-        // ]}
         readOnly={true}
         minDate={new Date()}
         maxDate={new Date().setMonth(22)}

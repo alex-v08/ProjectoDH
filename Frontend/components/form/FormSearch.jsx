@@ -28,9 +28,11 @@ export default function FormSearch({ dateInit, dateEnd }) {
     setSelectedCity(event.target.value)
   }
 
+  // Controla el cambio de fecha
   const handleTimeChange = newValue => {
-    console.log('value', newValue)
-    setSelectedTime(newValue)
+    if (newValue.startDate !== null || newValue.endDate !== null) {
+      setSelectedTime(newValue)
+    }
   }
   // Estado para almacenar el Array de lugares
   const [locations, setLocations] = useState([])
@@ -100,12 +102,9 @@ export default function FormSearch({ dateInit, dateEnd }) {
             </div>
           </div>
           <Link
-            href={`/search?city=${selectedCity}&dateInit=${selectedTime.startDate}&dateEnd=${selectedTime.endDate}`}
+            href={`/search?city=${selectedCity}&categoriesId=&featuresId=&minPrice=0&maxPrice=5000&dateInit=${selectedTime.startDate}&dateEnd=${selectedTime.endDate}`}
           >
-            <button
-              className='trasition h-12 w-full rounded border border-sky-500 bg-sky-500 px-4 py-2 font-semibold text-white transition ease-in-out hover:bg-sky-900 lg:mt-8 lg:min-w-[125px] lg:max-w-[176px]'
-              onClick={console.log('falta codigo')}
-            >
+            <button className='trasition h-12 w-full rounded border border-sky-500 bg-sky-500 px-4 py-2 font-semibold text-white transition ease-in-out hover:bg-sky-900 lg:mt-8 lg:min-w-[125px] lg:max-w-[176px]'>
               Buscar <BiSearch className='ml-2 inline-block h-6 w-6' />
             </button>
           </Link>

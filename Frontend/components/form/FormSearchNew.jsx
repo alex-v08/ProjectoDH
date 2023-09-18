@@ -1,48 +1,54 @@
 'use client'
 
-import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import DatePicker from './DatePicker'
 import { BiCurrentLocation, BiCalendar } from 'react-icons/bi'
 import { useSearchParams, useRouter } from 'next/navigation'
 
-export default function FormSearchSearch() {
+export default function FormSearchNew() {
+  // Params
   const searchParams = useSearchParams()
   const router = useRouter()
-
-  let paramsCity = searchParams.get('city')
-
-  let time = {
+  const paramsCity = searchParams.get('city')
+  const time = {
     startDate: searchParams.get('dateInit'),
     endDate: searchParams.get('dateEnd')
   }
 
+  const urlBase = process.env.NEXT_PUBLIC_HOST_URL
+  const urlLocations = `${urlBase}/api/location/all`
+
+  // Almacena la ciudad selecionada
   const [selectedCity, setSelectedCity] = useState(
     paramsCity || 'Elija su lugar de inicio'
   )
 
+  // Almacena los dias seleccionados
   const [selectedTime, setSelectedTime] = useState(time)
 
-  // Función para manejar el cambio de ciudad seleccionada
+  // Controla el cambio de ciudad
   const handleSelectChangeCity = event => {
     setSelectedCity(event.target.value)
     router.push(
-      `/search?city=${event.target.value}&dateInit=${selectedTime.startDate}&dateEnd=${selectedTime.endDate}`
+      `/search?city=${event.target.value}&dateInit=${selectedTime.startDate}&dateEnd=${selectedTime.endDate}`,
+      { scroll: false }
     )
   }
 
+  // Controla el cambio de fecha
   const handleTimeChange = newValue => {
-    setSelectedTime(newValue)
-    router.push(
-      `/search?city=${selectedCity}&dateInit=${newValue.startDate}&dateEnd=${newValue.endDate}`
-    )
+    if (newValue.startDate !== null || newValue.endDate !== null) {
+      setSelectedTime(newValue)
+      router.push(
+        `/search?city=${selectedCity}&dateInit=${newValue.startDate}&dateEnd=${newValue.endDate}`,
+        { scroll: false }
+      )
+    }
   }
-  // Estado para almacenar el Array de lugares
+  // Almacena el Array de lugares para la peticion
   const [locations, setLocations] = useState([])
 
-  const urlBase = process.env.NEXT_PUBLIC_HOST_URL
-  const urlLocations = `${urlBase}/api/location/all`
-
+  // Obtiene el listado de ciudades para el select
   const getLocations = async () => {
     try {
       const response = await fetch(`${urlLocations}`)
@@ -56,6 +62,7 @@ export default function FormSearchSearch() {
     }
   }
 
+  // Pinta el listado de ciudades para el select
   useEffect(() => {
     getLocations()
   }, [])
@@ -104,16 +111,6 @@ export default function FormSearchSearch() {
               />
             </div>
           </div>
-          {/* <Link
-            href={`/search?city=${selectedCity}&dateInit=${selectedTime.startDate}&dateEnd=${selectedTime.endDate}`}
-          >
-            <button
-              className='trasition h-12 w-full rounded border border-sky-500 bg-sky-500 px-4 py-2 font-semibold text-white transition ease-in-out hover:bg-sky-900 lg:mt-8 lg:min-w-[125px] lg:max-w-[176px]'
-              onClick={console.log('falta codigo')}
-            >
-              Buscar <BiSearch className='ml-2 inline-block h-6 w-6' />
-            </button>
-          </Link> */}
         </div>
       </div>
     </div>
