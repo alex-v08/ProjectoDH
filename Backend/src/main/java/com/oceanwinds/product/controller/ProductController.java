@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -36,8 +37,8 @@ public class ProductController {
 
 
     @GetMapping("/all")
-    public List<Product> getAllProduct() {
-        return productService.getAllProducts();
+    public Set<Product> getAllProduct() {
+        return productService.getAllActiveProduct();
     }
 
 
@@ -45,9 +46,13 @@ public class ProductController {
     public ResponseEntity<List<Product>> getAllProductFilter(
             @RequestParam(defaultValue = "") String city,
             @RequestParam(defaultValue = "") Set<Long> categoriesId,
-            @RequestParam(defaultValue = "") Set<Long> featuresId) {
+            @RequestParam(defaultValue = "") Set<Long> featuresId,
+            @RequestParam(defaultValue = "") Double minPrice,
+            @RequestParam(defaultValue = "") Double maxPrice,
+            @RequestParam(defaultValue = "") LocalDate dateInit,
+            @RequestParam(defaultValue = "") LocalDate dateEnd) {
 
-        List<Product> products = (List<Product>) productService.getAllProductFilter(city, categoriesId, featuresId);
+        List<Product> products = (List<Product>) productService.getAllProductFilter(city, categoriesId, featuresId, minPrice, maxPrice, dateInit, dateEnd);
 
         return ResponseEntity.ok(products);
     }

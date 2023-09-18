@@ -1,13 +1,40 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Datepicker from 'react-tailwindcss-datepicker'
 
-export default function DatePicker({ setSelectedDate }) {
+export default function DatePicker({ setSelectedDate, id }) {
   const [value, setValue] = useState({
     startDate: null,
     endDate: null
   })
+
+  const [disabledDates, setDisabledDates] = useState([])
+
+  useEffect(() => {
+    const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+    // Realiza una solicitud GET a la API cuando el componente se monta
+    fetch(`${hostUrl}/api/bookings/product/date/${id}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('La solicitud no se completó correctamente.')
+        }
+        return response.json()
+      })
+      .then(data => {
+        // Transforma los datos recibidos en el formato adecuado para disabledDates
+        const transformedDates = data.map(item => ({
+          startDate: item.starDate,
+          endDate: item.endDate
+        }))
+        // Actualiza el estado con las fechas deshabilitadas
+        setDisabledDates(transformedDates)
+      })
+      .catch(error => {
+        // Maneja los errores si la solicitud no se completa correctamente
+        console.error('Error en la solicitud GET:', error)
+      })
+  }, [id])
 
   const handleValueChange = newValue => {
     console.log('newValue:', newValue)
@@ -19,16 +46,7 @@ export default function DatePicker({ setSelectedDate }) {
   return (
     <>
       <Datepicker
-        disabledDates={[
-          {
-            startDate: '2023-09-08',
-            endDate: '2023-09-10'
-          },
-          {
-            startDate: '2023-09-13',
-            endDate: '2023-09-15'
-          }
-        ]}
+        disabledDates={disabledDates}
         readOnly={true}
         useRange={false}
         popoverDirection='down'
