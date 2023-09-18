@@ -6,7 +6,7 @@ import Filters from '@/components/screens/search/Filters'
 import FormSearchNew from '@/components/form/FormSearchNew'
 import { CardDetailSearch } from '@/components/screens/search/CardDetailSearch'
 import { getAllUseClient } from '@/components/util/callAPI'
-// import { AiOutlineSortAscending } from 'react-icons/ai'
+import { AiOutlineSortAscending } from 'react-icons/ai'
 
 export default function Search() {
   // Params
@@ -144,7 +144,7 @@ export default function Search() {
                   </div>
                   <div>Resultados</div>
                 </h1>
-                {/* <div className='flex items-center'>
+                <div className='flex items-center'>
                   <div className='hidden text-sm tracking-tight sm:inline-block'>
                     Ordenar por
                   </div>
@@ -158,7 +158,7 @@ export default function Search() {
                     <option value=''>Precio</option>
                     <option value=''>Rating</option>
                   </select>
-                </div> */}
+                </div>
               </div>
               <div className='grid grid-cols-1 justify-items-center gap-x-6 gap-y-10 pt-10 sm:grid-cols-2 lg:grid-cols-1'>
                 {productsFilters &&
