@@ -408,7 +408,7 @@ export default function EmailTemplate({
             </tr>
             <tr>
               <td valign="middle" style="text-align:left; padding: 1em 2.5em;">
-                <p><a href="http://oceanwingsdh.ddns.net/reservas" class="btn btn-primary">Ver reservas realizadas</a></p>
+                <p><a href='http://oceanwingsdh.ddns.net/reservas' class="btn btn-primary">Ver reservas realizadas</a></p>
               </td>
             </tr>
           </table>

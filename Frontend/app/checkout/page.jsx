@@ -2,10 +2,8 @@
 
 import Link from 'next/link'
 import { HiLocationMarker } from 'react-icons/hi'
-import { BsStarFill, BsStar } from 'react-icons/bs'
 import Image from 'next/image'
-import DatePicker from '@/components/detail/DatePicker'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es-mx'
 import { useEffect, useState } from 'react'
@@ -181,6 +179,7 @@ export default function Checkout() {
 
             if (emailResponse.ok) {
               console.log('Email sent successfully')
+              router.push('/reservas')
             } else {
               console.error('Error sending email')
             }
@@ -207,6 +206,8 @@ export default function Checkout() {
 
   const handleChange = ({ target: { value, name } }) =>
     setUserForm({ ...userForm, [name]: value })
+
+  const router = useRouter()
 
   return (
     <div className='bg-[#f2f5fa] p-4 pt-0 sm:p-10 sm:pt-0'>
