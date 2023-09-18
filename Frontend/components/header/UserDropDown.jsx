@@ -4,6 +4,7 @@ import { BsGear } from 'react-icons/bs'
 import { BiLogOut } from 'react-icons/bi'
 import { AiOutlineHome } from 'react-icons/ai'
 import { AiOutlineHeart } from 'react-icons/ai'
+import { AiOutlineSchedule } from 'react-icons/ai'
 import { MdOutlineAdminPanelSettings } from 'react-icons/md'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -68,18 +69,13 @@ export default function Dropdown({ openMenu }) {
         Favoritos
       </Link>
 
-
       <Link
         href='/reservas'
         className='rounded-lg px-3 py-2 hover:bg-slate-200'
       >
-        <AiOutlineHeart className='mr-2 inline-block text-base' />
+        <AiOutlineSchedule className='mr-2 inline-block text-base' />
         Reservas
       </Link>
-
-
-
-
 
       <Link href='/user' className='rounded-lg px-3 py-2 hover:bg-slate-200'>
         <BsGear className='mr-2 inline-block text-base' />
