@@ -15,7 +15,6 @@ import Swal from 'sweetalert2'
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 const itemsUrl = `${hostUrl}/api/`
-const imageUrl = `${hostUrl}/api/urlImage/`
 
 async function getItem(id) {
   const response = await fetch(itemsUrl + id, {

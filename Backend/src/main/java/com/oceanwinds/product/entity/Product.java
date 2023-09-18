@@ -63,19 +63,6 @@ public class Product {
     private Set<User> favoriteUsers = new HashSet<>();
 
 
-    public Product(Long id, String name, String sku, String description, String imageUrl, Double pricePerDay, Double pricePerWeek, Double pricePerHour, Category category, Boolean available) {
-        this.id = id;
-        this.name = name;
-        this.sku = sku;
-        this.description = description;
-        this.imageUrl = imageUrl;
-        this.pricePerDay = pricePerDay;
-        this.pricePerWeek = pricePerWeek;
-        this.pricePerHour = pricePerHour;
-        this.category = category;
-        this.available = available;
-    }
-
 
 
 

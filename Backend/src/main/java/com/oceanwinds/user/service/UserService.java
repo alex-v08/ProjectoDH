@@ -33,12 +33,6 @@ public class UserService {
     private final ProfilePictureRepository profilePictureRepository;
 
 
-    @Autowired
-    public UserService(UserRepository usersRepository, ProfilePictureRepository profilePictureRepository) {
-        this.usersRepository = usersRepository;
-        this.profilePictureRepository = profilePictureRepository;
-    }
-
     public List<User> getAllUsers() {
         List<User> users = usersRepository.findAll();
         users.removeIf(user -> user.getDeleted());

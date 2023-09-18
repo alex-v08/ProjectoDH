@@ -5,6 +5,7 @@ import Global.exceptions.ResourceNotFoundException;
 import com.oceanwinds.location.entity.Location;
 import com.oceanwinds.location.entity.dto.LocationDto;
 import com.oceanwinds.location.repository.LocationRepository;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Data
 public class LocationService {
 
     @Autowired

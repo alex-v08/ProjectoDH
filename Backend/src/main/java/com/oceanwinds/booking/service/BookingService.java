@@ -7,6 +7,7 @@ import com.oceanwinds.booking.entity.dto.MediaRatingDto;
 import com.oceanwinds.booking.entity.dto.RatingDto;
 import com.oceanwinds.booking.repository.BookingMessageRepository;
 import com.oceanwinds.booking.repository.BookingRatingRepository;
+import com.oceanwinds.mail.service.EmailService;
 import com.oceanwinds.product.entity.Product;
 import com.oceanwinds.product.repository.ProductRepository;
 import com.oceanwinds.booking.entity.Booking;
@@ -14,7 +15,11 @@ import com.oceanwinds.booking.entity.dto.BookingDto;
 import com.oceanwinds.booking.repository.BookingRepository;
 import com.oceanwinds.user.entity.User;
 import com.oceanwinds.user.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,9 +27,12 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class BookingService {
 
     private final BookingRepository bookingRepository;
@@ -33,15 +41,10 @@ public class BookingService {
     private final BookingMessageRepository bookingMessageRepository;
 
     private final ProductRepository productRepository;
+    private final EmailService emailSender;
+    private final ExecutorService emailExecutor = Executors.newSingleThreadExecutor();
 
-    @Autowired
-    public BookingService(BookingRepository bookingRepository, UserRepository userRepository, BookingRatingRepository bookingRatingRepository, BookingMessageRepository bookingMessageRepository, ProductRepository productRepository) {
-        this.bookingRepository = bookingRepository;
-        this.userRepository = userRepository;
-        this.bookingRatingRepository = bookingRatingRepository;
-        this.bookingMessageRepository = bookingMessageRepository;
-        this.productRepository = productRepository;
-    }
+
 
 
 
@@ -233,4 +236,40 @@ public class BookingService {
             return bookingRatingRepository.save(bookingRating);
         }
     }
+    @Scheduled(cron = "0 0 0 * * *")
+    public void sendEmailsForUpcomingBookings() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate twoDaysFromNow = currentDate.plusDays(2);
+
+        List<Booking> upcomingBookings = bookingRepository.findByDateEndBetweenAndCompleteFalse(currentDate, twoDaysFromNow);
+
+        for (Booking booking : upcomingBookings) {
+            User user = booking.getUser();
+            String to = user.getEmail();
+            String subject = "Tu reserva está a punto de finalizar";
+            String message = "Tu reserva está programada para finalizar en 2 días. ¡Por favor, asegúrate de tomar las medidas necesarias si deseas extenderla o prepararte para su finalización!";
+
+            emailExecutor.execute(() -> sendEmail(to, subject, message));
+        }
+    }
+
+    private Object sendEmail(String to, String subject, String message) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(to);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(message);
+
+        try {
+
+            emailSender.sendEmail(to, subject, message);
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+        public void sendEmailAsync(String to, String subject, String message) {
+            emailExecutor.execute(() -> sendEmail(to, subject, message));
+        }
 }
