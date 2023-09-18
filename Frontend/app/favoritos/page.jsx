@@ -103,11 +103,11 @@ const CurrentFavs = () => {
     <div className='bg-[#f2f5fa]'>
       <div className='container mx-auto min-h-screen p-4 pt-8'>
         <SectionTitle antetitulo='elegidos' titulo='Tus favoritos' />
-        <div className='grid grid-cols-1 justify-items-center gap-x-6 gap-y-3 sm:grid-cols-2'>
+        <div className='grid grid-cols-1 justify-items-center gap-x-6 gap-y-10 sm:grid-cols-2 xl:gap-x-8'>
           {data.map(item => (
             <a
               key={item.id}
-              className='group relative flex w-full max-w-[450px] flex-col overflow-hidden rounded-lg border shadow-sm transition-transform duration-300 ease-in-out hover:scale-[1.02] lg:max-w-full lg:flex-row'
+              className='group relative flex w-full max-w-[450px] flex-col overflow-hidden rounded-lg border shadow-md transition-transform duration-300 ease-in-out hover:scale-[1.02] lg:max-w-full lg:flex-row'
               href={`/detail/${item.product.id}`}
             >
               <div className='relative h-36 min-h-[150px] w-full overflow-hidden lg:h-[200px] lg:max-w-[35%] xl:max-w-[35%]'>
@@ -122,9 +122,9 @@ const CurrentFavs = () => {
                   <h3 className='truncate pb-2 text-xl font-bold uppercase text-sky-900'>
                     {item.product.name}
                   </h3>
-                  <p className='font-small pb-4 text-sm text-gray-500'>
+                  <div className='font-small mb-4 line-clamp-3 text-sm text-gray-500'>
                     {item.product.description}
-                  </p>
+                  </div>
                 </div>
                 <div className='flex items-center justify-between'>
                   <h3 className='text-l flex flex-col font-extrabold leading-none text-sky-500 md:flex-row'>
@@ -134,13 +134,13 @@ const CurrentFavs = () => {
                     <span>$ {item.product.pricePerDay}</span>
                   </h3>
                   <a
-                    className=' cursor-pointer rounded px-2 py-1 text-sm text-rose-500 transition hover:text-rose-600'
+                    className=' cursor-pointer rounded px-2 py-1 text-sm text-rose-400 transition hover:rotate-12 hover:text-rose-500'
                     onClick={e => {
                       e.preventDefault()
                       handleRemoveFav(item.product.id)
                     }}
                   >
-                    <BsFillTrashFill className='h-7 w-7' />
+                    <BsFillTrashFill className='h-6 w-6' />
                   </a>
                 </div>
               </div>
