@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Modal } from '../util/modal'
 import { FormCat } from '../register-edit/formCategory'
 import Swal from 'sweetalert2'
+import { BsTrash } from 'react-icons/bs'
 
 export function RowCategory(props) {
   const { id, name, icon, isChangeData, onRefreshData } = props
@@ -47,7 +48,6 @@ export function RowCategory(props) {
       console.error('Error al intentar cargar los datos del registro: ', error)
     }
   }
-
 
   async function handleOnDelete(e) {
     e.preventDefault()
@@ -118,30 +118,19 @@ export function RowCategory(props) {
           {id}
         </th>
         <td className='px-16 py-4'>{name}</td>
-        <td className='px-8 py-4'><button className="shadow-md w-28 py-1 no-underline rounded-full bg-sky-500 text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none text-center">{dataCategory.length}</button></td>
+        <td className='px-8 py-4'>
+          <button className='border-blue btn-primary hover:bg-blue-light w-28 rounded-full bg-sky-500 py-1 text-center font-sans text-sm font-semibold text-white no-underline shadow-md hover:text-white focus:outline-none active:shadow-none'>
+            {dataCategory.length}
+          </button>
+        </td>
         <td className='px-6 py-4 text-right'>
           <div>
             <button
               value={id}
               onClick={handleOnDelete}
-              className='font-medium text-blue-600 hover:underline dark:text-blue-500'
+              className='rounded-lg bg-red-500 px-2 py-2 text-white hover:bg-red-900'
             >
-              <svg
-                className='h-6 w-6 text-red-500'
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                strokeWidth='2'
-                stroke='currentColor'
-                fill='none'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-              >
-                {' '}
-                <path stroke='none' d='M0 0h24v24H0z' />{' '}
-                <line x1='18' y1='6' x2='6' y2='18' />{' '}
-                <line x1='6' y1='6' x2='18' y2='18' />
-              </svg>
+              <BsTrash className='text-xl' />
             </button>
           </div>
         </td>
