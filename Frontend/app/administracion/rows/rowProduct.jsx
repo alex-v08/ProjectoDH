@@ -66,7 +66,7 @@ export function RowProduct(props) {
         } else {
           Swal.fire({
             icon: 'success',
-            text: `El producto '${name}' a sido eliminado correctamente.`
+            text: `El producto '${name}' fue eliminado correctamente.`
           })
           onRefreshData()
         }

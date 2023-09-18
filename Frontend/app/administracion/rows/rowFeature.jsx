@@ -78,7 +78,7 @@ export function RowFeature(props) {
         } else {
           Swal.fire({
             icon: 'success',
-            text: `La caracteristica '${name}' a sido eliminada correctamente.`
+            text: `La caracteristica '${name}' fue eliminada correctamente.`
           })
           onRefreshData()
         }

@@ -78,7 +78,7 @@ export function RowCategory(props) {
         } else {
           Swal.fire({
             icon: 'success',
-            text: `La categoria '${name}' a sido eliminada correctamente.`
+            text: `La categoria '${name}' fue eliminada correctamente.`
           })
           onRefreshData()
         }
