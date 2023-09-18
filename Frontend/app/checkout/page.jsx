@@ -532,7 +532,7 @@ export default function Checkout() {
               <th width="20%" style="text-align:right; padding: 0 2.5em; color: #000; padding-bottom: 20px">Precio</th>
             </tr>
             <tr style="border-bottom: 1px solid rgba(0,0,0,.05);">
-              <td valign="middle" width="80%" style="text-align:left; padding: 0 2.5em;">
+              <td valign="middle" width="80%" style="text-align:left; padding: 0 1em 0 2.5em;">
                 <div class="product-entry">
                   <img src='${
                     productInfo.imageUrl
@@ -558,7 +558,7 @@ export default function Checkout() {
                   </div>
                 </div>
               </td>
-              <td valign="middle" width="20%" style="text-align:left; padding: 0 2.5em;">
+              <td valign="middle" width="20%" style="text-align:right; padding: 0 2.5em 0 0;">
                 <span class="price" style="color: #000; font-size: 20px;">$ ${
                   productInfo.pricePerDay * days
                 }</span>
