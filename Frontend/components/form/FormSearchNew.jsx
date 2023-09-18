@@ -1,32 +1,58 @@
 'use client'
 
-import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import DatePicker from './DatePicker'
-import { BiCurrentLocation, BiCalendar, BiSearch } from 'react-icons/bi'
+import { BiCurrentLocation, BiCalendar } from 'react-icons/bi'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { getAllUseClient } from '../util/callAPI'
 
-export default function FormSearch() {
+export default function FormSearchNew({
+  convertArrayOfStringsToNumbers,
+  selectedCategory,
+  selectedFeatures
+}) {
+  // Params
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const paramsCity = searchParams.get('city')
+  const time = {
+    startDate: searchParams.get('dateInit'),
+    endDate: searchParams.get('dateEnd')
+  }
+
+  const urlLocations = '/api/products/locations'
+
+  const arrayFeatures = convertArrayOfStringsToNumbers(selectedFeatures)
+  const arrayCategories = convertArrayOfStringsToNumbers(selectedCategory)
+
   // Almacena la ciudad selecionada
-  const [selectedCity, setSelectedCity] = useState('Elija su lugar de inicio')
+  const [selectedCity, setSelectedCity] = useState(
+    paramsCity || 'Elija su lugar de inicio'
+  )
 
   // Almacena los dias seleccionados
-  const [selectedTime, setSelectedTime] = useState({})
+  const [selectedTime, setSelectedTime] = useState(time)
 
   // Almacena el Array de ciudades para el select
   const [locations, setLocations] = useState([])
 
-  const urlLocations = '/api/products/locations'
-
-  // Controla el cambio de ciudad seleccionada
+  // Controla el cambio de ciudad
   const handleSelectChangeCity = event => {
     setSelectedCity(event.target.value)
+    router.push(
+      `/search?city=${event.target.value}&categoriesId=${arrayCategories}&featuresId=${arrayFeatures}&minPrice=0&maxPrice=5000&dateInit=${time.startDate}&dateEnd=${time.endDate}`,
+      { scroll: false }
+    )
   }
 
-  // Controla el cambio de fecha seleccionada
+  // Controla el cambio de fecha
   const handleTimeChange = newValue => {
     if (newValue.startDate !== null || newValue.endDate !== null) {
       setSelectedTime(newValue)
+      router.push(
+        `/search?city=${paramsCity}&categoriesId=${arrayCategories}&featuresId=${arrayFeatures}&minPrice=0&maxPrice=5000&dateInit=${newValue.startDate}&dateEnd=${newValue.endDate}`,
+        { scroll: false }
+      )
     }
   }
 
@@ -79,13 +105,6 @@ export default function FormSearch() {
               />
             </div>
           </div>
-          <Link
-            href={`/search?city=${selectedCity}&categoriesId=&featuresId=&minPrice=0&maxPrice=5000&dateInit=${selectedTime.startDate}&dateEnd=${selectedTime.endDate}`}
-          >
-            <button className='trasition h-12 w-full rounded border border-sky-500 bg-sky-500 px-4 py-2 font-semibold text-white transition ease-in-out hover:bg-sky-900 lg:mt-8 lg:min-w-[125px] lg:max-w-[176px]'>
-              Buscar <BiSearch className='ml-2 inline-block h-6 w-6' />
-            </button>
-          </Link>
         </div>
       </div>
     </div>
