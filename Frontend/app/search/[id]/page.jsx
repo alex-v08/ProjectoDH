@@ -21,9 +21,17 @@ async function getHeader(params) {
 
 export default async function SearchID({ params }) {
   const results = await getHeader(params)
-  const placeHolders = await Promise.all(
-    results.map(product => dynamicBlurDataUrl(`${product.imageUrl}1.png`))
-  )
+  const productsArray = results.map(async product => {
+    const imageWithOrder0 = product.pictureDataSet.find(
+      image => image.imageOrder === '0'
+    )
+    return {
+      ...product,
+      placeHolder: await dynamicBlurDataUrl(imageWithOrder0.imageUrl)
+    }
+  })
+
+  const products = await Promise.all(productsArray)
 
   return (
     <>
@@ -57,19 +65,17 @@ export default async function SearchID({ params }) {
                 </div>
               </div>
               <div className='grid grid-cols-1 justify-items-center gap-x-6 gap-y-10 pt-10 sm:grid-cols-2 lg:grid-cols-1'>
-                {results &&
-                  results.map(
-                    (
-                      {
-                        imageUrl,
-                        id,
-                        name,
-                        description,
-                        pricePerDay,
-                        category
-                      },
-                      index
-                    ) =>
+                {products &&
+                  products.map(
+                    ({
+                      imageUrl,
+                      id,
+                      name,
+                      description,
+                      pricePerDay,
+                      category,
+                      placeHolder
+                    }) =>
                       imageUrl !== null ? (
                         <CardDetailSearch
                           key={id}
@@ -79,7 +85,7 @@ export default async function SearchID({ params }) {
                           description={description}
                           pricePerDay={pricePerDay}
                           category={category}
-                          placeHolder={placeHolders[index]}
+                          placeHolder={placeHolder}
                         />
                       ) : null
                   )}
