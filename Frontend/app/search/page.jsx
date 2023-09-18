@@ -1,22 +1,25 @@
 'use client'
-import HeroSearch from '@/components/screens/search/HeroSearch'
-import { AiOutlineSortAscending } from 'react-icons/ai'
 import React, { useState, useEffect } from 'react'
-import { CardDetailSearch } from '@/components/screens/search/CardDetailSearch'
-import Filters from '@/components/screens/search/Filters'
-import { getAllUseClient } from '@/components/util/callAPI'
-// import { dynamicBlurDataUrl } from '@/components/util/dynamicBlurDataUrl'
 import { useSearchParams } from 'next/navigation'
+import HeroSearch from '@/components/screens/search/HeroSearch'
+import Filters from '@/components/screens/search/Filters'
 import FormSearchSearch from '@/components/form/FormSearchSearch'
+import { CardDetailSearch } from '@/components/screens/search/CardDetailSearch'
+import { getAllUseClient } from '@/components/util/callAPI'
+import { AiOutlineSortAscending } from 'react-icons/ai'
+// import { dynamicBlurDataUrl } from '@/components/util/dynamicBlurDataUrl'
 
 export default function SearchID() {
+  // Params
   const searchParams = useSearchParams()
   let selectedCity = searchParams.get('city')
   let dateInit = searchParams.get('dateInit')
   let dateEnd = searchParams.get('dateEnd')
 
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+  const urlGetProductsFilterHome = `${hostUrl}/api/allFiltered/?city=${selectedCity}&dateInit=${dateInit}&dateEnd=${dateEnd}`
 
+  // Estado para pintar el resultado de la busqueda
   const [productsFilters, setProductsFilters] = useState([])
 
   const [loading, setLoading] = useState(true)
@@ -25,7 +28,7 @@ export default function SearchID() {
   const [priceRange, setPriceRange] = useState(5000)
 
   // Estado para almacenar las opciones de categorias de embarcaciones seleccionadas
-  const [selectedOption, setSelectedOption] = useState([])
+  const [selectedCategory, setSelectedCategory] = useState([])
 
   // Estado para almacenar las opciones de características de embarcaciones seleccionadas
   const [featuresOptions, setFeaturesOptions] = useState([])
@@ -37,16 +40,14 @@ export default function SearchID() {
 
     if (checked) {
       // Agregar el valor al array si el checkbox está marcado
-      setSelectedOption([...selectedOption, value])
+      setSelectedCategory([...selectedCategory, value])
     } else {
       // Eliminar el valor del array si el checkbox está desmarcado
-      setSelectedOption(selectedOption.filter(item => item !== value))
+      setSelectedCategory(selectedCategory.filter(item => item !== value))
     }
   }
 
   // controla el rango de precios
-  console.log('priceRange', priceRange)
-
   const handleSliderChange = event => {
     setPriceRange(event.target.value)
   }
@@ -54,7 +55,6 @@ export default function SearchID() {
   // controla los check de las características
   const handleSelectChangeFeatures = event => {
     const { value, checked } = event.target
-    // let link
 
     if (checked) {
       // Agregar el valor al array si el checkbox está marcado
@@ -67,7 +67,6 @@ export default function SearchID() {
   }
 
   // Para obtener el filtrado de la home
-  const urlGetProductsFilterHome = `${hostUrl}/api/allFiltered/?city=${selectedCity}&dateInit=${dateInit}&dateEnd=${dateEnd}`
   useEffect(() => {
     getAllUseClient(urlGetProductsFilterHome, setProductsFilters, setLoading)
   }, [])
@@ -76,7 +75,7 @@ export default function SearchID() {
   useEffect(() => {
     const getSearch = async () => {
       // para generar el slug para las categorias
-      let array = selectedOption
+      let array = selectedCategory
       let cadena = array.join(', ')
       const resultado = eval(`[${cadena}]`)
 
@@ -88,7 +87,6 @@ export default function SearchID() {
       try {
         const response = await fetch(
           `${hostUrl}/api/allFiltered/?city=${selectedCity}&categoriesId=${resultado}&featuresId=${resultFeatures}&minPrice=0&maxPrice=${priceRange}&dateInit=${dateInit}&dateEnd=${dateEnd}`,
-          // `${hostUrl}/api/allFiltered/?city=${selectedCity}&categoriesId=${resultado}&dateInit=${dateInit}&dateEnd=${dateEnd}&featuresId=${resultFeatures}`,
           {
             cache: 'no-store'
           }
@@ -106,7 +104,7 @@ export default function SearchID() {
       }
     }
     getSearch()
-  }, [selectedOption, featuresOptions, selectedCity, priceRange, dateEnd])
+  }, [selectedCategory, featuresOptions, selectedCity, priceRange, dateEnd])
 
   // export default async function SearchID({ params }) {
   //   const results = await getHeader(params)
