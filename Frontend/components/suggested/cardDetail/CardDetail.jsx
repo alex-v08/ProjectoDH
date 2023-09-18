@@ -2,8 +2,8 @@ import CurrencyFormatter from '@/components/util/CurrencyFormatter'
 import { staticBlurDataUrl } from '@/components/util/staticBlurDataUrl'
 import Image from 'next/image'
 import Link from 'next/link'
-import { BsStarFill } from 'react-icons/bs'
 import HeartButton from '@/components/favs/HeartButton'
+import RatingMedia from '@/components/detail/RatingMedia'
 
 export const CardDetail = ({
   imageUrl,
@@ -42,9 +42,9 @@ export const CardDetail = ({
             <h5 className='font-semibold uppercase text-sky-500'>
               {category?.name || 'Sin categoria'}
             </h5>
+            {/* Rating */}
             <div className='flex'>
-              <BsStarFill className='mr-2 inline-block h-[14px] w-[14px] text-sky-500' />
-              <span className='font-medium text-gray-500'>4.6/5</span>
+                <RatingMedia productId={id} style={'font-medium text-gray-500'}/>
             </div>
           </div>
           <h4 className='my-1 truncate text-lg font-bold uppercase text-sky-900'>
