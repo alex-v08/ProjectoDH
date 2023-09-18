@@ -88,8 +88,8 @@ public class BookingController {
     }
 
     @PostMapping("/{bookingId}/messages")
-    public void addMessageToBooking(@PathVariable Long bookingId, @RequestBody BookingMessage message, @RequestBody String photoURL) {
-        bookingService.addMessageToBooking(bookingId, message, photoURL);
+    public void addMessageToBooking(@PathVariable Long bookingId, @RequestBody BookingMessage message) {
+        bookingService.addMessageToBooking(bookingId, message);
     }
 
     @PostMapping("/{bookingId}/ratings")
