@@ -33,7 +33,7 @@ export function RowFeature(props) {
 
   async function fetchDataFeature() {
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const urlGetDataFeature = `${hostUrl}/api/all/?featuresId=${id}`
+    const urlGetDataFeature = `${hostUrl}/api/allFiltered/?featuresId=${id}&dateInit=9999-01-01&dateEnd=9999-01-01`
     try {
       const response = await fetch(urlGetDataFeature)
       if (!response.ok) {
