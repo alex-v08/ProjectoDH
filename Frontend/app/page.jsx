@@ -1,7 +1,7 @@
 'use client'
 
 import SectionTitle from '@/components/SectionTitle'
-import FormSearchNew from '@/components/form/FormSearchNew'
+import FormSearch from '@/components/form/FormSearch'
 import Descubre from '@/components/screens/home/Descubre'
 import Embarcaciones from '@/components/screens/home/Embarcaciones'
 import Hero from '@/components/screens/home/Hero'
@@ -94,7 +94,7 @@ export default function Home({ searchParams }) {
   return (
     <section>
       <Hero />
-      <FormSearchNew />
+      <FormSearch />
       <Descubre />
       {loading ? (
         <>

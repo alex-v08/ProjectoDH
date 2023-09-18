@@ -5,32 +5,24 @@ import React, { useState, useEffect } from 'react'
 import { CardDetailSearch } from '@/components/screens/search/CardDetailSearch'
 import Filters from '@/components/screens/search/Filters'
 import { getAllUseClient } from '@/components/util/callAPI'
-import { dynamicBlurDataUrl } from '@/components/util/dynamicBlurDataUrl'
-import { useRouter, useSearchParams } from 'next/navigation'
-import FormSearchNew from '@/components/form/FormSearchNew'
+// import { dynamicBlurDataUrl } from '@/components/util/dynamicBlurDataUrl'
+import { useSearchParams } from 'next/navigation'
+import FormSearchSearch from '@/components/form/FormSearchSearch'
 
 export default function SearchID() {
   const searchParams = useSearchParams()
-  const router = useRouter()
   let selectedCity = searchParams.get('city')
   let dateInit = searchParams.get('dateInit')
   let dateEnd = searchParams.get('dateEnd')
-  let featuresId = searchParams.get('featuresId')
-  let minPrice = searchParams.get('minPrice')
-  let maxPrice = searchParams.get('maxPrice')
 
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 
-  // Estados para almacenar los items del listado
-  const [totalProducts, setTotalProducts] = useState([])
   const [productsFilters, setProductsFilters] = useState([])
 
   const [loading, setLoading] = useState(true)
 
   // Estados para almacenar precios
   const [priceRange, setPriceRange] = useState(5000)
-  // Estado para almacenar la ciudad seleccionada
-  // const [selectedCity, setSelectedCity] = useState(params?.id)
 
   // Estado para almacenar las opciones de categorias de embarcaciones seleccionadas
   const [selectedOption, setSelectedOption] = useState([])
@@ -38,34 +30,18 @@ export default function SearchID() {
   // Estado para almacenar las opciones de características de embarcaciones seleccionadas
   const [featuresOptions, setFeaturesOptions] = useState([])
 
-  // Estado para almacenar el slug de características
-  const [slugFeatudes, setSlugFeatudes] = useState(false)
-
-  // Estado para almacenar el slug de categorias
-  const [slugCategory, setSlugCategory] = useState(false)
-
   // controla los check de las categorias
   const handleSelectChangeCategory = event => {
-    const { value, checked, name } = event.target
+    const { value, checked } = event.target
     // let link
 
     if (checked) {
       // Agregar el valor al array si el checkbox está marcado
       setSelectedOption([...selectedOption, value])
-      // router.push(
-      //   `search?city=${event.target.value}&categoriesId=${selectedOption}&featuresId=${featuresOptions}&minPrice=${minPrice}&maxPrice=${maxPrice}&dateInit=${dateInit}&dateEnd=${dateEnd}`
-      // )
     } else {
       // Eliminar el valor del array si el checkbox está desmarcado
       setSelectedOption(selectedOption.filter(item => item !== value))
     }
-    if (!checked && selectedOption.length === 1) {
-      setProductsFilters(totalProducts)
-    }
-    // link = selectedOption
-    // if (link.length !== 0) {
-    //   router.replace(`/search/${link}`)
-    // }
   }
 
   // controla el rango de precios
@@ -88,10 +64,6 @@ export default function SearchID() {
       // Eliminar el valor del array si el checkbox está desmarcado
       setFeaturesOptions(featuresOptions.filter(item => item !== value))
     }
-    // link = selectedOption
-    // if (link.length !== 0) {
-    //   router.replace(`/search/${link}`)
-    // }
   }
 
   // Para obtener el filtrado de la home
@@ -134,7 +106,7 @@ export default function SearchID() {
       }
     }
     getSearch()
-  }, [selectedOption, featuresOptions, selectedCity, priceRange])
+  }, [selectedOption, featuresOptions, selectedCity, priceRange, dateEnd])
 
   // export default async function SearchID({ params }) {
   //   const results = await getHeader(params)
@@ -145,7 +117,7 @@ export default function SearchID() {
   return (
     <>
       <HeroSearch />
-      <FormSearchNew dateInit={dateInit} dateEnd={dateEnd} />
+      <FormSearchSearch dateInit={dateInit} dateEnd={dateEnd} />
       <div className='bg-[#f2f5fa]'>
         <div className='container pb-20 pt-[32rem] sm:pt-[26rem] lg:pt-32'>
           {/* Container */}

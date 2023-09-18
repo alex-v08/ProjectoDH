@@ -3,12 +3,12 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import DatePicker from './DatePicker'
-import { BiCurrentLocation, BiCalendar, BiSearch } from 'react-icons/bi'
+import { BiCurrentLocation, BiCalendar } from 'react-icons/bi'
 import { useSearchParams, useRouter } from 'next/navigation'
-//import { doSearch, getCategories } from '../util/callAPI'
 
-export default function FormSearchNew({ dateInit, dateEnd }) {
+export default function FormSearchSearch() {
   const searchParams = useSearchParams()
+  const router = useRouter()
 
   let paramsCity = searchParams.get('city')
 
@@ -26,11 +26,16 @@ export default function FormSearchNew({ dateInit, dateEnd }) {
   // Función para manejar el cambio de ciudad seleccionada
   const handleSelectChangeCity = event => {
     setSelectedCity(event.target.value)
+    router.push(
+      `/search?city=${event.target.value}&dateInit=${selectedTime.startDate}&dateEnd=${selectedTime.endDate}`
+    )
   }
 
   const handleTimeChange = newValue => {
-    console.log('value', newValue)
     setSelectedTime(newValue)
+    router.push(
+      `/search?city=${selectedCity}&dateInit=${newValue.startDate}&dateEnd=${newValue.endDate}`
+    )
   }
   // Estado para almacenar el Array de lugares
   const [locations, setLocations] = useState([])
@@ -99,7 +104,7 @@ export default function FormSearchNew({ dateInit, dateEnd }) {
               />
             </div>
           </div>
-          <Link
+          {/* <Link
             href={`/search?city=${selectedCity}&dateInit=${selectedTime.startDate}&dateEnd=${selectedTime.endDate}`}
           >
             <button
@@ -108,7 +113,7 @@ export default function FormSearchNew({ dateInit, dateEnd }) {
             >
               Buscar <BiSearch className='ml-2 inline-block h-6 w-6' />
             </button>
-          </Link>
+          </Link> */}
         </div>
       </div>
     </div>
