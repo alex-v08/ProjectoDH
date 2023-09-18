@@ -42,8 +42,8 @@ export default async function Detalle({ params }) {
 
   const images = await Promise.all(imgUrls)
 
-  // Ordenar las imágenes por el campo 'imageUrl' en orden ascendente
-  images.sort((a, b) => a.imageUrl.localeCompare(b.imageUrl))
+  // Ordenar las imágenes por el campo 'imageOrder' en orden ascendente
+  images.sort((a, b) => a.imageOrder - b.imageOrder)
 
   // console.log(images)
 

@@ -7,6 +7,7 @@ import com.oceanwinds.feature.entity.dto.FeatureDto;
 import com.oceanwinds.feature.repository.FeatureRepository;
 import com.oceanwinds.product.entity.Product;
 import com.oceanwinds.product.repository.ProductRepository;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Data
 public class FeatureService {
     @Autowired
     FeatureRepository featureRepository;

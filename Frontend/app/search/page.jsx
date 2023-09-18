@@ -18,10 +18,15 @@ async function getHeader() {
 
 export default async function Search() {
   const results = await getHeader()
-  const productsArray = results.map(async product => ({
-    ...product,
-    placeHolder: await dynamicBlurDataUrl(`${product.imageUrl}1.png`)
-  }))
+  const productsArray = results.map(async product => {
+    const imageWithOrder0 = product.pictureDataSet.find(
+      image => image.imageOrder === '0'
+    )
+    return {
+      ...product,
+      placeHolder: await dynamicBlurDataUrl(imageWithOrder0.imageUrl)
+    }
+  })
 
   const products = await Promise.all(productsArray)
 

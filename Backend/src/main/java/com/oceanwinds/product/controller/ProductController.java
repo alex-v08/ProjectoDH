@@ -37,8 +37,8 @@ public class ProductController {
 
 
     @GetMapping("/all")
-    public List<Product> getAllProduct() {
-        return productService.getAllProducts();
+    public Set<Product> getAllProduct() {
+        return productService.getAllActiveProduct();
     }
 
 
