@@ -24,8 +24,8 @@ const autography = localFont({
 })
 
 export const metadata = {
-  title: 'Proyecto integrador - Digital House',
-  description: 'Grupo 5 - Camada 1'
+  title: 'OceanWings',
+  description: 'Proyecto integrador - Digital House - Grupo 5 - Camada 1'
 }
 
 export default function RootLayout({ children }) {

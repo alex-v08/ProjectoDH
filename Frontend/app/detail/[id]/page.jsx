@@ -1,7 +1,6 @@
 import Galeria from '@/components/suggested/galeriaImagenes/Galeria'
 import Link from 'next/link'
 import { HiLocationMarker } from 'react-icons/hi'
-import { BsStarFill } from 'react-icons/bs'
 import { ButtonBack } from '@/components/suggested/buttonBack/ButtonBack'
 import ShareButton from '@/components/favs/ShareButton'
 import HeartButton from '@/components/favs/HeartButton'
@@ -10,6 +9,7 @@ import { dynamicBlurDataUrl } from '@/components/util/dynamicBlurDataUrl'
 import Comentarios from '@/components/detail/Comentarios'
 import MediaShare from '@/components/mediaShare/MediaShare'
 import MenuReserva from '@/components/detail/MenuReserva'
+import RatingMedia from '@/components/detail/RatingMedia'
 import Feature from '@/components/detail/Feature'
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
@@ -24,24 +24,29 @@ async function getItem(id) {
   return data
 }
 
-async function getGallery(id) {
-  const response = await fetch(imageUrl + id, {
-    cache: 'no-store'
-  })
-  const data = await response.json()
-  return data
-}
+// async function getGallery(id) {
+//   const response = await fetch(imageUrl + id, {
+//     cache: 'no-store'
+//   })
+//   const data = await response.json()
+//   return data
+// }
 
 export default async function Detalle({ params }) {
   const index = parseInt(params.id)
   const results = await getItem(index)
   // console.log('RESULTS', results)
-  const imagesGallery = await getGallery(index)
-  // Create placeholders for images
-  const imgUrls = imagesGallery.map(image => image.url)
-  const placeHolders = await Promise.all(
-    imgUrls.map(url => dynamicBlurDataUrl(url))
-  )
+  const imgUrls = results.pictureDataSet.map(async image => ({
+    ...image,
+    placeHolder: await dynamicBlurDataUrl(image.imageUrl)
+  }))
+
+  const images = await Promise.all(imgUrls)
+
+  // Ordenar las imágenes por el campo 'imageOrder' en orden ascendente
+  images.sort((a, b) => a.imageOrder - b.imageOrder)
+
+  // console.log(images)
 
   return (
     <div className='bg-[#f2f5fa] p-4 pt-0 sm:p-10 sm:pt-0'>
@@ -77,7 +82,7 @@ export default async function Detalle({ params }) {
           <HeartButton fillColor='#0EA5E9' productId={index} />
         </div>
 
-        <Galeria imagesGallery={imagesGallery} placeHolders={placeHolders} />
+        <Galeria images={images} />
 
         {/* Container */}
         <div className='flex flex-col items-start gap-8 pt-6 lg:flex-row'>
@@ -97,8 +102,8 @@ export default async function Detalle({ params }) {
               <span className='pr-3'>
                 8 Huéspedes 9 Habitaciones 2 Baños 5 Cabinas
               </span>
-              <BsStarFill className='mr-2 inline-block h-[14px] w-[14px] text-sky-500' />
-              <span className='font-bold'>4.6/5</span>
+              {/* Rating */}
+              <RatingMedia productId={index} style='font-bold' />
             </div>
 
             {/* Descripcion */}
@@ -115,7 +120,7 @@ export default async function Detalle({ params }) {
                 Características
               </h2>
               <div className='grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3'>
-                {results.feature.map((feature) => (
+                {results.feature.map(feature => (
                   <Feature key={feature.id} feature={feature} />
                 ))}
               </div>
@@ -186,14 +191,14 @@ export default async function Detalle({ params }) {
                 <div className='content'>
                   <p className='pl-9 text-gray-500 sm:pl-12'>
                     Flexible: Reembolso total hasta 1 día antes de la llegada,
-                    excluyendo gastos de servicio y comisión de Ocean Winds.
+                    excluyendo gastos de servicio y comisión de Ocean Wings.
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Comentarios */}
-            <Comentarios />
+            <Comentarios productId={results.id} />
           </div>
           {/* Reserva */}
           <MenuReserva price={results.pricePerDay} id={results.id} />

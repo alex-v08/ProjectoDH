@@ -15,33 +15,33 @@ import java.util.Set;
 @Table(name = "USERS")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
+@Getter@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    @Column(nullable = false)@Setter
+    @Column(nullable = false)
     private String name;
-    @Setter
+
     private String lastName;
-    @Column(nullable = false, unique = true)@Setter
+    @Column(nullable = false, unique = true)
     private String email;
-    @Setter
+
     private String dni;
-    @Setter
+
     private String phone;
-    @Setter
+
     private String address;
-    @Setter
+
     private UserEnum role= UserEnum.USER_DEFAULT;
-    @Setter
+
     @Column(nullable = false, unique = true)
     private String uuid;
-    @Setter
+
     private Boolean deleted = false;
-    @Setter
+
     private Boolean enabled = true;
-    @Setter
+
     @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "profilePicture_id", referencedColumnName = "id")
     private ProfilePicture profilePicture;

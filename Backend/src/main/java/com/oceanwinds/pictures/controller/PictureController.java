@@ -33,6 +33,7 @@ public class PictureController {
         Map<String, String> result = new HashMap<>();
         result.put("imageKey", key);
         result.put("imageUrl", s3Service.getObjectUrl(key));
+        result.put("imageOrder", "");
 
         return result;
     }
