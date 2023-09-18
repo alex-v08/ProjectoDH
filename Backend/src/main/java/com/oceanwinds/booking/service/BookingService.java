@@ -125,12 +125,13 @@ public class BookingService {
     }
 
     @Transactional
-    public void addMessageToBooking(Long bookingId, BookingMessage message) {
+    public void addMessageToBooking(Long bookingId, BookingMessage message, String photoURL) {
         Optional<Booking> bookingOptional = bookingRepository.findById(bookingId);
         Booking booking = bookingOptional.get();
         if (bookingOptional.isPresent() && booking.getComplete()) {
             message.setBooking(booking);
             message.setUuid(booking.getUser().getUuid());
+            message.setPhotoURL(photoURL);
             booking.setMessage(bookingMessageRepository.save(message));
             bookingRepository.save(booking);
         } else {
@@ -186,6 +187,7 @@ public class BookingService {
             ratingDto.setName(reserve.getUser().getName() + " " + reserve.getUser().getLastName());
             ratingDto.setRating(reserve.getRating().getRating());
             ratingDto.setMessage(reserve.getMessage().getMessage());
+            ratingDto.setPhotoUrl(reserve.getMessage().getPhotoURL());
 
             ratings.add(ratingDto);
         }
