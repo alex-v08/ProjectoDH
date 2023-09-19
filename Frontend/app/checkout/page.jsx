@@ -2,16 +2,15 @@
 
 import Link from 'next/link'
 import { HiLocationMarker } from 'react-icons/hi'
-import { BsStarFill, BsStar } from 'react-icons/bs'
 import Image from 'next/image'
-import DatePicker from '@/components/detail/DatePicker'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import dayjs from 'dayjs'
-import 'dayjs/locale/es'
+import 'dayjs/locale/es-mx'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/context/authContext'
 import CurrencyFormatter from '@/components/util/CurrencyFormatter'
 import Swal from 'sweetalert2'
+import EmailTemplate from '@/components/checkout/emailtemplate'
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 const itemsUrl = `${hostUrl}/api/`
@@ -24,16 +23,18 @@ async function getItem(id) {
   return data
 }
 
+dayjs.locale('es-mx')
+
 export default function Checkout() {
   const searchParam = useSearchParams()
   const id = searchParam.get('productId')
   const startDate = searchParam.get('startDate')
   const endDate = searchParam.get('endDate')
   const startDateFormated = dayjs(startDate).format('DD-MMMM-YYYY', {
-    locale: 'es'
+    locale: 'es-mx'
   })
   const endDateFormated = dayjs(endDate).format('DD-MMMM-YYYY', {
-    locale: 'es'
+    locale: 'es-mx'
   })
   const days = dayjs(endDate).diff(dayjs(startDate), 'day')
   const [productInfo, setProductInfo] = useState(null)
@@ -122,7 +123,8 @@ export default function Checkout() {
   const handleSubmit = async e => {
     e.preventDefault()
     // setError('')
-    console.log(reservForm)
+    // console.log(reservForm)
+
     Swal.fire({
       title: '¿Está seguro que desea confirmar la reserva?',
       text: 'Confirmar reserva!',
@@ -152,6 +154,35 @@ export default function Checkout() {
               'La reserva ha sido completada.',
               'success'
             )
+            //Enviar Mail
+            const emailHTML = EmailTemplate({
+              userForm: userForm,
+              productInfo: productInfo,
+              id: id,
+              days: days,
+              startDateFormated: startDateFormated,
+              endDateFormated: endDateFormated
+            })
+
+            const emailResponse = await fetch(`${hostUrl}/email/send-html`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                to: userForm.email,
+                subject: 'Confirmación de reserva',
+                body: 'Muchas gracias por realizar la reserva.',
+                htmlContent: emailHTML
+              })
+            })
+
+            if (emailResponse.ok) {
+              console.log('Email sent successfully')
+              router.push('/reservas')
+            } else {
+              console.error('Error sending email')
+            }
             //REDIRECCIONAR A LA PAGINA DE RESERVAS
           } else {
             console.error('Error al confirmar la reserva.')
@@ -175,6 +206,8 @@ export default function Checkout() {
 
   const handleChange = ({ target: { value, name } }) =>
     setUserForm({ ...userForm, [name]: value })
+
+  const router = useRouter()
 
   return (
     <div className='bg-[#f2f5fa] p-4 pt-0 sm:p-10 sm:pt-0'>
