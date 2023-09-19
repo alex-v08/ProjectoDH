@@ -3,7 +3,7 @@ import DatePicker from '@/components/detail/DatePicker'
 import CurrencyFormatter from '@/components/util/CurrencyFormatter'
 import { useAuth } from '@/context/authContext'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Swal from 'sweetalert2'
 
 export default function MenuReserva({ price, id }) {
