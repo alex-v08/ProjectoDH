@@ -83,7 +83,7 @@ export default function FormSearch() {
             </div>
           </div>
           <Link
-            href={`/search?city=${selectedCity}&categoriesId=&featuresId=&minPrice=0&maxPrice=5000&dateInit=${selectedTime.startDate}&dateEnd=${selectedTime.endDate}`}
+            href={`/search?city=${selectedCity}&categoriesId=null&featuresId=null&minPrice=0&maxPrice=5000&dateInit=${selectedTime.startDate}&dateEnd=${selectedTime.endDate}`}
           >
             <button className='trasition h-12 w-full rounded border border-sky-500 bg-sky-500 px-4 py-2 font-semibold text-white transition ease-in-out hover:bg-sky-900 lg:mt-8 lg:min-w-[125px] lg:max-w-[176px]'>
               Buscar <BiSearch className='ml-2 inline-block h-6 w-6' />
