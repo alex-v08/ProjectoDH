@@ -4,67 +4,109 @@ import { useCallback, useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 import { useDropzone } from 'react-dropzone'
 import { ArrowUpTrayIcon, XMarkIcon } from '@heroicons/react/24/solid'
+import { useRouter } from 'next/navigation'
 
-const Dropzone = ({ className }, props) => {
+
+const Dropzone = ({ className, params }) => {
+  const router = useRouter()
+  const [product, setProduct] = useState([])
+  const [changeData, setChangeData] = useState(true)
   const [files, setFiles] = useState([])
   const [rejected, setRejected] = useState([])
-  const { formEditData, onClose, onRefreshData } = props
-  const [product, setProduct] = useState(formEditData)
-  const [name, setName] = useState(product == undefined ? '' : product.name)
-  const [sku, setSku] = useState(product == undefined ? '' : product.sku)
-  const [description, setDescription] = useState(
-    product == undefined ? '' : product.description
-  )
-  const [image, setImage] = useState(
-    product == undefined ? '' : product.imageUrl
-  )
-  const [pricePerDay, setPricePerDay] = useState(
-    product == undefined ? '' : product.pricePerDay
-  )
-  const [pricePerWeek, setPricePerWeek] = useState(
-    product == undefined ? '' : product.pricePerWeek
-  )
-  const [pricePerHour, setPricePerHour] = useState(
-    product == undefined ? '' : product.pricePerHour
-  )
-  const [categoryId, setCategoryId] = useState(
-    product == undefined
-      ? ''
-      : product.category == null
-      ? ''
-      : product.category.id
-  )
-  const [featuresId, setFeaturesId] = useState(
-    product == undefined
-      ? []
-      : product.feature == null
-      ? []
-      : product.feature.map(feature => feature.id)
-  )
+  const [name, setName] = useState('')
+  const [sku, setSku] = useState('')
+  const [description, setDescription] = useState('')
+  const [image, setImage] = useState('')
+  const [pricePerDay, setPricePerDay] = useState('')
+  const [pricePerWeek, setPricePerWeek] = useState('')
+  const [pricePerHour, setPricePerHour] = useState('')
+  const [categoryId, setCategoryId] = useState('')
+  const [featuresId, setFeaturesId] = useState([])
   const [categories, setCategories] = useState([])
   const [features, setFeatures] = useState([])
-  const [country, setCountry] = useState(
-    product == undefined
-      ? ''
-      : product.location == null
-      ? ''
-      : product.location.country
-  )
-  const [city, setCity] = useState(
-    product == undefined
-      ? ''
-      : product.location == null
-      ? ''
-      : product.location.city
-  )
-  const [available, setAvailable] = useState(
-    product == undefined ? true : product.available
-  )
+  const [country, setCountry] = useState('')
+  const [city, setCity] = useState('')
+  const [available, setAvailable] = useState(true)
 
-  const optionSelect = features.map(feature => ({
-    value: `${feature.id}`,
-    label: `${feature.name}`
-  }))
+  async function fetchData() {
+    if (params.id !== undefined) {
+      const endpoint = `http://3.130.4.28:8080/api/${params.id}`
+      try {
+        const response = await fetch(endpoint)
+        if (!response.ok) {
+          throw new Error(
+            'Error al intentar cargar todos los registros: . Response: ' +
+              response.status
+          )
+        }
+        const jsonData = await response.json()
+        setProduct(jsonData)
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          text: `Error durante la carga de registros o no hay registros para mostrar.`
+        })
+        console.error('Error cargando los registros: ', error)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (changeData) {
+      fetchData()
+      setChangeData(false)
+    }
+  }, [changeData])
+
+  useEffect(() => {
+    setName(product == undefined ? '' : product.name)
+    setSku(product == undefined ? '' : product.sku)
+    setDescription(product == undefined ? '' : product.description)
+    setImage(product == undefined ? '' : product.imageUrl)
+    setPricePerDay(product == undefined ? '' : product.pricePerDay)
+    setPricePerWeek(product == undefined ? '' : product.pricePerWeek)
+    setPricePerHour(product == undefined ? '' : product.pricePerHour)
+    setCategoryId(
+      product == undefined
+        ? ''
+        : product.category == null
+        ? ''
+        : product.category.id
+    )
+    setFeaturesId(
+      product == undefined
+        ? []
+        : product.feature == null
+        ? []
+        : product.feature.map(feature => feature.id)
+    )
+    setCountry(
+      product == undefined
+        ? ''
+        : product.location == null
+        ? ''
+        : product.location.country
+    )
+    setCity(
+      product == undefined
+        ? ''
+        : product.location == null
+        ? ''
+        : product.location.city
+    )
+    setFiles(
+      product == undefined
+        ? []
+        : product.pictureDataSet == null
+        ? []
+        : product.pictureDataSet
+    )
+    setAvailable(product == undefined ? true : product.available)
+  }, [product])
+
+  function refreshData() {
+    setChangeData(true)
+  }
 
   function handleChangeName(e) {
     setName(e.target.value)
@@ -184,7 +226,7 @@ const Dropzone = ({ className }, props) => {
     if (opcion.isConfirmed) {
       try {
         const response = await fetch(url, {
-          method: product == undefined ? 'POST' : 'PUT',
+          method: product == undefined ? 'POST' : 'PATCH',
           headers: {
             'Content-Type': 'application/json'
           },
@@ -197,12 +239,12 @@ const Dropzone = ({ className }, props) => {
               response.status
           )
         } else {
-          onRefreshData()
+          refreshData()
           Swal.fire({
             icon: 'success',
             text: `${msgProduct}`
           })
-          onClose()
+          router.push('/administracion')
         }
 
         const data = await response.json()

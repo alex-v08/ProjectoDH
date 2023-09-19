@@ -4,14 +4,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { BsStarFill } from 'react-icons/bs'
 import { HiLocationMarker } from 'react-icons/hi'
+import RatingMedia from '@/components/detail/RatingMedia'
 
 export const CardDetailSearch = ({
   imageUrl,
   id,
   name,
-  description,
+  location,
   pricePerDay,
-  category,
   placeHolder
 }) => {
   return (
@@ -37,13 +37,14 @@ export const CardDetailSearch = ({
           <div className='flex justify-between pb-[5px]'>
             <div className='flex items-center'>
               <HiLocationMarker className='mr-1 h-4 w-4 text-gray-400' />
-              <p className='mr-3 line-clamp-1 w-full text-xs text-gray-500'>
-                SANTA ROSA, LA PAMPA, ARGENTINA
+              <p className='mr-3 line-clamp-1 w-full text-xs uppercase text-gray-500'>
+                {location === null
+                  ? 'SANTA ROSA, ARGENTINA'
+                  : `${location.city}, ${location.country}`}
               </p>
             </div>
             <div className='flex items-center'>
-              <BsStarFill className='mr-2 inline-block h-[14px] w-[14px] text-sky-500' />
-              <span className='font-medium text-gray-500'>4.6/5</span>
+              <RatingMedia productId={id} style={'font-medium text-gray-500'}/>
             </div>
           </div>
           <h3 className='truncate pb-[5px] text-xl font-bold uppercase text-sky-900'>

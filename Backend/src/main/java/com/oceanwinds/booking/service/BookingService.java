@@ -186,6 +186,7 @@ public class BookingService {
             ratingDto.setName(reserve.getUser().getName() + " " + reserve.getUser().getLastName());
             ratingDto.setRating(reserve.getRating().getRating());
             ratingDto.setMessage(reserve.getMessage().getMessage());
+            ratingDto.setPhotoUrl(reserve.getMessage().getPhotoURL());
 
             ratings.add(ratingDto);
         }
@@ -236,7 +237,7 @@ public class BookingService {
             return bookingRatingRepository.save(bookingRating);
         }
     }
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void sendEmailsForUpcomingBookings() {
         LocalDate currentDate = LocalDate.now();
         LocalDate twoDaysFromNow = currentDate.plusDays(2);

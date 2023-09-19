@@ -19,6 +19,7 @@ public class BookingMessage {
     private String message; // Mensaje relacionado con la reserva
     private String uuid;
     private LocalDate dateMessage;
+    private String photoURL;
 
 
     @JsonIgnore

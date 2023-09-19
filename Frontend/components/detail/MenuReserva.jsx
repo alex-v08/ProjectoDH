@@ -3,7 +3,8 @@ import DatePicker from '@/components/detail/DatePicker'
 import CurrencyFormatter from '@/components/util/CurrencyFormatter'
 import { useAuth } from '@/context/authContext'
 import Link from 'next/link'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
+import Swal from 'sweetalert2'
 
 export default function MenuReserva({ price, id }) {
   const { user } = useAuth()
@@ -16,34 +17,13 @@ export default function MenuReserva({ price, id }) {
     if (!selectedDate) {
       // Si no se ha seleccionado una fecha, muestra un mensaje de error o realiza la lógica que desees.
       e.preventDefault()
-      alert('Debes seleccionar una fecha antes de realizar la reserva.')
+      Swal.fire({
+        icon: 'error',
+        title: 'Para realizar una reserva',
+        text: 'Debes seleccionar una fecha!'
+      })
       return // Evita continuar con la reserva
     }
-
-    if (!cantPassenger) {
-      // Si no se ha seleccionado una cantidad de pasajeros, muestra un mensaje de error o realiza la lógica que desees.
-      e.preventDefault()
-      alert('Debes ingresar un cantidad de pasajeros válida antes de realizar la reserva.')
-      return // Evita continuar con la reserva
-    }
-
-    // Validar si el valor es un número válido
-    if (!Number.isInteger(cantPassenger) || cantPassenger < 1) {
-      e.preventDefault()
-      // Mostrar un mensaje de error
-      alert('Por favor, ingrese una cantidad de pasajeros válida.');
-
-      // Restablecer el valor del campo de entrada
-      inputRef.value = 0;
-      return
-    } else {
-      // El valor es válido, puedes realizar otras acciones aquí si es necesario
-      console.log('Cantidad de pasajeros válida: ' + value);
-    }
-
-    // El valor es válido
-    // Lógica para proceder con la reserva si se selecciona una fecha
-    // ...
   }
 
   const handlePassenger = e => {

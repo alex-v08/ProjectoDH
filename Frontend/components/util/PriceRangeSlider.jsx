@@ -1,19 +1,12 @@
 'use client'
 
-import { useState } from 'react'
-
-export default function PriceRangeSlider() {
-  const [priceRange, setPriceRange] = useState(0)
-
-  const handleSliderChange = event => {
-    setPriceRange(event.target.value)
-  }
+export default function PriceRangeSlider({ priceRange, handleSliderChange }) {
   return (
     <div className='w-full'>
       <input
         type='range'
         min='0'
-        max='30000' // Ajusta estos valores según tu rango de precios
+        max='5000' // Ajusta estos valores según tu rango de precios
         value={priceRange}
         onChange={handleSliderChange}
         className='slider h-3 w-full cursor-pointer appearance-none rounded-full bg-sky-500'
