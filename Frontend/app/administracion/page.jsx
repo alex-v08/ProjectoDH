@@ -50,7 +50,7 @@ export default function Menu() {
           role='alert'
         >
           <div className='z-10'>
-            <div className='pb-8 text-[18rem] font-bold text-sky-500'>
+            <div className='pb-8 text-[10rem] font-bold text-sky-500'>
               <span>404</span>
             </div>
             <div className='px-10 pb-8 text-2xl text-blue-950'>

@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '@/context/authContext'
 import CurrencyFormatter from '@/components/util/CurrencyFormatter'
 import Swal from 'sweetalert2'
-import EmailTemplate from '@/components/checkout/emailtemplate'
+import EmailTemplate from '@/components/checkout/emailTemplate'
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 const itemsUrl = `${hostUrl}/api/`
