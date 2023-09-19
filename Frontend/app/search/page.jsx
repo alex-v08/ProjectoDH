@@ -5,8 +5,7 @@ import HeroSearch from '@/components/screens/search/HeroSearch'
 import Filters from '@/components/screens/search/Filters'
 import FormSearchNew from '@/components/form/FormSearchNew'
 import { CardDetailSearch } from '@/components/screens/search/CardDetailSearch'
-import { getAllUseClient } from '@/components/util/callAPI'
-// import { AiOutlineSortAscending } from 'react-icons/ai'
+import { AiOutlineSortAscending } from 'react-icons/ai'
 
 export default function Search() {
   // Params
@@ -18,7 +17,6 @@ export default function Search() {
   const router = useRouter()
 
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-  const urlGetProductsFilterHome = `${hostUrl}/api/allFiltered/?city=${selectedCity}&dateInit=${dateInit}&dateEnd=${dateEnd}`
 
   // Pinta el resultado de la busqueda
   const [productsFilters, setProductsFilters] = useState([])
@@ -67,11 +65,6 @@ export default function Search() {
       setSelectedFeatures(selectedFeatures.filter(item => item !== value))
     }
   }
-
-  // Pinta el filtrado que viene de la home
-  useEffect(() => {
-    getAllUseClient(urlGetProductsFilterHome, setProductsFilters)
-  }, [])
 
   // convierte un array de strings otro de numeros
   const convertArrayOfStringsToNumbers = arrayState => {
@@ -144,7 +137,7 @@ export default function Search() {
                   </div>
                   <div>Resultados</div>
                 </h1>
-                {/* <div className='flex items-center'>
+                <div className='flex items-center'>
                   <div className='hidden text-sm tracking-tight sm:inline-block'>
                     Ordenar por
                   </div>
@@ -158,28 +151,20 @@ export default function Search() {
                     <option value=''>Precio</option>
                     <option value=''>Rating</option>
                   </select>
-                </div> */}
+                </div>
               </div>
               <div className='grid grid-cols-1 justify-items-center gap-x-6 gap-y-10 pt-10 sm:grid-cols-2 lg:grid-cols-1'>
                 {productsFilters &&
                   productsFilters.map(
-                    ({
-                      imageUrl,
-                      id,
-                      name,
-                      description,
-                      pricePerDay,
-                      category
-                    }) =>
+                    ({ imageUrl, id, name, pricePerDay, location }) =>
                       imageUrl !== null ? (
                         <CardDetailSearch
+                          location={location}
                           key={id}
                           imageUrl={imageUrl + '1.png'}
                           id={id}
                           name={name}
-                          description={description}
                           pricePerDay={pricePerDay}
-                          category={category}
                           // placeHolder={placeHolders[index]}
                         />
                       ) : null

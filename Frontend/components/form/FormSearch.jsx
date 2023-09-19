@@ -8,10 +8,13 @@ import { getAllUseClient } from '../util/callAPI'
 
 export default function FormSearch() {
   // Almacena la ciudad selecionada
-  const [selectedCity, setSelectedCity] = useState('Elija su lugar de inicio')
+  const [selectedCity, setSelectedCity] = useState('')
 
   // Almacena los dias seleccionados
-  const [selectedTime, setSelectedTime] = useState({})
+  const [selectedTime, setSelectedTime] = useState({
+    startDate: '',
+    endDate: ''
+  })
 
   // Almacena el Array de ciudades para el select
   const [locations, setLocations] = useState([])
