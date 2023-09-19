@@ -5,7 +5,7 @@ import { HiLocationMarker } from 'react-icons/hi'
 import { BsStarFill, BsStar } from 'react-icons/bs'
 import Image from 'next/image'
 import DatePicker from '@/components/detail/DatePicker'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 import { useEffect, useState } from 'react'
@@ -55,6 +55,7 @@ export default function Checkout() {
     dateInit: '',
     dateEnd: ''
   })
+  const router = useRouter()
 
   useEffect(() => {
     if (id) {
@@ -145,14 +146,7 @@ export default function Checkout() {
           })
 
           if (response.ok) {
-            console.log('Reserva confirmada')
-            // setSend(!send)
-            Swal.fire(
-              'Confirmada!',
-              'La reserva ha sido completada.',
-              'success'
-            )
-            //REDIRECCIONAR A LA PAGINA DE RESERVAS
+            router.push('/checkout/confirmation')
           } else {
             console.error('Error al confirmar la reserva.')
             Swal.fire(
