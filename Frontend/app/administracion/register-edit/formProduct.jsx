@@ -29,7 +29,7 @@ export const Dropzone = ({ className, params }) => {
   async function fetchData() {
     if (params !== undefined) {
       const idProduct = params.params.id
-      const endpoint = `http://3.130.4.28:8080/api/${idProduct}`
+      const endpoint = `http://3.130.4.28:8080/api/products/${idProduct}`
       try {
         const response = await fetch(endpoint)
         if (!response.ok) {

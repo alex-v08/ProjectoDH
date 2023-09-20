@@ -44,8 +44,6 @@ public class ProductService {
     private final BookingRepository bookingRepository;
     private final PictureDataRepository pictureDataRepository;
 
-
-
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
