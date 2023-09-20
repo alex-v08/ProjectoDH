@@ -3,12 +3,15 @@ import DatePicker from '@/components/detail/DatePicker'
 import CurrencyFormatter from '@/components/util/CurrencyFormatter'
 import { useAuth } from '@/context/authContext'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Swal from 'sweetalert2'
 
 export default function MenuReserva({ price, id }) {
   const { user } = useAuth()
+  const inputRef = useRef();
   const [selectedDate, setSelectedDate] = useState(null) // Agrega un estado para la fecha seleccionada
+  const [cantPassenger, setCantPassenger] = useState(0) // Agrega un estado para la cantidad de pasajeros
+
 
   const handleReserva = e => {
     if (!selectedDate) {
@@ -21,6 +24,15 @@ export default function MenuReserva({ price, id }) {
       })
       return // Evita continuar con la reserva
     }
+  }
+
+  const handlePassenger = e => {
+    if (isNaN(e.target.value) || e.target.value === undefined || e.target.value === null) {
+      return
+    }
+    // Obtener el valor del input
+    const value = parseInt(e.target.value);
+    setCantPassenger(value)
   }
 
   return (
@@ -44,6 +56,9 @@ export default function MenuReserva({ price, id }) {
           </div>
           <input
             type='number'
+            value={isNaN(cantPassenger) ? 0 : cantPassenger}
+            onChange={handlePassenger}
+            ref={inputRef}
             placeholder='Cantidad de personas'
             className='mb-10 w-full rounded-lg border-2 p-3 text-gray-400 dark:[color-scheme:light]'
           />
