@@ -149,6 +149,11 @@ export default function Checkout() {
 
           if (response.ok) {
             //Enviar Mail
+            Swal.fire(
+              'Confirmada!',
+              'La reserva ha sido completada.',
+              'success'
+            )
             const emailHTML = EmailTemplate({
               userForm: userForm,
               productInfo: productInfo,
