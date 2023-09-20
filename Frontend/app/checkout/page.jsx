@@ -13,7 +13,7 @@ import Swal from 'sweetalert2'
 import EmailTemplate from '@/components/checkout/emailTemplate'
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-const itemsUrl = `${hostUrl}/api/`
+const itemsUrl = `${hostUrl}/api/products/`
 
 async function getItem(id) {
   const response = await fetch(itemsUrl + id, {
@@ -164,18 +164,21 @@ export default function Checkout() {
               endDateFormated: endDateFormated
             })
 
-            const emailResponse = await fetch(`${hostUrl}/email/send-html`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                to: userForm.email,
-                subject: 'Confirmación de reserva',
-                body: 'Muchas gracias por realizar la reserva.',
-                htmlContent: emailHTML
-              })
-            })
+            const emailResponse = await fetch(
+              `${hostUrl}/api/email/send-html`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  to: userForm.email,
+                  subject: 'Confirmación de reserva',
+                  body: 'Muchas gracias por realizar la reserva.',
+                  htmlContent: emailHTML
+                })
+              }
+            )
 
             if (emailResponse.ok) {
               console.log('Email sent successfully')
