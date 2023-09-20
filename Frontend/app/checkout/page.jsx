@@ -56,6 +56,7 @@ export default function Checkout() {
     dateInit: '',
     dateEnd: ''
   })
+  const router = useRouter()
 
   useEffect(() => {
     if (id) {
@@ -147,14 +148,12 @@ export default function Checkout() {
           })
 
           if (response.ok) {
-            console.log('Reserva confirmada')
-            // setSend(!send)
+            //Enviar Mail
             Swal.fire(
               'Confirmada!',
               'La reserva ha sido completada.',
               'success'
             )
-            //Enviar Mail
             const emailHTML = EmailTemplate({
               userForm: userForm,
               productInfo: productInfo,
@@ -186,7 +185,8 @@ export default function Checkout() {
             } else {
               console.error('Error sending email')
             }
-            //REDIRECCIONAR A LA PAGINA DE RESERVAS
+            //REDIRECCIONA A LA PAGINA DE CONFIRMACIÓN
+            router.push('/checkout/confirmation')
           } else {
             console.error('Error al confirmar la reserva.')
             Swal.fire(
@@ -209,8 +209,6 @@ export default function Checkout() {
 
   const handleChange = ({ target: { value, name } }) =>
     setUserForm({ ...userForm, [name]: value })
-
-  const router = useRouter()
 
   return (
     <div className='bg-[#f2f5fa] p-4 pt-0 sm:p-10 sm:pt-0'>
