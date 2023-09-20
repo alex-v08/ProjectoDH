@@ -83,7 +83,7 @@ export default function Home({ searchParams }) {
           <div className='skeleton-name mt-2 h-5 animate-pulse bg-gray-300'></div>
           <div className='skeleton-description mt-2 h-10 animate-pulse bg-gray-300'></div>
         </div>
-        <div className='flex items-center justify-between border-t px-7 py-3'>
+        <div className='flex items-center justify-between px-7 py-3'>
           <div className='skeleton-price h-6 w-24 animate-pulse bg-gray-300'></div>
           <div className='skeleton-button h-9 w-32 animate-pulse rounded-lg bg-gray-300'></div>
         </div>
