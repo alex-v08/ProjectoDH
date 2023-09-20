@@ -7,7 +7,8 @@ import Global.exceptions.ResourceNotFoundException;
 import com.oceanwinds.category.entity.Category;
 import com.oceanwinds.category.entity.dto.CategoryDto;
 import com.oceanwinds.category.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +16,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/category")
 @CrossOrigin(origins = "*")
+@AllArgsConstructor
 public class CategoryController {
 
-    @Autowired
+
     CategoryService categoryService;
 
     @PostMapping("/category/create")

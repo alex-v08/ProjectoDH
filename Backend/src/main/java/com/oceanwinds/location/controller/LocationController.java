@@ -2,11 +2,10 @@ package com.oceanwinds.location.controller;
 
 import Global.dto.MessageDto;
 import Global.exceptions.AttributeException;
-import com.oceanwinds.feature.entity.dto.FeatureDto;
 import com.oceanwinds.location.entity.Location;
 import com.oceanwinds.location.entity.dto.LocationDto;
 import com.oceanwinds.location.service.LocationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/location")
 @CrossOrigin(origins = "*")
+@AllArgsConstructor
 public class LocationController {
-    @Autowired
+
     private LocationService locationService;
 
     @PostMapping("/location/create")

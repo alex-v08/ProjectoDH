@@ -16,8 +16,6 @@ import com.oceanwinds.booking.repository.BookingRepository;
 import com.oceanwinds.user.entity.User;
 import com.oceanwinds.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.hibernate.validator.constraints.Email;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -85,7 +83,7 @@ public class BookingService {
 
     public List<Booking> getAllReserves() {
         // Recupera todas las entidades Reservee
-        return (List<Booking>) bookingRepository.findAll();
+        return  bookingRepository.findAll();
     }
 
     public Booking getReserveById(Long id) {

@@ -2,20 +2,19 @@ package com.oceanwinds.mail.controller;
 import com.oceanwinds.mail.request.EmailRequest;
 import com.oceanwinds.mail.service.EmailService;
 import jakarta.mail.MessagingException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/email")
+@RequestMapping("/api/email")
 @CrossOrigin("*")
+@RequiredArgsConstructor
 public class EmailController {
 
     private final EmailService emailService;
 
-    @Autowired
-    public EmailController(EmailService emailService) {
-        this.emailService = emailService;
-    }
+
 
     @PostMapping("/send")
     public String sendEmail(@RequestBody EmailRequest emailRequest) {

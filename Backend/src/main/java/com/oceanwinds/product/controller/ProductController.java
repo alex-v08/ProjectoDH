@@ -20,7 +20,7 @@ import java.util.*;
 
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/products")
 @CrossOrigin(origins = "*")
 public class ProductController {
 
