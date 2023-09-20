@@ -1,9 +1,19 @@
+'use client'
 import Image from 'next/image'
 import Swal from 'sweetalert2'
 import Link from 'next/link'
 import { BsPencil, BsTrash } from 'react-icons/bs'
+import { useState } from 'react'
 export function RowProduct(props) {
-  const { id, name, urlImage, category, isChangeData, onRefreshData } = props
+  const { id, name, urlImage, category, onRefreshData } = props
+
+  let imageUrlOrder0 = '';
+  
+  urlImage.forEach(image => {
+    if(image.imageOrder == '0'){
+      imageUrlOrder0 = `${image.imageUrl}`
+    }
+  });
 
   async function handleOnDelete(e) {
     e.preventDefault()
@@ -60,10 +70,10 @@ export function RowProduct(props) {
           <div>
             <Image
               className='h-11 w-11 rounded-full border-2 border-sky-500'
-              width='50'
-              height='50'
-              src={`${urlImage}1.png`}
-              alt='imagen de la embarcación'
+              src={imageUrlOrder0}
+              alt={`imagen de ${name}`}
+              width={50}
+              height={50}
               quality={100}
             />
           </div>

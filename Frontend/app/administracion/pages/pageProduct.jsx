@@ -64,7 +64,7 @@ export default function PageProduct() {
                   key={product.id}
                   id={product.id}
                   name={product.name}
-                  urlImage={product.imageUrl}
+                  urlImage={product.pictureDataSet}
                   category={product.category}
                   features={product.feature}
                   isChangeData={changeData}

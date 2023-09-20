@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Modal } from '../util/modal'
 import { FormCat } from '../register-edit/formCategory'
 import Swal from 'sweetalert2'
-import { BsTrash } from 'react-icons/bs'
+import { BsPencil, BsTrash } from 'react-icons/bs'
 
 export function RowCategory(props) {
   const { id, name, icon, isChangeData, onRefreshData } = props
@@ -65,7 +65,7 @@ export function RowCategory(props) {
     if (opcion.isConfirmed) {
       try {
         const response = await fetch(urlDelete, {
-          method: 'PATCH',
+          method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
           }
@@ -102,10 +102,7 @@ export function RowCategory(props) {
 
   return (
     <>
-      <tr
-        className='border-b bg-white hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600'
-        onClick={handleOpenModalEdit}
-      >
+      <tr className='border-b bg-white hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600'>
         <td className='px-8 py-4'>
           <i
             className={`${icon} h-11 w-11 rounded-full text-center text-3xl text-sky-500`}
@@ -123,7 +120,15 @@ export function RowCategory(props) {
             {dataCategory.length}
           </button>
         </td>
-        <td className='px-6 py-4 text-right'>
+        <td className='flex content-center justify-between px-6 py-6 text-right align-middle'>
+          <div className='mr-4'>
+            <button
+              className='rounded-lg bg-sky-500 px-2 py-2 text-white hover:bg-sky-900'
+              onClick={handleOpenModalEdit}
+            >
+              <BsPencil className='text-xl' />
+            </button>
+          </div>
           <div>
             <button
               value={id}

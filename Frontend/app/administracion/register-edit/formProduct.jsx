@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 
 export const Dropzone = ({ className, params }) => {
   const router = useRouter()
-  const [product, setProduct] = useState([])
+  const [product, setProduct] = useState()
   const [files, setFiles] = useState([])
   const [rejected, setRejected] = useState([])
   const [name, setName] = useState('')
@@ -595,7 +595,7 @@ export const Dropzone = ({ className, params }) => {
         })}
       >
         <input {...getInputProps({ name: 'file' })} />
-        <div className='flex flex-col items-center justify-center gap-4'>
+        <div className='container space-y-6 p-6 flex flex-col items-center justify-center gap-4 rounded-md border border-gray-300 bg-gray-50'>
           <ArrowUpTrayIcon className='h-5 w-5 fill-current' />
           {isDragActive ? (
             <p>Suelte los archivos aqui..</p>
@@ -606,36 +606,17 @@ export const Dropzone = ({ className, params }) => {
       </div>
 
       {/* Vista previa */}
-      <section className='mt-10'>
-        <div className='flex gap-4'>
-          <h2 className='title text-3xl font-semibold'>Vista previa</h2>
-          <button
-            type='button'
-            onClick={removeAll}
-            className='mt-1 rounded-md border border-rose-400 px-3 text-[12px] font-bold uppercase tracking-wider text-stone-500 transition-colors hover:bg-rose-400 hover:text-white'
-          >
-            Remover todo
-          </button>
-          <button
-            type='submit'
-            className='ml-auto mt-1 rounded-md border border-purple-400 px-3 text-[12px] font-bold uppercase tracking-wider text-stone-500 transition-colors hover:bg-purple-400 hover:text-white'
-          >
-            Subir
-          </button>
-        </div>
-
-        {/* Fotos */}
-        <h3 className='title mt-10 border-b pb-3 text-lg font-semibold text-stone-600'>
-          Fotos
-        </h3>
-        <ul className='mt-6 grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'>
+      <section className='space-y-6 p-6'>
+        <h2 className='title text-3xl font-semibold text-center'>Vista previa</h2>
+        <ul className='mt-3 grid grid-cols-1 gap-10 border rounded-md  p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'>
           {files.map(file => (
             <li key={file.name} className='relative h-32 rounded-md shadow-lg'>
               <Image
-                src={file.preview}
-                alt={file.name}
+                src={file.preview || file.imageUrl}
+                alt={file.name || `imagen de ${name}`}
                 width={100}
                 height={100}
+                quality={100}
                 onLoad={() => {
                   URL.revokeObjectURL(file.preview)
                 }}
@@ -654,6 +635,13 @@ export const Dropzone = ({ className, params }) => {
             </li>
           ))}
         </ul>
+        <button
+          type='button'
+          onClick={removeAll}
+          className='mt-1 rounded-md border border-rose-400 px-3 py-3 text-[12px] font-bold uppercase tracking-wider text-stone-500 transition-colors hover:bg-rose-400 hover:text-white'
+        >
+          Remover todo
+        </button>
       </section>
       <div className='col-span-6 flex items-center space-x-2 rounded-b border-t border-gray-200 p-6 dark:border-gray-600'>
         <div className='mx-auto'>

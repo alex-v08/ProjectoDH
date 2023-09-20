@@ -77,7 +77,7 @@ export function FormFeature(props) {
     if (opcion.isConfirmed) {
       try {
         const response = await fetch(url, {
-          method: feature == undefined ? 'POST' : 'PATCH',
+          method: feature == undefined ? 'POST' : 'PUT',
           headers: {
             'Content-Type': 'application/json'
           },
