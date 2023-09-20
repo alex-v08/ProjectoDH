@@ -223,13 +223,13 @@ public class ProductService {
         List<Product> initialProductsList;
 
         if ((city == null || city.isEmpty()) && (categoriesId == null || categoriesId.isEmpty()) && (featuresId == null || featuresId.isEmpty()) && (minPrice == null) && (maxPrice == null) && (startDate == null) && (endDate == null)) {
-            return new ArrayList<>();
+            return productRepository.findAll();
         }
 
         if ((startDate != null) && (endDate != null)){
             initialProductsList = bookingRepository.findProductsNotReservedInDateRange(startDate, endDate);
         } else {
-            initialProductsList = null;
+            initialProductsList = productRepository.findAll();
         }
 
 
@@ -250,9 +250,11 @@ public class ProductService {
         }
 
         if (!featuresId.isEmpty()) {
-            spec = spec.and((root, query, builder) ->
-                    root.join("feature").get("id").in(featuresId)
-            );
+            for (Long featureId : featuresId) {
+                spec = spec.and((root, query, builder) ->
+                        builder.isTrue(root.join("feature").get("id").in(featureId))
+                );
+            }
         }
 
         if (minPrice != null || maxPrice != null) {

@@ -1,41 +1,19 @@
-import { useState, useEffect } from 'react'
-import { Modal } from '../util/modal'
-import { FormProduct } from '../register-edit/formProduct'
+'use client'
 import Image from 'next/image'
 import Swal from 'sweetalert2'
+import Link from 'next/link'
+import { BsPencil, BsTrash } from 'react-icons/bs'
+import { useState } from 'react'
 export function RowProduct(props) {
-  const {
-    id,
-    name,
-    urlImage,
-    category,
-    features,
-    isChangeData,
-    onRefreshData
-  } = props
-  const [product, setYatcht] = useState({})
-  const [modalEditOpen, setModalEditOpen] = useState(false)
+  const { id, name, urlImage, category, onRefreshData } = props
 
-  useEffect(() => {
-    fetchData()
-  }, [isChangeData])
-
-  async function fetchData() {
-    const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const urlGetProduct = `${hostUrl}/api/${id}`
-    try {
-      const response = await fetch(urlGetProduct)
-      if (!response.ok) {
-        throw new Error(
-          'Error al intentar cargar los datos del registro: ' + response.status
-        )
-      }
-      const jsonData = await response.json()
-      setYatcht(jsonData)
-    } catch (error) {
-      console.error('Error al intentar cargar los datos del registro: ', error)
+  let imageUrlOrder0 = '';
+  
+  urlImage.forEach(image => {
+    if(image.imageOrder == '0'){
+      imageUrlOrder0 = `${image.imageUrl}`
     }
-  }
+  });
 
   async function handleOnDelete(e) {
     e.preventDefault()
@@ -53,7 +31,7 @@ export function RowProduct(props) {
     if (opcion.isConfirmed) {
       try {
         const response = await fetch(urlDelete, {
-          method: 'DELETE',
+          method: 'PATCH',
           headers: {
             'Content-Type': 'application/json'
           }
@@ -66,7 +44,7 @@ export function RowProduct(props) {
         } else {
           Swal.fire({
             icon: 'success',
-            text: `El producto '${name}' a sido eliminado correctamente.`
+            text: `El producto '${name}' fue eliminado correctamente.`
           })
           onRefreshData()
         }
@@ -80,28 +58,22 @@ export function RowProduct(props) {
     }
   }
 
-  const handleOpenModalEdit = () => {
-    setModalEditOpen(true)
-  }
-
-  const handleCloseModalEdit = () => {
-    setModalEditOpen(false)
+  const handleEdit = () => {
+    const urlEdit = `/administracion/formProduct/${id}`
+    return urlEdit
   }
 
   return (
     <>
-      <tr
-        className='border-b bg-white hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600'
-        onClick={handleOpenModalEdit}
-      >
+      <tr className='border-b bg-white hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600'>
         <td className='px-16 py-4'>
           <div>
             <Image
               className='h-11 w-11 rounded-full border-2 border-sky-500'
-              width='50'
-              height='50'
-              src={`${urlImage}1.png`}
-              alt='imagen de la embarcación'
+              src={imageUrlOrder0}
+              alt={`imagen de ${name}`}
+              width={50}
+              height={50}
               quality={100}
             />
           </div>
@@ -113,41 +85,30 @@ export function RowProduct(props) {
           {id}
         </th>
         <td className='px-16 py-4'>{name}</td>
-        <td className='px-8 py-4'><button className="shadow-md w-28 py-1 no-underline rounded-full bg-sky-500 text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none text-center">{category != null ? category.name : 'Sin categorizar'}</button></td>
-        <td className='px-6 py-4 text-right'>
+        <td className='px-8 py-4'>
+          <button className='border-blue btn-primary hover:bg-blue-light w-28 rounded-full bg-sky-500 py-1 text-center font-sans text-sm font-semibold text-white no-underline shadow-md hover:text-white focus:outline-none active:shadow-none'>
+            {category != null ? category.name : 'Sin categorizar'}
+          </button>
+        </td>
+        <td className='flex content-center justify-between px-6 py-6 text-right align-middle'>
+          <div className='mr-4'>
+            <button className='rounded-lg bg-sky-500 px-2 py-2 text-white hover:bg-sky-900'>
+              <Link href={handleEdit()}>
+                <BsPencil className='text-xl' />
+              </Link>
+            </button>
+          </div>
           <div>
             <button
               value={id}
               onClick={handleOnDelete}
-              className='font-medium text-blue-600 hover:underline dark:text-blue-500'
+              className='rounded-lg bg-red-500 px-2 py-2 text-white hover:bg-red-900'
             >
-              <svg
-                className='h-6 w-6 text-red-500'
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                strokeWidth='2'
-                stroke='currentColor'
-                fill='none'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-              >
-                {' '}
-                <path stroke='none' d='M0 0h24v24H0z' />{' '}
-                <line x1='18' y1='6' x2='6' y2='18' />{' '}
-                <line x1='6' y1='6' x2='18' y2='18' />
-              </svg>
+              <BsTrash className='text-xl' />
             </button>
           </div>
         </td>
       </tr>
-      <Modal isOpen={modalEditOpen} onClose={handleCloseModalEdit}>
-        <FormProduct
-          formEditData={product}
-          onClose={handleCloseModalEdit}
-          onRefreshData={onRefreshData}
-        />
-      </Modal>
     </>
   )
 }

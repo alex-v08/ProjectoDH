@@ -1,6 +1,31 @@
-import PriceRangeSlider from '@/components/util/PriceRangeSlider'
+'use client'
 
-export default function Filters() {
+import PriceRangeSlider from '@/components/util/PriceRangeSlider'
+import { getAllUseClient } from '@/components/util/callAPI'
+import { useState, useEffect } from 'react'
+
+export default function Filters({
+  handleSelectChangeCategory,
+  handleSelectChangeFeatures,
+  productsFilters,
+  handleSliderChange,
+  priceRange
+}) {
+  // Para almacenar la data de inptus
+  const [allCategories, setAllCategories] = useState([])
+  const [allFeatures, setAllFeatures] = useState([])
+
+  const urlCategories = '/api/products/categories'
+  const urlFeatures = '/api/products/features'
+
+  useEffect(() => {
+    getAllUseClient(urlFeatures, setAllFeatures)
+  }, [])
+
+  useEffect(() => {
+    getAllUseClient(urlCategories, setAllCategories)
+  }, [productsFilters])
+
   return (
     <>
       {/* Tipo de bote */}
@@ -14,76 +39,26 @@ export default function Filters() {
         </div>
         <div className='px-14 pb-10 lg:px-9 xl:px-14'>
           <div className='flex flex-col gap-4 text-lg font-medium text-gray-500'>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='velero'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='velero'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Velero
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='motor'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='motor'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                A motor
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='catamaran'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='catamaran'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Catamarán
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='yate'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='yate'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Yate
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='sky'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='sky'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Jet Ski
-              </label>
-            </div>
+            {allCategories &&
+              allCategories.map((category, index) => (
+                <div className='group flex items-center' key={index}>
+                  <input
+                    onChange={handleSelectChangeCategory}
+                    value={category.id}
+                    type='checkbox'
+                    name={category.name}
+                    id={category.id}
+                    // checked={categoryIds.includes(category.id) ? true : false}
+                    className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
+                  />
+                  <label
+                    htmlFor={category.name}
+                    className='truncate pl-2 transition group-hover:text-sky-500'
+                  >
+                    {category.name}
+                  </label>
+                </div>
+              ))}
           </div>
         </div>
       </div>
@@ -98,7 +73,10 @@ export default function Filters() {
         </div>
         <div className='px-14 pb-10 lg:px-9 xl:px-14'>
           <div className='flex flex-col gap-4 text-lg font-medium text-gray-500'>
-            <PriceRangeSlider />
+            <PriceRangeSlider
+              priceRange={priceRange}
+              handleSliderChange={handleSliderChange}
+            />
           </div>
         </div>
       </div>
@@ -113,216 +91,25 @@ export default function Filters() {
         </div>
         <div className='px-14 pb-10 lg:px-9 xl:px-14'>
           <div className='flex flex-col gap-4 text-lg font-medium text-gray-500'>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='acondicionado'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='acondicionado'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Aire acondicionado
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='parrilla'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='parrilla'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Parrilla
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='television'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='television'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Televisión
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='cubiertos'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='cubierto'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Cubiertos
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='toallas'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='toallas'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Toallas
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='audio'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='audio'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Sistema de audio
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='cafetera'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='cafetera'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Cafetera
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='heladera'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='heladera'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Heladera
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='ducha'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='ducha'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Ducha exterior
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='generador'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='generador'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Generador
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='piloto'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='piloto'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Piloto automático
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='horno'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='horno'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Horno
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='calefaccion'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='calefaccion'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Calefacción
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='radar'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='radar'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Radar
-              </label>
-            </div>
-            <div className='group flex items-center'>
-              <input
-                type='checkbox'
-                name=''
-                id='altavoces'
-                className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
-              />
-              <label
-                htmlFor='altavoces'
-                className='truncate pl-2 transition group-hover:text-sky-500'
-              >
-                Altavoces interiores
-              </label>
-            </div>
+            {allFeatures &&
+              allFeatures.map((feature, index) => (
+                <div className='group flex items-center' key={index}>
+                  <input
+                    onChange={handleSelectChangeFeatures}
+                    value={feature.id}
+                    type='checkbox'
+                    name={feature.name}
+                    id={feature.image}
+                    className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
+                  />
+                  <label
+                    htmlFor={feature.image}
+                    className='truncate pl-2 transition group-hover:text-sky-500'
+                  >
+                    {feature.name}
+                  </label>
+                </div>
+              ))}
           </div>
         </div>
       </div>
