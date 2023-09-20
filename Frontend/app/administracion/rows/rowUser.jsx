@@ -16,7 +16,7 @@ export function RowUser(props) {
 
   async function handleOnEditRole(newRole) {
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const urlEditRole = `${hostUrl}/users/update/role/` + id
+    const urlEditRole = `${hostUrl}/api/users/update/role/` + id
 
     const opcion = confirm(
       newRole === 'ADMIN'

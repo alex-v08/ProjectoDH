@@ -26,7 +26,7 @@ export const useAuth = () => {
 }
 
 const fetchUserData = async (userData, hostUrl) => {
-  const response = await fetch(`${hostUrl}/users/uid/${userData.uuid}`, {
+  const response = await fetch(`${hostUrl}/api/users/uid/${userData.uuid}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -43,7 +43,7 @@ const fetchUserData = async (userData, hostUrl) => {
 }
 
 const postUserData = async (userData, hostUrl) => {
-  const response = await fetch(`${hostUrl}/users/createfb`, {
+  const response = await fetch(`${hostUrl}/api/users/createfb`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -124,7 +124,7 @@ export function AuthProvider({ children }) {
         email: userCredential.user.email,
         name: userCredential.user.displayName.split(' ')[0],
         lastName: userCredential.user.displayName.split(' ')[1],
-        active: true,
+        active: true
       }
 
       const userExists = await fetchUserData(userData, hostUrl)

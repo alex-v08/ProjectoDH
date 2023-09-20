@@ -10,6 +10,7 @@ import com.oceanwinds.user.entity.dto.UserDto;
 import com.oceanwinds.user.entity.dto.UserDtoFirebase;
 import com.oceanwinds.user.service.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,18 +20,13 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @CrossOrigin(origins = "*")
-
+@RequiredArgsConstructor
 
 public class UserController {
 
     private final UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
 
     @GetMapping("/all")

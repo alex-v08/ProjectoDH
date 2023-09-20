@@ -6,6 +6,7 @@ import com.oceanwinds.location.entity.Location;
 import com.oceanwinds.location.entity.dto.LocationDto;
 import com.oceanwinds.location.repository.LocationRepository;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +14,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Data
+
+@RequiredArgsConstructor
 public class LocationService {
 
-    @Autowired
-    LocationRepository locationRepository;
+
+   private final LocationRepository locationRepository;
 
     public List<Location> getAllLocation() {
         List<Location> locations = locationRepository.findAll();

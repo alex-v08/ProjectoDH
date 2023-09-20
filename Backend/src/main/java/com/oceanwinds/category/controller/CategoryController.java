@@ -7,7 +7,8 @@ import Global.exceptions.ResourceNotFoundException;
 import com.oceanwinds.category.entity.Category;
 import com.oceanwinds.category.entity.dto.CategoryDto;
 import com.oceanwinds.category.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,27 +16,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/category")
 @CrossOrigin(origins = "*")
+@AllArgsConstructor
 public class CategoryController {
 
-    @Autowired
+
     CategoryService categoryService;
 
-    @PostMapping("/category/create")
+    @PostMapping("/create")
     public ResponseEntity<MessageDto> createCategory(@RequestBody CategoryDto dto) throws AttributeException {
         categoryService.createCategory(dto);
         String message = "Category created successfully";
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
 
-    @DeleteMapping("/category/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<MessageDto> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, "Category deleted successfully"));
     }
 
-    @PutMapping("/category/update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<MessageDto> updateCategory(@PathVariable Long id, @RequestBody CategoryDto dto) throws AttributeException {
         categoryService.updateCategory(id, dto);
 
@@ -43,7 +45,7 @@ public class CategoryController {
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
 
-    @GetMapping("/category/all")
+    @GetMapping("/all")
     public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> categories = categoryService.getAllCategory();
         if (categories.isEmpty()) {

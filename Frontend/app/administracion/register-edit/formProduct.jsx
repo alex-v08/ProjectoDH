@@ -309,7 +309,7 @@ export const Dropzone = ({ className, params }) => {
 
   async function fetchFeatures() {
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const urlGetFeatures = `${hostUrl}/api/feature/all`
+    const urlGetFeatures = `${hostUrl}/api/features/all`
     try {
       const response = await fetch(urlGetFeatures)
       if (!response.ok) {
@@ -595,7 +595,7 @@ export const Dropzone = ({ className, params }) => {
         })}
       >
         <input {...getInputProps({ name: 'file' })} />
-        <div className='container space-y-6 p-6 flex flex-col items-center justify-center gap-4 rounded-md border border-gray-300 bg-gray-50'>
+        <div className='container flex flex-col items-center justify-center gap-4 space-y-6 rounded-md border border-gray-300 bg-gray-50 p-6'>
           <ArrowUpTrayIcon className='h-5 w-5 fill-current' />
           {isDragActive ? (
             <p>Suelte los archivos aqui..</p>
@@ -607,8 +607,10 @@ export const Dropzone = ({ className, params }) => {
 
       {/* Vista previa */}
       <section className='space-y-6 p-6'>
-        <h2 className='title text-3xl font-semibold text-center'>Vista previa</h2>
-        <ul className='mt-3 grid grid-cols-1 gap-10 border rounded-md  p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'>
+        <h2 className='title text-center text-3xl font-semibold'>
+          Vista previa
+        </h2>
+        <ul className='mt-3 grid grid-cols-1 gap-10 rounded-md border  p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'>
           {files.map(file => (
             <li key={file.name} className='relative h-32 rounded-md shadow-lg'>
               <Image

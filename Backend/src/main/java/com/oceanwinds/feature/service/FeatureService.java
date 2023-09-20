@@ -7,20 +7,20 @@ import com.oceanwinds.feature.entity.dto.FeatureDto;
 import com.oceanwinds.feature.repository.FeatureRepository;
 import com.oceanwinds.product.entity.Product;
 import com.oceanwinds.product.repository.ProductRepository;
-import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Data
+@AllArgsConstructor
 public class FeatureService {
-    @Autowired
+
     FeatureRepository featureRepository;
 
-    @Autowired
+
     ProductRepository productRepository;
 
     public List<Feature> getAllFeature() {

@@ -28,7 +28,7 @@ export default function User() {
       try {
         const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
         const response = await fetch(
-          `${hostUrl}/users/list/{uuid}?uuid=${user.uid}`
+          `${hostUrl}/api/users/list/{uuid}?uuid=${user.uid}`
         )
         if (response.ok) {
           const userData = await response.json()
@@ -74,7 +74,7 @@ export default function User() {
         try {
           const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
           console.log(userForm)
-          const response = await fetch(`${hostUrl}/users/${userInfo.id}`, {
+          const response = await fetch(`${hostUrl}/api/users/${userInfo.id}`, {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json'

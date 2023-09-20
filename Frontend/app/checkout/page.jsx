@@ -13,7 +13,7 @@ import Swal from 'sweetalert2'
 import EmailTemplate from '@/components/checkout/emailTemplate'
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-const itemsUrl = `${hostUrl}/api/`
+const itemsUrl = `${hostUrl}/api/products/`
 
 async function getItem(id) {
   const response = await fetch(itemsUrl + id, {
@@ -56,6 +56,7 @@ export default function Checkout() {
     dateInit: '',
     dateEnd: ''
   })
+  const router = useRouter()
 
   useEffect(() => {
     if (id) {
@@ -76,7 +77,7 @@ export default function Checkout() {
       try {
         const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
         const response = await fetch(
-          `${hostUrl}/users/list/{uuid}?uuid=${user.uid}`
+          `${hostUrl}/api/users/list/{uuid}?uuid=${user.uid}`
         )
         if (response.ok) {
           const userData = await response.json()
@@ -147,14 +148,12 @@ export default function Checkout() {
           })
 
           if (response.ok) {
-            console.log('Reserva confirmada')
-            // setSend(!send)
+            //Enviar Mail
             Swal.fire(
               'Confirmada!',
               'La reserva ha sido completada.',
               'success'
             )
-            //Enviar Mail
             const emailHTML = EmailTemplate({
               userForm: userForm,
               productInfo: productInfo,
@@ -164,18 +163,21 @@ export default function Checkout() {
               endDateFormated: endDateFormated
             })
 
-            const emailResponse = await fetch(`${hostUrl}/email/send-html`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                to: userForm.email,
-                subject: 'Confirmación de reserva',
-                body: 'Muchas gracias por realizar la reserva.',
-                htmlContent: emailHTML
-              })
-            })
+            const emailResponse = await fetch(
+              `${hostUrl}/api/email/send-html`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  to: userForm.email,
+                  subject: 'Confirmación de reserva',
+                  body: 'Muchas gracias por realizar la reserva.',
+                  htmlContent: emailHTML
+                })
+              }
+            )
 
             if (emailResponse.ok) {
               console.log('Email sent successfully')
@@ -183,7 +185,8 @@ export default function Checkout() {
             } else {
               console.error('Error sending email')
             }
-            //REDIRECCIONAR A LA PAGINA DE RESERVAS
+            //REDIRECCIONA A LA PAGINA DE CONFIRMACIÓN
+            router.push('/checkout/confirmation')
           } else {
             console.error('Error al confirmar la reserva.')
             Swal.fire(
@@ -206,8 +209,6 @@ export default function Checkout() {
 
   const handleChange = ({ target: { value, name } }) =>
     setUserForm({ ...userForm, [name]: value })
-
-  const router = useRouter()
 
   return (
     <div className='bg-[#f2f5fa] p-4 pt-0 sm:p-10 sm:pt-0'>

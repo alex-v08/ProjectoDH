@@ -16,8 +16,6 @@ import com.oceanwinds.booking.repository.BookingRepository;
 import com.oceanwinds.user.entity.User;
 import com.oceanwinds.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.hibernate.validator.constraints.Email;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -85,7 +83,7 @@ public class BookingService {
 
     public List<Booking> getAllReserves() {
         // Recupera todas las entidades Reservee
-        return (List<Booking>) bookingRepository.findAll();
+        return  bookingRepository.findAll();
     }
 
     public Booking getReserveById(Long id) {
@@ -103,7 +101,7 @@ public class BookingService {
     public List<Booking> getReservesByProductId(Long productId) {
         // Recupera todas las entidades Reservee asociadas a un producto específico
         List<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getProduct().getId().equals(productId)).toList();
-        return  bookings;
+        return bookings;
     }
     @Transactional
         public List<Map<String, Object>> getReservesDateByProductId(Long productId) {
@@ -270,7 +268,19 @@ public class BookingService {
         return null;
     }
 
-        public void sendEmailAsync(String to, String subject, String message) {
+    public void sendEmailAsync(String to, String subject, String message) {
             emailExecutor.execute(() -> sendEmail(to, subject, message));
         }
+
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void autoSetBookingComplete(){
+        List<Booking> bookings = bookingRepository.findAll();
+
+        for(Booking reserve: bookings){
+            if(reserve.getDateEnd().isBefore(LocalDate.now())){
+                reserve.setComplete(true);
+            }
+        }
+    }
 }

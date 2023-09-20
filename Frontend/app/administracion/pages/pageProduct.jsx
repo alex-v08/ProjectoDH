@@ -10,7 +10,7 @@ export default function PageProduct() {
   const [data, setData] = useState([])
   const [changeData, setChangeData] = useState(true)
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-  const urlGetProduct = `${hostUrl}/api/all`
+  const urlGetProduct = `${hostUrl}/api/products/all`
 
   async function fetchData() {
     try {

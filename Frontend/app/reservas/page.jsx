@@ -18,7 +18,7 @@ const HistorialReservas = () => {
     const fetchUserId = async () => {
       try {
         const response = await fetch(
-          `${hostUrl}/users/list/{uuid}?uuid=${user.uid}`
+          `${hostUrl}/api/users/list/{uuid}?uuid=${user.uid}`
         )
         if (response.ok) {
           const userData = await response.json()
@@ -109,7 +109,7 @@ const HistorialReservas = () => {
   return (
     <div className='bg-[#f2f5fa]'>
       <div className='container mx-auto min-h-screen pb-10 pt-8'>
-        <SectionTitle antetitulo='volve a disfrutar' titulo='Tus reservas' />
+        <SectionTitle antetitulo='volve a disfrutar' titulo='Mis reservas' />
         <div className='grid grid-cols-1 justify-items-center gap-x-6 gap-y-10 sm:grid-cols-2 xl:gap-x-8'>
           {isLoadingData ? (
             <>{skeletonCards}</>
@@ -142,28 +142,28 @@ const HistorialReservas = () => {
                         {booking.product.name}
                       </h3>
                       <div className='font-small mb-4 text-sm text-gray-500'>
-                        <p className='font-small text-sm text-gray-500'>
-                          Hiciste tu reserva el día:{' '}
-                          <span className='mr-2 text-xs font-semibold uppercase text-gray-500'>
+                        <p className='font-small text-sm font-semibold text-gray-500'>
+                          Reserva realizada:{' '}
+                          <span className='mr-2 text-xs font-normal uppercase text-gray-500'>
                             {' '}
                             {dayjs(booking.dateCreated).format('DD-MM-YYYY')}
                           </span>
                         </p>
-                        <p className='font-small text-sm text-gray-500'>
+                        <p className='font-small text-sm font-semibold text-gray-500'>
                           Fecha de ingreso:{' '}
-                          <span className='mr-2 text-xs font-semibold uppercase text-gray-500'>
+                          <span className='mr-2 text-xs font-normal uppercase text-gray-500'>
                             {dayjs(booking.dateInit).format('DD-MM-YYYY')}
                           </span>
                         </p>
-                        <p className='font-small text-sm text-gray-500'>
+                        <p className='font-small text-sm font-semibold text-gray-500'>
                           Fecha de salida:{' '}
-                          <span className='mr-2 text-xs font-semibold uppercase text-gray-500'>
+                          <span className='mr-2 text-xs font-normal uppercase text-gray-500'>
                             {dayjs(booking.dateEnd).format('DD-MM-YYYY')}
                           </span>
                         </p>
-                        <p className='font-small text-sm text-gray-500'>
-                          Cantidad de días:{' '}
-                          <span className='mr-2 text-xs font-semibold uppercase text-gray-500'>
+                        <p className='font-small text-sm font-semibold text-gray-500'>
+                          Días:{' '}
+                          <span className='mr-2 text-xs font-normal uppercase text-gray-500'>
                             {calculateDays(booking.dateInit, booking.dateEnd)}
                           </span>
                         </p>
