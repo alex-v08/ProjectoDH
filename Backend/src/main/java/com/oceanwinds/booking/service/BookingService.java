@@ -268,7 +268,19 @@ public class BookingService {
         return null;
     }
 
-        public void sendEmailAsync(String to, String subject, String message) {
+    public void sendEmailAsync(String to, String subject, String message) {
             emailExecutor.execute(() -> sendEmail(to, subject, message));
         }
+
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void autoSetBookingComplete(){
+        List<Booking> bookings = bookingRepository.findAll();
+
+        for(Booking reserve: bookings){
+            if(reserve.getDateEnd().isBefore(LocalDate.now())){
+                reserve.setComplete(true);
+            }
+        }
+    }
 }
