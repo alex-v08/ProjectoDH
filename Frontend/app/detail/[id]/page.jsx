@@ -13,8 +13,7 @@ import RatingMedia from '@/components/detail/RatingMedia'
 import Feature from '@/components/detail/Feature'
 
 const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-const itemsUrl = `${hostUrl}/api/`
-const imageUrl = `${hostUrl}/api/urlImage/`
+const itemsUrl = `${hostUrl}/api/products/`
 
 async function getItem(id) {
   const response = await fetch(itemsUrl + id, {
@@ -23,14 +22,6 @@ async function getItem(id) {
   const data = await response.json()
   return data
 }
-
-// async function getGallery(id) {
-//   const response = await fetch(imageUrl + id, {
-//     cache: 'no-store'
-//   })
-//   const data = await response.json()
-//   return data
-// }
 
 export default async function Detalle({ params }) {
   const index = parseInt(params.id)

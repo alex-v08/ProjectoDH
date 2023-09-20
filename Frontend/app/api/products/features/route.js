@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 async function fetchFeatures() {
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
 
-  const response = await fetch(`${hostUrl}/api/feature/all`, {
+  const response = await fetch(`${hostUrl}/api/features/all`, {
     cache: 'no-store'
   })
   const data = await response.json()

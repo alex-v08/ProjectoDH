@@ -53,7 +53,7 @@ export function RowFeature(props) {
     e.preventDefault()
     e.stopPropagation()
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const urlDelete = `${hostUrl}/api/feature/delete/${id}`
+    const urlDelete = `${hostUrl}/api/features/delete/${id}`
     const opcion = await Swal.fire({
       title: `¿Estás seguro de que quieres eliminar la caracteristica '${name}'?`,
       text: `En caso de eliminar esta caracteristica de la base de datos, todos los productos que esten asociados a ella podrian quedar sin caracteristicas asociadas.`,

@@ -134,7 +134,7 @@ const CurrentFavs = () => {
   return (
     <div className='bg-[#f2f5fa]'>
       <div className='container mx-auto min-h-screen pb-10 pt-8'>
-        <SectionTitle antetitulo='elegidos' titulo='Tus favoritos' />
+        <SectionTitle antetitulo='elegidos' titulo='Mis favoritos' />
         <div className='grid grid-cols-1 justify-items-center gap-x-6 gap-y-10 sm:grid-cols-2 xl:gap-x-8'>
           {isLoadingData ? (
             <>{skeletonCards}</>

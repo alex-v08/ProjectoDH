@@ -7,19 +7,19 @@ import { useState } from 'react'
 export function RowProduct(props) {
   const { id, name, urlImage, category, onRefreshData } = props
 
-  let imageUrlOrder0 = '';
-  
+  let imageUrlOrder0 = ''
+
   urlImage.forEach(image => {
-    if(image.imageOrder == '0'){
+    if (image.imageOrder == '0') {
       imageUrlOrder0 = `${image.imageUrl}`
     }
-  });
+  })
 
   async function handleOnDelete(e) {
     e.preventDefault()
     e.stopPropagation()
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const urlDelete = `${hostUrl}/api/delete/${id}`
+    const urlDelete = `${hostUrl}/api/products/delete/${id}`
     const opcion = await Swal.fire({
       title: `¿Estás seguro de que quieres eliminar el producto '${name}'?`,
       text: `En caso de eliminar este producto de la base de datos, este ya no aparecera en la pagina y se perderan todos sus datos.`,

@@ -20,7 +20,7 @@ export default function PageFeature() {
   const [modalFeatureOpen, setModalFeatureOpen] = useState(false)
   const [changeData, setChangeData] = useState(true)
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-  const urlGetFeature = `${hostUrl}/api/feature/all`
+  const urlGetFeature = `${hostUrl}/api/features/all`
   async function fetchData() {
     try {
       const response = await fetch(urlGetFeature)
