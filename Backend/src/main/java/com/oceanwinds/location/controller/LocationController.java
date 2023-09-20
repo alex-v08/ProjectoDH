@@ -20,14 +20,14 @@ public class LocationController {
 
     private LocationService locationService;
 
-    @PostMapping("/location/create")
+    @PostMapping("/create")
     public ResponseEntity<MessageDto> createLocation(@RequestBody LocationDto dto) throws AttributeException {
         locationService.createLocation(dto);
         String message = "Location created successfully";
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
 
-    @GetMapping("/location/all")
+    @GetMapping("/all")
     public ResponseEntity<List<Location>> getAllLocation() {
         List<Location> locations = locationService.getAllLocation();
         if (locations.isEmpty()) {
@@ -37,14 +37,14 @@ public class LocationController {
         }
     }
 
-    @PutMapping("/location/update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<MessageDto> updateLocation(@PathVariable Long id, @RequestBody LocationDto dto) throws AttributeException {
         locationService.updateLocation(id, dto);
         String message = "Location updated successfully";
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
 
-    @DeleteMapping("/location/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<MessageDto> deleteLocation (@PathVariable Long id){
         locationService.deleteLocation(id);
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, "Location deleted successfully"));
