@@ -19,7 +19,7 @@ import java.util.Optional;
 public class LocationService {
 
 
-    LocationRepository locationRepository;
+   private final LocationRepository locationRepository;
 
     public List<Location> getAllLocation() {
         List<Location> locations = locationRepository.findAll();

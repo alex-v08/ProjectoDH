@@ -6,6 +6,7 @@ import com.oceanwinds.location.entity.Location;
 import com.oceanwinds.location.entity.dto.LocationDto;
 import com.oceanwinds.location.service.LocationService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +16,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/location")
 @CrossOrigin(origins = "*")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class LocationController {
 
-    private LocationService locationService;
+    private final LocationService locationService;
 
     @PostMapping("/create")
     public ResponseEntity<MessageDto> createLocation(@RequestBody LocationDto dto) throws AttributeException {
