@@ -101,7 +101,7 @@ public class BookingService {
     public List<Booking> getReservesByProductId(Long productId) {
         // Recupera todas las entidades Reservee asociadas a un producto específico
         List<Booking> bookings = bookingRepository.findAll().stream().filter(booking -> booking.getProduct().getId().equals(productId)).toList();
-        return  bookings;
+        return bookings;
     }
     @Transactional
         public List<Map<String, Object>> getReservesDateByProductId(Long productId) {
