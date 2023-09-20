@@ -1,41 +1,19 @@
-import { useState, useEffect } from 'react'
+'use client'
 import Image from 'next/image'
 import Swal from 'sweetalert2'
 import Link from 'next/link'
 import { BsPencil, BsTrash } from 'react-icons/bs'
+import { useState } from 'react'
 export function RowProduct(props) {
-  const {
-    id,
-    name,
-    urlImage,
-    category,
-    features,
-    isChangeData,
-    onRefreshData
-  } = props
-  const [product, setYatcht] = useState({})
-  const [modalEditOpen, setModalEditOpen] = useState(false)
+  const { id, name, urlImage, category, onRefreshData } = props
 
-  useEffect(() => {
-    fetchData()
-  }, [isChangeData])
-
-  async function fetchData() {
-    const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const urlGetProduct = `${hostUrl}/api/${id}`
-    try {
-      const response = await fetch(urlGetProduct)
-      if (!response.ok) {
-        throw new Error(
-          'Error al intentar cargar los datos del registro: ' + response.status
-        )
-      }
-      const jsonData = await response.json()
-      setYatcht(jsonData)
-    } catch (error) {
-      console.error('Error al intentar cargar los datos del registro: ', error)
+  let imageUrlOrder0 = '';
+  
+  urlImage.forEach(image => {
+    if(image.imageOrder == '0'){
+      imageUrlOrder0 = `${image.imageUrl}`
     }
-  }
+  });
 
   async function handleOnDelete(e) {
     e.preventDefault()
@@ -92,10 +70,10 @@ export function RowProduct(props) {
           <div>
             <Image
               className='h-11 w-11 rounded-full border-2 border-sky-500'
-              width='50'
-              height='50'
-              src={`${urlImage}1.png`}
-              alt='imagen de la embarcación'
+              src={imageUrlOrder0}
+              alt={`imagen de ${name}`}
+              width={50}
+              height={50}
               quality={100}
             />
           </div>
