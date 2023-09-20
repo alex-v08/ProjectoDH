@@ -9,6 +9,7 @@ import com.oceanwinds.product.entity.dto.ProductDto;
 import com.oceanwinds.feature.repository.FeatureRepository;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/products")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
@@ -29,11 +31,6 @@ public class ProductController {
 
     private final FeatureRepository featureRepository;
 
-    @Autowired
-    public ProductController(ProductService productService, FeatureRepository featureRepository) {
-        this.productService = productService;
-        this.featureRepository = featureRepository;
-    }
 
 
     @GetMapping("/all")

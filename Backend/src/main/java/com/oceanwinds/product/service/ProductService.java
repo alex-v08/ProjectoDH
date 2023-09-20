@@ -20,6 +20,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-@Data
+@RequiredArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
