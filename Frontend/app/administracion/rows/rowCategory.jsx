@@ -65,7 +65,7 @@ export function RowCategory(props) {
     if (opcion.isConfirmed) {
       try {
         const response = await fetch(urlDelete, {
-          method: 'DELETE',
+          method: 'PATCH',
           headers: {
             'Content-Type': 'application/json'
           }

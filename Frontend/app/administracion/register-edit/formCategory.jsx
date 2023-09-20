@@ -95,7 +95,7 @@ export function FormCat(props) {
     if (opcion.isConfirmed) {
       try {
         const response = await fetch(url, {
-          method: category == undefined ? 'POST' : 'PUT',
+          method: category == undefined ? 'POST' : 'PATCH',
           headers: {
             'Content-Type': 'application/json'
           },
