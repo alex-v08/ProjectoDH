@@ -9,6 +9,7 @@ import com.oceanwinds.category.entity.dto.CategoryDto;
 import com.oceanwinds.category.service.CategoryService;
 import lombok.AllArgsConstructor;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +19,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/category")
 @CrossOrigin(origins = "*")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CategoryController {
 
 
-    CategoryService categoryService;
+   private final  CategoryService categoryService;
 
     @PostMapping("/create")
     public ResponseEntity<MessageDto> createCategory(@RequestBody CategoryDto dto) throws AttributeException {
