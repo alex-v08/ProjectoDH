@@ -15,7 +15,7 @@ export default function PageUser() {
   const [data, setData] = useState([])
   const [changeData, setChangeData] = useState(true)
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-  const urlGetUser = `${hostUrl}/users/all`
+  const urlGetUser = `${hostUrl}/api/users/all`
   async function fetchData() {
     try {
       const response = await fetch(urlGetUser)

@@ -85,7 +85,7 @@ export default function Search() {
 
       try {
         const response = await fetch(
-          `${hostUrl}/api/allFiltered/?city=${selectedCity}&categoriesId=${arrayCategories}&featuresId=${arrayFeatures}&minPrice=0&maxPrice=${priceRange}&dateInit=${dateInit}&dateEnd=${dateEnd}`,
+          `${hostUrl}/api/products/allFiltered/?city=${selectedCity}&categoriesId=${arrayCategories}&featuresId=${arrayFeatures}&minPrice=0&maxPrice=${priceRange}&dateInit=${dateInit}&dateEnd=${dateEnd}`,
           {
             cache: 'no-store'
           }

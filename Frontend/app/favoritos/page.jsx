@@ -22,7 +22,7 @@ const CurrentFavs = () => {
     const fetchUserId = async () => {
       try {
         const response = await fetch(
-          `${hostUrl}/users/list/{uuid}?uuid=${user.uid}`
+          `${hostUrl}/api/users/list/{uuid}?uuid=${user.uid}`
         )
         // console.log('FETCH USER')
         if (response.ok) {
