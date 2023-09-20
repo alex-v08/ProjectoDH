@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/features")
 @CrossOrigin(origins = "*")
 public class FeatureController {
 
@@ -26,14 +26,14 @@ public class FeatureController {
         this.featureService = featureService;
     }
 
-    @PostMapping("/feature/create")
+    @PostMapping("/create")
     public ResponseEntity<MessageDto> createFeature(@RequestBody FeatureDto dto) throws AttributeException {
         featureService.createFeature(dto);
         String message = "Feature created successfully";
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, message));
     }
 
-    @GetMapping("/feature/all")
+    @GetMapping("/all")
     public ResponseEntity<List<Feature>> getAllFeatures() {
         List<Feature> features = featureService.getAllFeature();
         if (features.isEmpty()) {
@@ -43,13 +43,13 @@ public class FeatureController {
         }
     }
 
-    @DeleteMapping("/feature/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<MessageDto> deleteFeature (@PathVariable Long id){
         featureService.deleteFeature(id);
         return ResponseEntity.ok(new MessageDto(HttpStatus.OK, "Feature deleted successfully"));
     }
 
-    @PutMapping("/feature/update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<MessageDto> updateFeature(@PathVariable Long id, @RequestBody FeatureDto dto) throws AttributeException {
         featureService.updateFeature(id, dto);
 

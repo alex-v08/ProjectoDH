@@ -48,8 +48,8 @@ export function FormFeature(props) {
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
     const url =
       feature == undefined
-        ? `${hostUrl}/api/feature/create`
-        : `${hostUrl}/api/feature/update/${feature.id}`
+        ? `${hostUrl}/api/features/create`
+        : `${hostUrl}/api/features/update/${feature.id}`
 
     const msg =
       feature == undefined

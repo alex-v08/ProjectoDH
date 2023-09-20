@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Modal } from '../util/modal'
 import { FormFeature } from '../register-edit/formFeature'
 import Swal from 'sweetalert2'
-import { BsTrash } from 'react-icons/bs'
+import { BsPencil, BsTrash } from 'react-icons/bs'
 
 export function RowFeature(props) {
   const { id, name, icon, isChangeData, onRefreshData } = props
@@ -34,7 +34,7 @@ export function RowFeature(props) {
 
   async function fetchDataFeature() {
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const urlGetDataFeature = `${hostUrl}/api/allFiltered/?featuresId=${id}&dateInit=9999-01-01&dateEnd=9999-01-01`
+    const urlGetDataFeature = `${hostUrl}/api/products/allFiltered/?featuresId=${id}&dateInit=9999-01-01&dateEnd=9999-01-01`
     try {
       const response = await fetch(urlGetDataFeature)
       if (!response.ok) {
@@ -53,7 +53,7 @@ export function RowFeature(props) {
     e.preventDefault()
     e.stopPropagation()
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const urlDelete = `${hostUrl}/api/feature/delete/${id}`
+    const urlDelete = `${hostUrl}/api/features/delete/${id}`
     const opcion = await Swal.fire({
       title: `¿Estás seguro de que quieres eliminar la caracteristica '${name}'?`,
       text: `En caso de eliminar esta caracteristica de la base de datos, todos los productos que esten asociados a ella podrian quedar sin caracteristicas asociadas.`,
@@ -103,10 +103,7 @@ export function RowFeature(props) {
   return (
     <>
       <>
-        <tr
-          className='border-b bg-white hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600'
-          onClick={handleOpenModalEdit}
-        >
+        <tr className='border-b bg-white hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600'>
           <td className='px-8 py-4'>
             <i
               className={`${icon} h-11 w-11 rounded-full text-center text-3xl text-sky-500`}
@@ -124,7 +121,15 @@ export function RowFeature(props) {
               {dataFeature.length}
             </button>
           </td>
-          <td className='px-6 py-4 text-right'>
+          <td className='flex content-center justify-between px-6 py-6 text-right align-middle'>
+            <div className='mr-4'>
+              <button
+                className='rounded-lg bg-sky-500 px-2 py-2 text-white hover:bg-sky-900'
+                onClick={handleOpenModalEdit}
+              >
+                <BsPencil className='text-xl' />
+              </button>
+            </div>
             <div>
               <button
                 value={id}

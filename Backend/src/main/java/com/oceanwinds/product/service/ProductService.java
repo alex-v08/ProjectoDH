@@ -19,6 +19,7 @@ import com.oceanwinds.product.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@Data
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -41,15 +43,7 @@ public class ProductService {
     private final BookingRepository bookingRepository;
     private final PictureDataRepository pictureDataRepository;
 
-    @Autowired
-    public ProductService(PictureDataRepository pictureDataRepository, ProductRepository productRepository, CategoryRepository categoryRepository, FeatureRepository featureRepository, LocationRepository locationRepository, BookingRepository bookingRepository) {
-        this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
-        this.featureRepository = featureRepository;
-        this.locationRepository = locationRepository;
-        this.pictureDataRepository = pictureDataRepository;
-        this.bookingRepository = bookingRepository;
-    }
+
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();

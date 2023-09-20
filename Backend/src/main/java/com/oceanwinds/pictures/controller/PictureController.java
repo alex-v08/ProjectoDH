@@ -3,6 +3,7 @@ package com.oceanwinds.pictures.controller;
 
 import com.oceanwinds.pictures.entity.vm.PictureAsset;
 import com.oceanwinds.pictures.service.S3Service;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
@@ -14,16 +15,14 @@ import java.util.Map;
 
 
 @RestController
+@Data
 @RequestMapping("/api/pictures")
 @CrossOrigin(origins = "*")
 public class PictureController {
 
 
     private final S3Service s3Service;
-    @Autowired
-    public PictureController(S3Service s3Service) {
-        this.s3Service = s3Service;
-    }
+
 
     @PostMapping("/upload")
 

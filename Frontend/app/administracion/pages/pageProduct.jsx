@@ -1,26 +1,17 @@
 'use client'
 import { useState, useEffect } from 'react'
 
-import { Modal } from '../util/modal'
 import Table from '../util/table'
-import { FormProduct } from '../register-edit/formProduct'
 import { RowProduct } from '../rows/rowProduct'
 import Swal from 'sweetalert2'
-import { Spline_Sans } from 'next/font/google'
-import Dropzone from '../formProduct/[id]/page'
-const spline = Spline_Sans({
-  weight: '600',
-  subsets: ['latin'],
-  display: 'swap'
-})
+import Link from 'next/link'
 
 export default function PageProduct() {
   const [data, setData] = useState([])
-  const [modalOpen, setModalOpen] = useState(false)
   const [changeData, setChangeData] = useState(true)
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-  const urlGetProduct = `${hostUrl}/api/all`
-  
+  const urlGetProduct = `${hostUrl}/api/products/all`
+
   async function fetchData() {
     try {
       const response = await fetch(urlGetProduct)
@@ -48,12 +39,9 @@ export default function PageProduct() {
     }
   }, [changeData])
 
-  const handleOpenModal = () => {
-    setModalOpen(true)
-  }
-
-  const handleCloseModal = () => {
-    setModalOpen(false)
+  function handleCreateProduct() {
+    const urlCreate = `/administracion/formProduct`
+    return urlCreate
   }
 
   function refreshData() {
@@ -64,28 +52,26 @@ export default function PageProduct() {
     <div className='container'>
       <div className='hidden min-h-screen lg:block'>
         <div className='pt-7'>
-          <button
-            className='rounded border border-sky-500 bg-transparent px-4 py-2 font-semibold text-sky-700 transition ease-in-out hover:border-transparent hover:bg-sky-500 hover:text-white dark:text-white sm:block'
-            onClick={handleOpenModal}
-          >
-            Registrar Producto
+          <button className='rounded border border-sky-500 bg-transparent px-4 py-2 font-semibold text-sky-700 transition ease-in-out hover:border-transparent hover:bg-sky-500 hover:text-white dark:text-white sm:block'>
+            <Link href={handleCreateProduct()}>Registrar Producto</Link>
           </button>
         </div>
         <div className='relative mx-auto mt-12  w-full overflow-x-auto rounded-lg shadow-md'>
           <Table>
-            {data.length !== 0 ? data.map(product => (
-              <RowProduct
-                key={product.id}
-                id={product.id}
-                name={product.name}
-                urlImage={product.imageUrl}
-                category={product.category}
-                features={product.feature}
-                isChangeData={changeData}
-                onClose={handleCloseModal}
-                onRefreshData={refreshData}
-              />
-            )) : (
+            {data.length !== 0 ? (
+              data.map(product => (
+                <RowProduct
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  urlImage={product.pictureDataSet}
+                  category={product.category}
+                  features={product.feature}
+                  isChangeData={changeData}
+                  onRefreshData={refreshData}
+                />
+              ))
+            ) : (
               <tr>
                 <td colSpan='5' className='text-center'>
                   No hay registros para mostrar
@@ -94,10 +80,6 @@ export default function PageProduct() {
             )}
           </Table>
         </div>
-
-        <Modal isOpen={modalOpen} onClose={handleCloseModal}>
-          <Dropzone isChangeData={changeData} onClose={handleCloseModal} onRefreshData={refreshData} />
-        </Modal>
       </div>
     </div>
   )
