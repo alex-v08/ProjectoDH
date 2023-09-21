@@ -3,21 +3,17 @@ package com.oceanwinds.product.controller;
 import Global.dto.MessageDto;
 import Global.exceptions.AttributeException;
 import Global.util.PaginatedResponse;
-import com.oceanwinds.product.entity.Product;
-import com.oceanwinds.product.service.ProductService;
-import com.oceanwinds.product.entity.dto.ProductDto;
 import com.oceanwinds.feature.repository.FeatureRepository;
-
-
+import com.oceanwinds.product.entity.Product;
+import com.oceanwinds.product.entity.dto.ProductDto;
+import com.oceanwinds.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.*;
-
 
 
 @RestController
@@ -41,15 +37,15 @@ public class ProductController {
 
     @GetMapping("/allFiltered/")
     public ResponseEntity<List<Product>> getAllProductFilter(
-            @RequestParam(defaultValue = "") String city,
-            @RequestParam(defaultValue = "") Set<Long> categoriesId,
-            @RequestParam(defaultValue = "") Set<Long> featuresId,
-            @RequestParam(defaultValue = "") Double minPrice,
-            @RequestParam(defaultValue = "") Double maxPrice,
-            @RequestParam(defaultValue = "") LocalDate dateInit,
-            @RequestParam(defaultValue = "") LocalDate dateEnd) {
+            @RequestParam(defaultValue = "", required = false) String city,
+            @RequestParam(defaultValue = "", required = false) Set<Long> categoriesId,
+            @RequestParam(defaultValue = "", required = false) Set<Long> featuresId,
+            @RequestParam(defaultValue = "", required = false) Double minPrice,
+            @RequestParam(defaultValue = "", required = false) Double maxPrice,
+            @RequestParam(defaultValue = "", required = false) LocalDate dateInit,
+            @RequestParam(defaultValue = "", required = false) LocalDate dateEnd) {
 
-        List<Product> products = (List<Product>) productService.getAllProductFilter(city, categoriesId, featuresId, minPrice, maxPrice, dateInit, dateEnd);
+        List<Product> products = productService.getAllProductFilter(city, categoriesId, featuresId, minPrice, maxPrice, dateInit, dateEnd);
 
         return ResponseEntity.ok(products);
     }

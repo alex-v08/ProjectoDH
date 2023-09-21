@@ -236,13 +236,13 @@ public class ProductService {
             );
         }
 
-        if (!categoriesId.isEmpty()) {
+        if (categoriesId != null && !categoriesId.isEmpty()) {
             spec = spec.and((root, query, builder) ->
                     root.join("category").get("id").in(categoriesId)
             );
         }
 
-        if (!featuresId.isEmpty()) {
+        if (featuresId != null && !featuresId.isEmpty()) {
             for (Long featureId : featuresId) {
                 spec = spec.and((root, query, builder) ->
                         builder.isTrue(root.join("feature").get("id").in(featureId))
