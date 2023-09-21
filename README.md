@@ -1,6 +1,6 @@
 # Equipo 5
 
-# Refinamiento del Código - Proyecto Final
+#  Proyecto Final - Oceanwings
 
 # URL del proyecto;
 http://oceanwingsdh.ddns.net/
