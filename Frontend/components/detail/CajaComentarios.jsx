@@ -5,27 +5,63 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { BsStarFill, BsStar } from 'react-icons/bs'
 
-export default function CajaComentarios({ agregarComentario }) {
+export default function CajaComentarios(bookingId) {
   const { user } = useAuth()
   const [nuevoComentario, setNuevoComentario] = useState('')
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
+
+  const url = process.env.NEXT_PUBLIC_HOST_URL + '/api/bookings/'
 
   const handleComentarioChange = e => {
     setNuevoComentario(e.target.value)
     updateButtonState(e.target.value, rating)
   }
 
+  async function postRating() {
+    try {
+      const response = await fetch(url + 'ratings/' + bookingId.bookingId, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ rating: rating })
+      })
+      if (!response.ok) {
+        throw new Error(
+          'Error al intentar registrar Rating: . Response: ' + response.status
+        )
+      }
+    } catch (error) {
+      console.error('Error al ingresar el rating', error)
+    }
+    try {
+      const response = await fetch(url + 'messages/' + bookingId.bookingId, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: nuevoComentario,
+          photoURL: user.photoURL
+        })
+      })
+      if (!response.ok) {
+        throw new Error(
+          'Error al intentar registrar el mensaje: . Response: ' +
+            response.status
+        )
+      }
+    } catch (error) {
+      console.error('Error al ingresar el mensaje', error)
+    }
+  }
+
   const handlePublicarComentario = () => {
     // Verifica que el usuario haya ingresado un comentario
     if (nuevoComentario.trim() !== '') {
       // Crea un objeto con el nuevo comentario y lo pasa al componente Comentarios
-      agregarComentario({
-        usuario: user.displayName, // Nombre del usuario (puedes cambiarlo)
-        rating: rating, // Rating hardcodeado (puedes cambiarlo)
-        fecha: new Date().toLocaleDateString(),
-        photoUrl: user.photoURL,
-        contenido: nuevoComentario
-      })
+
+      postRating()
 
       // Limpia las estados después de publicar el comentario
       setNuevoComentario('')

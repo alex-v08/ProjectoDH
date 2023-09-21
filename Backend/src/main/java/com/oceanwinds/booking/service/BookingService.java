@@ -129,6 +129,7 @@ public class BookingService {
         if (bookingOptional.isPresent() && booking.getComplete()) {
             message.setBooking(booking);
             message.setUuid(booking.getUser().getUuid());
+            message.setDateMessage(LocalDate.now());
             booking.setMessage(bookingMessageRepository.save(message));
             bookingRepository.save(booking);
         } else {
