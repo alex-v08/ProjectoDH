@@ -86,12 +86,12 @@ public class BookingController {
        return bookingService.getMediaRating(id);
     }
 
-    @PostMapping("/{bookingId}/messages")
+    @PostMapping("/messages/{bookingId}")
     public void addMessageToBooking(@PathVariable Long bookingId, @RequestBody BookingMessage message) {
         bookingService.addMessageToBooking(bookingId, message);
     }
 
-    @PostMapping("/{bookingId}/ratings")
+    @PostMapping("/ratings/{bookingId}")
     public void addRatingToBooking(@PathVariable Long bookingId, @RequestBody BookingRating rating) {
         int score = rating.getRating();
         if(score>0 && score<=5){
@@ -102,12 +102,12 @@ public class BookingController {
 
     }
 
-    @PatchMapping("/rating/message/{messageId}")
+    @PatchMapping("/messages/{messageId}")
     public BookingMessage editBookingMessage(@PathVariable Long messageId,String message){
         return bookingService.editBookingMessage(messageId,message);
     }
 
-    @PatchMapping("/rating/rating/{ratingId}")
+    @PatchMapping("/ratings/{ratingId}")
     public BookingRating editBookingRating(@PathVariable Long ratingId,int rating){
         return bookingService.editBookingRating(ratingId,rating);
     }
