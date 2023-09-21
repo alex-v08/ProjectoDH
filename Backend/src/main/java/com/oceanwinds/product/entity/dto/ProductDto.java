@@ -11,9 +11,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Data
-
+@AllArgsConstructor
 public class ProductDto {
     @Column(name = "name" , nullable = false)
     private String name;
