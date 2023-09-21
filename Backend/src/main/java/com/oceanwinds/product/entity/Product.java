@@ -35,6 +35,7 @@ public class Product {
     private Double pricePerDay;
     private Double pricePerWeek;
     private Double pricePerHour;
+    private String produDescription;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

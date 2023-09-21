@@ -10,8 +10,8 @@ import java.util.Set;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@RequiredArgsConstructor
 @Data
 
 public class ProductDto {
@@ -29,6 +29,7 @@ public class ProductDto {
     private Set<Long> featuresId;
     private LocationDto location;
     private Set<PictureData> pictures;
+    private String produDescription;
 
     private Boolean available;
 
