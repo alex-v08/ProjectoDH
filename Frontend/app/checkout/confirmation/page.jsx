@@ -1,33 +1,37 @@
 import Link from 'next/link'
 
 export default function Confirmation() {
-    return (
-        <>  
-            <div className='container flex flex-col pb-40 pt-[21rem] lg:pb-44 lg:pt-40 xl:pb-44'>
-                <div className='flex flex-col items-center lg:w-[55%] lg:items-start pb-20'>
-                    <h2 className='mb-7 text-center text-3xl font-bold text-sky-950 sm:text-5xl lg:text-left'>
-                        Reserva realizada con éxito.
-                    </h2>
-                    <blockquote className='border-l-4 border-sky-500 pl-6 text-lg text-gray-500 sm:text-xl'>
-                        Hemos recibido tu reserva con éxito. En breve, recibirás un correo electrónico con todos los detalles de tu reserva. <br/> 
-                        Si tienes alguna pregunta o necesitas asistencia adicional, no dudes en ponerte en contacto con nosotros. Estamos aquí para ayudarte.<br />
-                        <br />
-                        Gracias por elegir OceanWings. Esperamos que tengas una experiencia maravillosa.
-                    </blockquote>
-                </div>
-                <div className='flex flex-row justify-between lg:w-[55%] lg:items-start'>
-                    <Link href='/'>
-                        <button className='trasition h-auto w-auto rounded border border-sky-500 bg-sky-500 px-4 py-2 font-semibold text-white transition ease-in-out hover:bg-sky-900 lg:mt-8 lg:min-w-[125px] lg:max-w-[176px]'>
-                            Volver a la página principal
-                        </button>
-                    </Link>
-                    <Link href='/reservas'>
-                        <button className='trasition h-auto w-auto rounded border border-sky-500 bg-sky-500 px-4 py-2 font-semibold text-white transition ease-in-out hover:bg-sky-900 lg:mt-8 lg:min-w-[125px] lg:max-w-[176px]'>
-                            Ir al historial de Reservas
-                        </button>
-                    </Link>
-                </div>
-            </div>
-        </>
-    )
+  return (
+    <div className='bg-[#f2f5fa] p-4 pt-0 sm:p-10 sm:pt-0'>
+      <div className='container flex flex-col pb-10 pt-10 lg:pb-20 lg:pt-20 xl:pb-32 xl:pt-32'>
+        <div className='flex flex-col items-center pb-10 sm:pb-20 lg:w-3/4 lg:items-start'>
+          <h2 className='mb-5 text-center text-2xl font-bold text-blue-950 sm:text-4xl lg:text-left'>
+            Reserva realizada con éxito.
+          </h2>
+          <blockquote className='border-l-4 border-blue-700 pl-4 text-base text-gray-500 sm:pl-6 sm:text-lg'>
+            Reserva realizada con éxito. En breve, recibirás un correo
+            electrónico con todos los detalles de tu reserva. <br />
+            Si tienes alguna pregunta o necesitas asistencia adicional, no dudes
+            en ponerte en contacto con nosotros. Estamos aquí para ayudarte.
+            <br />
+            <br />
+            Gracias por elegir OceanWings. Esperamos que tengas una experiencia
+            maravillosa.
+          </blockquote>
+        </div>
+        <div className='flex flex-col justify-center sm:flex-row lg:w-3/4 lg:items-start'>
+          <Link href='/'>
+            <button className='mb-3 h-auto w-full rounded border border-blue-700 bg-blue-700 px-4 py-2 font-semibold text-white transition transition ease-in-out hover:bg-blue-950 sm:mb-0 sm:mr-3 sm:w-auto lg:min-w-[125px]'>
+              Volver a la página principal
+            </button>
+          </Link>
+          <Link href='/reservas'>
+            <button className='h-auto w-full rounded border border-blue-700 bg-blue-700 px-4 py-2 font-semibold text-white transition transition ease-in-out hover:bg-blue-950 sm:w-auto lg:min-w-[125px]'>
+              Ir al historial de Reservas
+            </button>
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
 }
