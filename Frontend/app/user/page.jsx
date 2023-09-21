@@ -29,7 +29,7 @@ export default function User() {
     if (!user) {
       router.push('/')
     }
-  })
+  }, [])
 
   useEffect(() => {
     // Realiza una solicitud HTTP para obtener los datos del usuario y su rol.

@@ -7,6 +7,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { staticBlurDataUrl } from '@/components/util/staticBlurDataUrl'
 import { useRouter } from 'next/navigation'
+import { MdComment } from 'react-icons/md'
+import { Modal } from '../administracion/util/modal'
+import CajaComentarios from '@/components/detail/CajaComentarios'
 
 const HistorialReservas = () => {
   const { user } = useAuth()
@@ -14,6 +17,9 @@ const HistorialReservas = () => {
   const [userId, setUserId] = useState(null)
   const [data, setData] = useState([])
   const [isLoadingData, setIsLoadingData] = useState(true)
+  const [modalEditOpen, setModalEditOpen] = useState(false)
+  const [selectId, setSelectId] = useState(null)
+  const [comment, setComment] = useState(false)
 
   const router = useRouter()
 
@@ -21,7 +27,7 @@ const HistorialReservas = () => {
     if (!user) {
       router.push('/')
     }
-  })
+  }, [])
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -73,7 +79,7 @@ const HistorialReservas = () => {
 
       fetchData() // Llamar a fetchData aquí cuando userId no sea nulo
     }
-  }, [userId])
+  }, [userId, comment])
 
   function calculateDays(startDate, endDate) {
     // Parse las fechas en objetos Date
@@ -115,6 +121,16 @@ const HistorialReservas = () => {
     </div>
   ))
 
+  const handleOpenModalEdit = id => {
+    setSelectId(id)
+    setModalEditOpen(true)
+  }
+
+  const handleCloseModalEdit = () => {
+    setSelectId(null)
+    setModalEditOpen(false)
+  }
+
   return (
     <div className='bg-[#f2f5fa]'>
       <div className='container mx-auto min-h-screen pb-10 pt-8'>
@@ -127,12 +143,14 @@ const HistorialReservas = () => {
           ) : (
             <>
               {data.map(booking => (
-                <Link
+                <div
                   key={booking.id}
                   className='group relative flex w-full max-w-[450px] flex-col overflow-hidden rounded-lg border shadow-md transition-transform duration-300 ease-in-out hover:scale-[1.02] lg:max-w-full lg:flex-row'
-                  href={`/detail/${booking.product.id}`}
                 >
-                  <div className='relative h-36 min-h-[150px] w-full overflow-hidden lg:h-[200px] lg:max-w-[35%] xl:max-w-[35%]'>
+                  <Link
+                    className='relative h-36 min-h-[150px] w-full overflow-hidden lg:h-[200px] lg:max-w-[35%] xl:max-w-[35%]'
+                    href={`/detail/${booking.product.id}`}
+                  >
                     <Image
                       src={`${booking.product.imageUrl}1.png`}
                       alt='imagen de la embarcacion'
@@ -144,9 +162,9 @@ const HistorialReservas = () => {
                       style={{ objectFit: 'cover' }}
                       className='transition duration-150 ease-in-out group-hover:brightness-105'
                     />
-                  </div>
+                  </Link>
                   <div className='flex h-full w-full flex-col justify-between px-4 py-4 transition duration-300 ease-in-out group-hover:bg-white lg:max-w-[65%] lg:px-8'>
-                    <div>
+                    <Link href={`/detail/${booking.product.id}`}>
                       <h3 className='truncate pb-2 text-xl font-bold uppercase text-sky-900'>
                         {booking.product.name}
                       </h3>
@@ -177,7 +195,7 @@ const HistorialReservas = () => {
                           </span>
                         </p>
                       </div>
-                    </div>
+                    </Link>
                     <div className='flex items-center justify-between'>
                       <h3 className='text-l flex flex-col font-extrabold leading-none text-sky-500 md:flex-row'>
                         <span className='mr-2 text-xs font-semibold uppercase text-gray-500'>
@@ -189,14 +207,33 @@ const HistorialReservas = () => {
                             calculateDays(booking.dateInit, booking.dateEnd)}
                         </span>
                       </h3>
+                      {booking.message === null ? (
+                        <button
+                          className=' cursor-pointer rounded px-2 py-1 text-sm text-emerald-400 transition hover:text-emerald-500'
+                          onClick={e => {
+                            e.preventDefault()
+                            handleOpenModalEdit(booking.id)
+                          }}
+                        >
+                          <MdComment className='h-6 w-6' />
+                        </button>
+                      ) : null}
                     </div>
                   </div>
-                </Link>
+                </div>
               ))}
             </>
           )}
         </div>
       </div>
+      <Modal isOpen={modalEditOpen} onClose={handleCloseModalEdit}>
+        <CajaComentarios
+          id={selectId}
+          onClose={handleCloseModalEdit}
+          commet={comment}
+          setComment={setComment}
+        />
+      </Modal>
     </div>
   )
 }

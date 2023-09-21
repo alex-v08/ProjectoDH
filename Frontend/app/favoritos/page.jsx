@@ -25,7 +25,7 @@ const CurrentFavs = () => {
     if (!user) {
       router.push('/')
     }
-  })
+  }, [])
 
   useEffect(() => {
     const fetchUserId = async () => {

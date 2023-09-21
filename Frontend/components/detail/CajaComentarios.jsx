@@ -2,13 +2,21 @@
 
 import { useAuth } from '@/context/authContext'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { BsStarFill, BsStar } from 'react-icons/bs'
+import Swal from 'sweetalert2'
 
-export default function CajaComentarios(bookingId) {
+export default function CajaComentarios({
+  id,
+  onClose: handleCloseModalEdit,
+  commet: comment,
+  setComment: setComment
+}) {
   const { user } = useAuth()
   const [nuevoComentario, setNuevoComentario] = useState('')
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
+  const router = useRouter()
 
   const url = process.env.NEXT_PUBLIC_HOST_URL + '/api/bookings/'
 
@@ -19,7 +27,7 @@ export default function CajaComentarios(bookingId) {
 
   async function postRating() {
     try {
-      const response = await fetch(url + 'ratings/' + bookingId.bookingId, {
+      const response = await fetch(url + 'ratings/' + id, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -35,7 +43,7 @@ export default function CajaComentarios(bookingId) {
       console.error('Error al ingresar el rating', error)
     }
     try {
-      const response = await fetch(url + 'messages/' + bookingId.bookingId, {
+      const response = await fetch(url + 'messages/' + id, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -45,7 +53,17 @@ export default function CajaComentarios(bookingId) {
           photoURL: user.photoURL
         })
       })
-      if (!response.ok) {
+      if (response.ok) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Comentario publicado',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        handleCloseModalEdit()
+        setComment(!comment)
+      } else {
         throw new Error(
           'Error al intentar registrar el mensaje: . Response: ' +
             response.status
@@ -60,13 +78,7 @@ export default function CajaComentarios(bookingId) {
     // Verifica que el usuario haya ingresado un comentario
     if (nuevoComentario.trim() !== '') {
       // Crea un objeto con el nuevo comentario y lo pasa al componente Comentarios
-
       postRating()
-
-      // Limpia las estados después de publicar el comentario
-      setNuevoComentario('')
-      setRating(0)
-      setIsButtonDisabled(true)
     }
   }
 
@@ -88,7 +100,7 @@ export default function CajaComentarios(bookingId) {
   }
 
   return (
-    <div>
+    <div className='p-10'>
       {user ? (
         // un imput text para escribir el comentario con ancho 100%
         <div>
