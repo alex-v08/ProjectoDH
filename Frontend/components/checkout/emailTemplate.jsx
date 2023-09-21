@@ -370,8 +370,8 @@ export default function EmailTemplate({
         <tr>
           <table class="bg_white" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr style="border-bottom: 1px solid rgba(0,0,0,.05);">
-              <th width="69%" style="text-align:left; padding: 0 2.5em; color: #000; padding-bottom: 20px">Producto</th>
-              <th width="31%" style="text-align:right; padding: 0 2.5em; color: #000; padding-bottom: 20px">Precio</th>
+              <th width="67%" style="text-align:left; padding: 0 2.5em; color: #000; padding-bottom: 20px">Producto</th>
+              <th width="33%" style="text-align:right; padding: 0 2.5em; color: #000; padding-bottom: 20px">Precio</th>
             </tr>
             <tr style="border-bottom: 1px solid rgba(0,0,0,.05);">
               <td valign="middle" width="80%" style="text-align:left; padding: 0 1em 0 2.5em;">
