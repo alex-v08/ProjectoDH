@@ -271,6 +271,7 @@ export default function EmailTemplate({
       position: relative;
       float: left;
       padding-top: 20px;
+      padding-bottom: 20px;
     }
 
     .product-entry .text {
