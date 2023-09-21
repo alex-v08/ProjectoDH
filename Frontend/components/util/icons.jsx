@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+
 import Select from 'react-select'
 
 export default function Icons(props) {
@@ -1057,7 +1057,7 @@ export default function Icons(props) {
       ...provided,
       padding: 2,
       margin: 0,
-      borderRadius: 8,
+      borderRadius: 8
     })
   }
 

@@ -6,6 +6,7 @@ import jakarta.mail.internet.MimeMessage;
 
 import lombok.Data;
 
+
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -18,7 +19,7 @@ public class EmailService {
 
     private final JavaMailSender javaMailSender;
 
-    private EmailTracker emailTracker;
+    private  EmailTracker emailTracker;
 
 
 

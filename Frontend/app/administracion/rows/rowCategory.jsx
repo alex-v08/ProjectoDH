@@ -17,7 +17,7 @@ export function RowCategory(props) {
 
   async function fetchData() {
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const urlGetCategory = `${hostUrl}/api/categoryById/${id}`
+    const urlGetCategory = `${hostUrl}/api/category/categoryById/${id}`
     try {
       const response = await fetch(urlGetCategory)
       if (!response.ok) {
@@ -34,7 +34,7 @@ export function RowCategory(props) {
 
   async function fetchDataCategory() {
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const urlGetDataCategory = `${hostUrl}/api/products/allFiltered/?categoriesId=${id}&dateInit=9999-01-01&dateEnd=9999-01-01`
+    const urlGetDataCategory = `${hostUrl}/api/products/allFiltered/?categoriesId=${id}`
     try {
       const response = await fetch(urlGetDataCategory)
       if (!response.ok) {

@@ -20,6 +20,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-@Data
+@RequiredArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -42,8 +43,6 @@ public class ProductService {
     private final LocationRepository locationRepository;
     private final BookingRepository bookingRepository;
     private final PictureDataRepository pictureDataRepository;
-
-
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();
@@ -237,13 +236,13 @@ public class ProductService {
             );
         }
 
-        if (!categoriesId.isEmpty()) {
+        if (categoriesId != null && !categoriesId.isEmpty()) {
             spec = spec.and((root, query, builder) ->
                     root.join("category").get("id").in(categoriesId)
             );
         }
 
-        if (!featuresId.isEmpty()) {
+        if (featuresId != null && !featuresId.isEmpty()) {
             for (Long featureId : featuresId) {
                 spec = spec.and((root, query, builder) ->
                         builder.isTrue(root.join("feature").get("id").in(featureId))

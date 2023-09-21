@@ -3,6 +3,7 @@ package com.oceanwinds.favorites.service;
 import com.oceanwinds.favorites.entity.Favorites;
 import com.oceanwinds.favorites.repository.FavoritesRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,14 +11,11 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class FavoritesService {
 
     private final FavoritesRepository favoritesRepository;
 
-    @Autowired
-    public FavoritesService(FavoritesRepository favoritesRepository) {
-        this.favoritesRepository = favoritesRepository;
-    }
 
     @Transactional
     public void addFavorite(Long userId, Long productId) {
