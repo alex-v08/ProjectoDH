@@ -369,44 +369,46 @@ export default function EmailTemplate({
         </tr><!-- end tr -->
         <tr>
           <table class="bg_white" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
-            <tr style="border-bottom: 1px solid rgba(0,0,0,.05); display: flex; justify-content: space-between;">
-              <th style="text-align:left; padding: 0 2.5em; color: #000; padding-bottom: 20px">Producto</th>
-              <th style="text-align:right; padding: 0 2.5em; color: #000; padding-bottom: 20px">Precio</th>
+            <tr style="border-bottom: 1px solid rgba(0,0,0,.05);">
+              <th width="69%" style="text-align:left; padding: 0 2.5em; color: #000; padding-bottom: 20px">Producto</th>
+              <th width="31%" style="text-align:right; padding: 0 2.5em; color: #000; padding-bottom: 20px">Precio</th>
             </tr>
-            <tr style="border-bottom: 1px solid rgba(0,0,0,.05); display: flex; justify-content: space-between; padding-top: 20px; padding-bottom: 20px;">
-              <td style="text-align:left; padding: 0 1em 0 2.5em; display: flex; flex-wrap: wrap; align-items: flex-start;">
-                <img src='${
-                  productInfo.imageUrl
-                }1.png' alt="" style="width: 100px; max-width: 600px; height: auto; margin-bottom: 20px; display: block; border-radius: 10px;">
-                <div class="text" style="padding-left: 16px;">
-                  <h3 style="margin-bottom: 0px;"><a href='http://oceanwingsdh.ddns.net/detail/${id}'>${
+            <tr style="border-bottom: 1px solid rgba(0,0,0,.05);">
+              <td valign="middle" width="80%" style="text-align:left; padding: 0 1em 0 2.5em;">
+                <div class="product-entry">
+                  <img src='${
+                    productInfo.imageUrl
+                  }1.png' alt="" style="width: 100px; max-width: 600px; height: auto; margin-bottom: 20px; display: block; border-radius: 10px;">
+                  <div class="text">
+                    <h3><a href='http://oceanwingsdh.ddns.net/detail/${id}'>${
     productInfo?.name
   }</a></h3>
-                  <div>
-                    <span class="text-bold">Fecha de ingreso:</span><br>
-                    <span>
-                      ${startDateFormated}
-                    </span>
-                  </div>
-                  <div>
-                    <span class="text-bold">Fecha de salida:</span><br>
-                    <span>${endDateFormated}</span>
-                  </div>
-                  <div>
-                    <span class="text-bold">Cantidad de días: </span>
-                    <span>${days}</span>
+                    <div>
+                      <span class="text-bold">Fecha de ingreso:</span><br>
+                      <span>
+                        ${startDateFormated}
+                      </span>
+                    </div>
+                    <div>
+                      <span class="text-bold">Fecha de salida:</span><br>
+                      <span>${endDateFormated}</span>
+                    </div>
+                    <div>
+                      <span class="text-bold">Cantidad de días: </span>
+                      <span>${days}</span>
+                    </div>
                   </div>
                 </div>
               </td>
-              <td style="text-align:right; padding: 0 2.5em 0 0;">
-                <span class="price" style="color: #000; font-size: 20px; min-width: 90px;">$ ${
+              <td valign="middle" width="20%" style="text-align:right; padding: 0 2.5em 0 0;">
+                <span class="price" style="color: #000; font-size: 20px;">$ ${
                   productInfo.pricePerDay * days
                 }</span>
               </td>
             </tr>
             <tr>
-              <td valign=" middle" style="text-align:left; padding: 1em 2.5em;">
-                  <p><a href='http://oceanwingsdh.ddns.net/reservas' class="btn btn-primary">Ver reservas realizadas</a></p>
+              <td valign="middle" style="text-align:left; padding: 1em 2.5em;">
+                <p><a href='http://oceanwingsdh.ddns.net/reservas' class="btn btn-primary">Ver reservas realizadas</a></p>
               </td>
             </tr>
           </table>
