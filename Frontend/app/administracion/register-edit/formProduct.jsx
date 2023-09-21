@@ -446,7 +446,7 @@ export const Dropzone = ({ className, params }) => {
                 required
               />
             </div>
-            <div className='col-span-6 sm:col-span-3'>
+            <div className='col-span-6 sm:col-span-3 mb-3'>
               <label
                 htmlFor='description'
                 className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
@@ -459,7 +459,7 @@ export const Dropzone = ({ className, params }) => {
                 onChange={handleChangeDescription}
                 placeholder='Ingrese una breve descripcion del producto'
                 id='description'
-                className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500'
+                className='block w-full h-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500'
               />
             </div>
             <div className='col-span-6 sm:col-span-3'>
@@ -591,7 +591,7 @@ export const Dropzone = ({ className, params }) => {
                 onChange={handleChangeFeature}
                 value={featuresId}
                 id='feature'
-                className='dropdown block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500'
+                className='dropdown block w-full h-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500'
               >
                 {features.map(feature => (
                   <option key={feature.id} value={feature.id}>
@@ -630,7 +630,7 @@ export const Dropzone = ({ className, params }) => {
           })}
         >
           <input {...getInputProps({ name: 'file' })} />
-          <div className='container flex flex-col items-center justify-center gap-4 space-y-6 rounded-md border border-gray-300 bg-gray-50 p-6'>
+          <div className='mt-5 container flex flex-col items-center justify-center gap-4 space-y-6 rounded-md border border-gray-300 bg-gray-50 p-6'>
             <ArrowUpTrayIcon className='h-5 w-5 fill-current' />
             {isDragActive ? (
               <p>Suelte los archivos aqui..</p>
