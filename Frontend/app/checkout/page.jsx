@@ -181,6 +181,7 @@ export default function Checkout() {
 
             if (emailResponse.ok) {
               console.log('Email sent successfully')
+              // console.log(emailHTML)
               router.push('/reservas')
             } else {
               console.error('Error sending email')
