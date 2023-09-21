@@ -6,6 +6,7 @@ import { BsFillTrashFill } from 'react-icons/bs'
 import Image from 'next/image'
 import Link from 'next/link'
 import { staticBlurDataUrl } from '@/components/util/staticBlurDataUrl'
+import { useRouter } from 'next/navigation'
 
 const CurrentFavs = () => {
   const [data, setData] = useState([])
@@ -17,6 +18,14 @@ const CurrentFavs = () => {
   const { user } = useAuth()
 
   const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/')
+    }
+  })
 
   useEffect(() => {
     const fetchUserId = async () => {
