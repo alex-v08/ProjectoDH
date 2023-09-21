@@ -212,7 +212,7 @@ export default function Checkout() {
     setUserForm({ ...userForm, [name]: value })
 
   return (
-    <div className='bg-[#f2f5fa] p-4 pt-0 sm:p-10 sm:pt-0'>
+    <div className='h-screen bg-[#f2f5fa] p-4 pt-0 sm:p-10 sm:pt-0'>
       <div className='container py-3 sm:pb-5 sm:pt-10'>
         <div className='flex items-center justify-between text-5xl font-bold text-blue-950'>
           Reserva
