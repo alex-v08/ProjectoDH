@@ -140,8 +140,8 @@ export function FormCat(props) {
       onSubmit={handleSubmit}
     >
       <div className='space-y-6 p-6'>
-        <div className='grid grid-cols-6 gap-6'>
-          <div className='col-span-6 sm:col-span-3'>
+        <div className='grid grid-cols-2 grid-rows-3 gap-6'>
+          <div>
             <label
               htmlFor='name'
               className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
@@ -158,24 +158,7 @@ export function FormCat(props) {
               required
             />
           </div>
-          <div className='col-span-6 sm:col-span-3'>
-            <label
-              htmlFor='description'
-              className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
-            >
-              Descripcion de la categoría
-            </label>
-            <textarea
-              type='text'
-              value={description}
-              onChange={handleChangeDescription}
-              placeholder='Ingrese una descripcion de la categoría'
-              id='description'
-              rows={1}
-              className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500'
-            />
-          </div>
-          <div className='col-span-6 sm:col-span-3'>
+          <div className='mt-5 col-start-1 row-start-2'>
             <label
               htmlFor='image'
               className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
@@ -190,22 +173,37 @@ export function FormCat(props) {
               />
             </div>
           </div>
-          <div className='col-span-6 flex items-center space-x-2 rounded-b border-t border-gray-200 p-6 dark:border-gray-600'>
-            <div className='mx-auto'>
-              <button
-                type='reset'
-                className='mr-5 rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-                onClick={handleReset}
-              >
-                Reiniciar
-              </button>
-              <button
-                type='submit'
-                className='rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-              >
-                Enviar
-              </button>
-            </div>
+          <div className='row-span-2 col-start-2 row-start-1'>
+            <label
+              htmlFor='description'
+              className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
+            >
+              Descripcion de la categoría
+            </label>
+            <textarea
+              type='text'
+              value={description}
+              onChange={handleChangeDescription}
+              placeholder='Ingrese una descripcion de la categoría'
+              id='description'
+              rows={4}
+              className='block w-full h-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500'
+            />
+          </div>
+          <div className='col-span-2 row-start-3 flex justify-center items-center space-x-4'>
+            <button
+              type='reset'
+              className='rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+              onClick={handleReset}
+            >
+              Reiniciar
+            </button>
+            <button
+              type='submit'
+              className='rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+            >
+              Enviar
+            </button>
           </div>
         </div>
       </div>

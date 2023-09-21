@@ -17,7 +17,7 @@ export function RowFeature(props) {
 
   async function fetchData() {
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const urlGetFeature = `${hostUrl}/api/featureById/${id}`
+    const urlGetFeature = `${hostUrl}/api/features/featureById/${id}`
     try {
       const response = await fetch(urlGetFeature)
       if (!response.ok) {
@@ -34,7 +34,7 @@ export function RowFeature(props) {
 
   async function fetchDataFeature() {
     const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
-    const urlGetDataFeature = `${hostUrl}/api/products/allFiltered/?featuresId=${id}&dateInit=9999-01-01&dateEnd=9999-01-01`
+    const urlGetDataFeature = `${hostUrl}/api/products/allFiltered/?featuresId=${id}`
     try {
       const response = await fetch(urlGetDataFeature)
       if (!response.ok) {

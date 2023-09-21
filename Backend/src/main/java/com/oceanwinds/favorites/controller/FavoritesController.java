@@ -2,6 +2,7 @@ package com.oceanwinds.favorites.controller;
 
 import com.oceanwinds.favorites.entity.Favorites;
 import com.oceanwinds.favorites.service.FavoritesService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,14 +12,12 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/favorites")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class FavoritesController {
 
     private final FavoritesService favoritesService;
 
-    @Autowired
-    public FavoritesController(FavoritesService favoritesService) {
-        this.favoritesService = favoritesService;
-    }
+
 
     @PostMapping("/add")
     public void addFavorite(@RequestParam Long userId, @RequestParam Long productId) {

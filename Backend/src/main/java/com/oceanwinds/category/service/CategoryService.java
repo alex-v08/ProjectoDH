@@ -7,6 +7,7 @@ import com.oceanwinds.category.entity.dto.CategoryDto;
 
 import com.oceanwinds.category.repository.CategoryRepository;
 import com.oceanwinds.product.entity.Product;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +15,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    @Autowired
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
 
     public List<Category> getAllCategory() {
 

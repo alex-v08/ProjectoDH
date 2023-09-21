@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import { staticBlurDataUrl } from '@/components/util/staticBlurDataUrl'
+import { useRouter } from 'next/navigation'
 
 const HistorialReservas = () => {
   const { user } = useAuth()
@@ -13,6 +14,14 @@ const HistorialReservas = () => {
   const [userId, setUserId] = useState(null)
   const [data, setData] = useState([])
   const [isLoadingData, setIsLoadingData] = useState(true)
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/')
+    }
+  })
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -136,7 +145,7 @@ const HistorialReservas = () => {
                       className='transition duration-150 ease-in-out group-hover:brightness-105'
                     />
                   </div>
-                  <div className='flex h-full w-full flex-col justify-between px-4 py-4 transition duration-300 ease-in-out group-hover:bg-white lg:px-8'>
+                  <div className='flex h-full w-full flex-col justify-between px-4 py-4 transition duration-300 ease-in-out group-hover:bg-white lg:max-w-[65%] lg:px-8'>
                     <div>
                       <h3 className='truncate pb-2 text-xl font-bold uppercase text-sky-900'>
                         {booking.product.name}
