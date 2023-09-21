@@ -20,14 +20,15 @@ export default function FormSearchNew({
     endDate: searchParams.get('dateEnd')
   }
 
-  const urlLocations = '/api/products/locations'
+  const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+  const urlLocations = `${hostUrl}/api/location/all`
 
   const arrayFeatures = convertArrayOfStringsToNumbers(selectedFeatures)
   const arrayCategories = convertArrayOfStringsToNumbers(selectedCategory)
 
   // Almacena la ciudad selecionada
   const [selectedCity, setSelectedCity] = useState(
-    paramsCity || 'Elija su lugar de inicio'
+    paramsCity == 'null' ? 'Elija su lugar de inicio' : paramsCity
   )
 
   // Almacena los dias seleccionados

@@ -9,7 +9,8 @@ export default function Filters({
   handleSelectChangeFeatures,
   productsFilters,
   handleSliderChange,
-  priceRange
+  priceRange,
+  categoriesId
 }) {
   // Para almacenar la data de inptus
   const [allCategories, setAllCategories] = useState([])
@@ -44,7 +45,9 @@ export default function Filters({
                 <div className='group flex items-center' key={index}>
                   <input
                     onChange={handleSelectChangeCategory}
-                    value={category.id}
+                    value={
+                      categoriesId === category.id ? categoriesId : category.id
+                    }
                     type='checkbox'
                     name={category.name}
                     id={category.id}

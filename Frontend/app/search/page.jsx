@@ -13,6 +13,7 @@ export default function Search() {
   const selectedCity = searchParams.get('city')
   const dateInit = searchParams.get('dateInit')
   const dateEnd = searchParams.get('dateEnd')
+  const categoriesId = searchParams.get('categoriesId')
 
   const router = useRouter()
 
@@ -74,6 +75,29 @@ export default function Search() {
     return result
   }
 
+  // const tryCatchForIcons = async cat => {
+  //   try {
+  //     const response = await fetch(
+  //       `${hostUrl}/api/products/allFiltered/?city=&categoriesId=${cat}&featuresId=&minPrice=0&maxPrice=5000&dateInit=&dateEnd=`,
+  //       {
+  //         cache: 'no-store'
+  //       }
+  //     )
+  //     router.push(
+  //       `/search?city=null&categoriesId=${categoriesId}&featuresId=null&minPrice=0&maxPrice=5000&dateInit=null&dateEnd=null`,
+  //       { scroll: false }
+  //     )
+
+  //     if (!response.ok) {
+  //       throw new Error('Network response was not ok')
+  //     }
+  //     const products = await response.json()
+  //     setProductsFilters(products)
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error)
+  //   }
+  // }
+
   // Pinta el filtrado del todos los input
   useEffect(() => {
     const getSearch = async () => {
@@ -82,7 +106,12 @@ export default function Search() {
 
       // para generar el slug para las características
       const arrayFeatures = convertArrayOfStringsToNumbers(selectedFeatures)
-
+      // if (
+      //   (selectedCity === 'null' && arrayCategories != '') ||
+      //   (arrayCategories != 'null' && arrayFeatures == '')
+      // ) {
+      //   tryCatchForIcons(arrayCategories)
+      // } else {
       try {
         const response = await fetch(
           `${hostUrl}/api/products/allFiltered/?city=${selectedCity}&categoriesId=${arrayCategories}&featuresId=${arrayFeatures}&minPrice=0&maxPrice=${priceRange}&dateInit=${dateInit}&dateEnd=${dateEnd}`,
@@ -103,6 +132,9 @@ export default function Search() {
       } catch (error) {
         console.error('Error fetching data:', error)
       }
+
+      //comentar esta
+      // }
     }
     getSearch()
   }, [
@@ -179,6 +211,7 @@ export default function Search() {
                 productsFilters={productsFilters}
                 handleSliderChange={handleSliderChange}
                 priceRange={priceRange}
+                categoriesId={categoriesId}
               />
             </div>
           </div>

@@ -19,7 +19,8 @@ export default function FormSearch() {
   // Almacena el Array de ciudades para el select
   const [locations, setLocations] = useState([])
 
-  const urlLocations = '/api/products/locations'
+  const hostUrl = process.env.NEXT_PUBLIC_HOST_URL
+  const urlLocations = `${hostUrl}/api/location/all`
 
   // Controla el cambio de ciudad seleccionada
   const handleSelectChangeCity = event => {
