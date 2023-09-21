@@ -370,8 +370,8 @@ export default function EmailTemplate({
         <tr>
           <table class="bg_white" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr style="border-bottom: 1px solid rgba(0,0,0,.05);">
-              <th width="80%" style="text-align:left; padding: 0 2.5em; color: #000; padding-bottom: 20px">Producto</th>
-              <th width="20%" style="text-align:right; padding: 0 2.5em; color: #000; padding-bottom: 20px">Precio</th>
+              <th width="50%" style="text-align:left; padding: 0 2.5em; color: #000; padding-bottom: 20px">Producto</th>
+              <th width="50%" style="text-align:right; padding: 0 2.5em; color: #000; padding-bottom: 20px">Precio</th>
             </tr>
             <tr style="border-bottom: 1px solid rgba(0,0,0,.05);">
               <td valign="middle" width="80%" style="text-align:left; padding: 0 1em 0 2.5em;">
@@ -424,7 +424,7 @@ export default function EmailTemplate({
                   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                     <tr>
                       <td style="text-align: left; padding-right: 10px;">
-                        <h3 class="heading">Información</h3>
+                        <h3 class="heading">Info</h3>
                         <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
                       </td>
                     </tr>
@@ -449,10 +449,10 @@ export default function EmailTemplate({
                       <td style="text-align: left; padding-left: 10px;">
                         <h3 class="heading">Enlaces</h3>
                         <ul>
-                          <li><a href="#">Inicio</a></li>
-                          <li><a href="#">Cuenta</a></li>
-                          <li><a href="#">Favoritos</a></li>
-                          <li><a href="#">Reservas</a></li>
+                          <li><a href="http://oceanwingsdh.ddns.net">Inicio</a></li>
+                          <li><a href="http://oceanwingsdh.ddns.net/user">Cuenta</a></li>
+                          <li><a href="http://oceanwingsdh.ddns.net/favoritos">Favoritos</a></li>
+                          <li><a href="http://oceanwingsdh.ddns.net/reservas">Reservas</a></li>
                         </ul>
                       </td>
                     </tr>

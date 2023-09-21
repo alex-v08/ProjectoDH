@@ -6,6 +6,7 @@ import { useAuth } from '@/context/authContext'
 import { useState, useEffect, use } from 'react'
 import { BsCameraFill } from 'react-icons/bs'
 import Swal from 'sweetalert2'
+import { useRouter } from 'next/navigation'
 
 export default function User() {
   const [userForm, setUserForm] = useState({
@@ -21,6 +22,14 @@ export default function User() {
   const { user, loading } = useAuth()
   const [userInfo, setUserInfo] = useState(null)
   const [send, setSend] = useState(false)
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/')
+    }
+  })
 
   useEffect(() => {
     // Realiza una solicitud HTTP para obtener los datos del usuario y su rol.
