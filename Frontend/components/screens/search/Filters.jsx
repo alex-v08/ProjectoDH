@@ -51,12 +51,12 @@ export default function Filters({
                     type='checkbox'
                     name={category.name}
                     id={category.id}
-                    // checked={categoryIds.includes(category.id) ? true : false}
-                    className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
+                    // checked={categoriesId.includes(category.id) ? true : false}
+                    className='h-5 w-5 cursor-pointer appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
                   />
                   <label
-                    htmlFor={category.name}
-                    className='truncate pl-2 transition group-hover:text-sky-500'
+                    htmlFor={category.id}
+                    className='cursor-pointer truncate pl-2 transition group-hover:text-sky-500'
                   >
                     {category.name}
                   </label>
@@ -103,11 +103,11 @@ export default function Filters({
                     type='checkbox'
                     name={feature.name}
                     id={feature.image}
-                    className='h-5 w-5 appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
+                    className='h-5 w-5 cursor-pointer appearance-none rounded-sm border border-gray-300 transition checked:border-transparent checked:bg-sky-500 checked:text-white hover:border-sky-500'
                   />
                   <label
                     htmlFor={feature.image}
-                    className='truncate pl-2 transition group-hover:text-sky-500'
+                    className='cursor-pointer truncate pl-2 transition group-hover:text-sky-500'
                   >
                     {feature.name}
                   </label>
